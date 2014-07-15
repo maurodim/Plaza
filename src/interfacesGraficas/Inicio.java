@@ -291,6 +291,11 @@ public class Inicio extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu8.setText("Contratos");
+        jMenu8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu8ActionPerformed(evt);
+            }
+        });
 
         jMenuItem11.setText("Administracion de Contratos");
         jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
@@ -302,9 +307,9 @@ public class Inicio extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu8);
 
-        jMenu9.setText("Conceptos");
+        jMenu9.setText("Cuentas");
 
-        jMenuItem17.setText("Ingreso de Conceptos Fijos");
+        jMenuItem17.setText("Ingreso de Nueva Cuenta");
         jMenu9.add(jMenuItem17);
 
         jMenuBar1.add(jMenu9);
@@ -427,6 +432,10 @@ public class Inicio extends javax.swing.JFrame {
         art.setVisible(true);
         art.toFront();
     }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void jMenu8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu8ActionPerformed
 
     /**
      * @param args the command line arguments
