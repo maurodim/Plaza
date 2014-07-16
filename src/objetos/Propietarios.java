@@ -7,8 +7,14 @@
 package objetos;
 
 import interfaces.Generable;
+import interfaces.Personalizable;
+import interfaces.Transaccionable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,6 +32,16 @@ public class Propietarios implements Generable{
     private Date fechaAlta;
     private Usuarios usuario;
     private Double saldo;
+    private String localidad;
+
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
+    }
+    
 
     public Propietarios() {
         propiedad=new Propiedades();
@@ -122,27 +138,100 @@ public class Propietarios implements Generable{
 
     @Override
     public void Alta(Object objeto) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Propietarios propietario=new Propietarios();
+        propietario=(Propietarios)objeto;
+        Transaccionable tra=new ConeccionLocal();
+        String sql="insert into proveedores (nombre,domicilio,localidad,telefono,mail,idusuario,observaciones) values ('"+propietario.getNombre()+"','"+propietario.getDomicilio()+"','"+propietario.getLocalidad()+"','"+propietario.getTelefono()+"','"+propietario.getMail()+"',"+propietario.getUsuario().getNumeroId()+",'"+propietario.getObservaciones()+"')";
+        tra.guardarRegistro(sql);
+        sql="last_inset_id()";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                propietario.setId(rs.getInt(1));
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Propietarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     public void Baja(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Transaccionable tra=new ConeccionLocal();
+        String sql="delete proveedores where numero="+id;
+        tra.guardarRegistro(sql);
     }
 
     @Override
     public void Modificacion(Object objeto) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Propietarios propietario=new Propietarios();
+        propietario=(Propietarios)objeto;
+        Transaccionable tra=new ConeccionLocal();
+        String sql="update proveedores set nombre='"+propietario.getNombre()+"',domicilio='"+propietario.getDomicilio()+"',localidad='"+propietario.getLocalidad()+"',telefono='"+propietario.getTelefono()+"',mail='"+propietario.getMail()+"',observaciones='"+propietario.getObservaciones()+"',saldo="+propietario.getSaldo()+",idpropiedad="+propietario.getPropiedad().getId()+" where numero="+propietario.getId();        
+        tra.guardarRegistro(sql);
     }
 
     @Override
     public ArrayList Listar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList listado=new ArrayList();
+        Generable prop=new Propiedades();
+        Personalizable per=new Usuarios();
+        String sql="select * from proveedores order by nombre";
+        Transaccionable tra=new ConeccionLocal();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                Propietarios propietario=new Propietarios();
+                propietario.setId(rs.getInt("numero"));
+                propietario.setNombre(rs.getString("nombre"));
+                propietario.setDomicilio(rs.getString("domicilio"));
+                propietario.setLocalidad(rs.getString("localidad"));
+                propietario.setTelefono(rs.getString("telefono"));
+                propietario.setMail(rs.getString("mail"));
+                propietario.setSaldo(rs.getDouble("saldo"));
+                propietario.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
+                propietario.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                propietario.setFechaAlta(rs.getDate("fechaalta"));
+                propietario.setObservaciones(rs.getString("observaciones"));
+                listado.add(propietario);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Propietarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listado;
     }
 
     @Override
     public Object Cargar(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //ArrayList listado=new ArrayList();
+        Generable prop=new Propiedades();
+        Personalizable per=new Usuarios();
+        String sql="select * from proveedores where numero="+id;
+        Transaccionable tra=new ConeccionLocal();
+        Propietarios propietario=new Propietarios();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                propietario.setId(rs.getInt("numero"));
+                propietario.setNombre(rs.getString("nombre"));
+                propietario.setDomicilio(rs.getString("domicilio"));
+                propietario.setLocalidad(rs.getString("localidad"));
+                propietario.setTelefono(rs.getString("telefono"));
+                propietario.setMail(rs.getString("mail"));
+                propietario.setSaldo(rs.getDouble("saldo"));
+                propietario.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
+                propietario.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                propietario.setFechaAlta(rs.getDate("fechaalta"));
+                propietario.setObservaciones(rs.getString("observaciones"));
+                //listado.add(propietario);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Propietarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return propietario;
     }
     
     

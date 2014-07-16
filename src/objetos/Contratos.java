@@ -7,8 +7,14 @@
 package objetos;
 
 import interfaces.Generable;
+import interfaces.Personalizable;
+import interfaces.Transaccionable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -134,27 +140,96 @@ public class Contratos implements Generable{
 
     @Override
     public void Alta(Object objeto) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Transaccionable tra=new ConeccionLocal();
+        Contratos contrato=new Contratos();
+        contrato=(Contratos)objeto;
+        String sql="insert into contratos(monto1,fecha1,monto2,fecha2,idinquilino,idpropiedad,idpropietario,idgarante,archivo,idusuario) values ("+contrato.getMonto1()+",'"+contrato.getVencimiento1()+"',"+contrato.getMonto2()+",'"+contrato.getVencimiento2()+"',"+contrato.getInquilino().getId()+","+contrato.getPropiedad().getId()+","+contrato.getPropietario().getId()+","+contrato.getGarante().getId()+","+contrato.getArchivo()+","+contrato.getUsuario().getNumeroId()+")";
+        tra.guardarRegistro(sql);
     }
 
     @Override
     public void Baja(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Transaccionable tra=new ConeccionLocal();
+        String sql="delete contratos where id="+id;
+        tra.guardarRegistro(sql);
     }
 
     @Override
     public void Modificacion(Object objeto) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Transaccionable tra=new ConeccionLocal();
+        Contratos contrato=new Contratos();
+        contrato=(Contratos)objeto;
+        String sql="update contratos set monto1="+contrato.getMonto1()+",fecha1='"+contrato.getVencimiento1()+"',monto2="+contrato.getMonto2()+",fecha2='"+contrato.getVencimiento2()+"',idinquilino="+contrato.getInquilino().getId()+",idpropiedad="+contrato.getPropiedad().getId()+",idpropietario="+contrato.getPropietario().getId()+",idgarante="+contrato.getGarante().getId()+",archivo="+contrato.getArchivo()+",idusuario="+contrato.getUsuario().getNumeroId()+" where id="+contrato.getId();
+        tra.guardarRegistro(sql);
     }
 
     @Override
     public ArrayList Listar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList listado=new ArrayList();
+        Generable inqui=new Inquilinos();
+        Generable prop=new Propiedades();
+        Generable propi=new Propietarios();
+        Personalizable usu=new Usuarios();
+        Generable gar=new Garantes();
+        String sql="select * from contratos";
+        Transaccionable tra=new ConeccionLocal();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                Contratos contrato=new Contratos();
+                contrato.setId(rs.getInt("id"));
+                contrato.setFecha(rs.getDate("fecha"));
+                contrato.setMonto1(rs.getDouble("monto1"));
+                contrato.setVencimiento1(rs.getDate("fecha1"));
+                contrato.setMonto2(rs.getDouble("monto2"));
+                contrato.setVencimiento2(rs.getDate("fecha2"));
+                contrato.setInquilino((Inquilinos)inqui.Cargar(rs.getInt("idinquilino")));
+                contrato.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
+                contrato.setPropietario((Propietarios)propi.Cargar(rs.getInt("idpropietario")));
+                contrato.setGarante((Garantes)gar.Cargar(rs.getInt("idgarante")));
+                contrato.setArchivo(rs.getString("archivo"));
+                contrato.setUsuario((Usuarios)usu.buscarPorNumero(rs.getInt("idusuario")));
+                listado.add(contrato);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Contratos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listado;
     }
 
     @Override
     public Object Cargar(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //ArrayList listado=new ArrayList();
+        Generable inqui=new Inquilinos();
+        Generable prop=new Propiedades();
+        Generable propi=new Propietarios();
+        Personalizable usu=new Usuarios();
+        Generable gar=new Garantes();
+        Contratos contrato=new Contratos();
+        String sql="select * from contratos where id="+id;
+        Transaccionable tra=new ConeccionLocal();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                contrato.setId(rs.getInt("id"));
+                contrato.setFecha(rs.getDate("fecha"));
+                contrato.setMonto1(rs.getDouble("monto1"));
+                contrato.setVencimiento1(rs.getDate("fecha1"));
+                contrato.setMonto2(rs.getDouble("monto2"));
+                contrato.setVencimiento2(rs.getDate("fecha2"));
+                contrato.setInquilino((Inquilinos)inqui.Cargar(rs.getInt("idinquilino")));
+                contrato.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
+                contrato.setPropietario((Propietarios)propi.Cargar(rs.getInt("idpropietario")));
+                contrato.setGarante((Garantes)gar.Cargar(rs.getInt("idgarante")));
+                contrato.setArchivo(rs.getString("archivo"));
+                contrato.setUsuario((Usuarios)usu.buscarPorNumero(rs.getInt("idusuario")));
+                //listado.add(contrato);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Contratos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return contrato;
     }
     
     
