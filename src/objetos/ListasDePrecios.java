@@ -175,7 +175,7 @@ public class ListasDePrecios implements Personalizable,Editables{
     public static void BackapearListasDePrecios(){
         ListasDePrecios rs=new ListasDePrecios();
         Transaccionable tra=new ConeccionLocal();
-        String sql="delete from coeficienteslistas";
+        String sql="delete from from coeficienteslistas";
         tra.guardarRegistro(sql);
         Enumeration<ListasDePrecios> elementos=listadoDeListas.elements();
             while(elementos.hasMoreElements()){

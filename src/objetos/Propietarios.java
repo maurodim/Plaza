@@ -158,7 +158,7 @@ public class Propietarios implements Generable{
     @Override
     public void Baja(Integer id) {
         Transaccionable tra=new ConeccionLocal();
-        String sql="delete proveedores where numero="+id;
+        String sql="delete from proveedores where numero="+id;
         tra.guardarRegistro(sql);
     }
 

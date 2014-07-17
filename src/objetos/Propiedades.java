@@ -137,7 +137,7 @@ public class Propiedades implements Generable{
     @Override
     public void Baja(Integer id) {
        Transaccionable tra=new ConeccionLocal();
-       String sql="delete propiedades where id="+id;
+       String sql="delete from propiedades where id="+id;
        tra.guardarRegistro(sql);
     }
 

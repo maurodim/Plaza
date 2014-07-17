@@ -116,7 +116,7 @@ public class CuentaCorriente implements Generable{
     @Override
     public void Baja(Integer id) {
         Transaccionable tra=new ConeccionLocal();
-        String sql="delete cuentacorrientes where id="+id;
+        String sql="delete from cuentacorrientes where id="+id;
         tra.guardarRegistro(sql);
     }
 

@@ -61,7 +61,7 @@ public class Comisiones implements Generable{
     @Override
     public void Baja(Integer id) {
         Transaccionable tra=new ConeccionLocal();
-        String sql="delete comisiones where id="+id;
+        String sql="delete from comisiones where id="+id;
         tra.guardarRegistro(sql);
     }
 

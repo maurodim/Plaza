@@ -59,7 +59,7 @@ public class Localidad implements Generable{
     @Override
     public void Baja(Integer id) {
         Transaccionable tra=new ConeccionLocal();
-        String sql="delete localidad where id="+id;
+        String sql="delete from localidad where id="+id;
         tra.guardarRegistro(sql);
     }
 

@@ -161,7 +161,7 @@ public class GastosF implements Editables{
     public Boolean EliminacionDeObjeto(Object objeto) {
         Boolean verif=false;
         GastosF gastos=(GastosF)objeto;
-        String sql="delete movimientosgastosfijos where id="+gastos.getId();
+        String sql="delete from movimientosgastosfijos where id="+gastos.getId();
         Transaccionable tra=new Conecciones();
         if(tra.guardarRegistro(sql)){
             verif=true;

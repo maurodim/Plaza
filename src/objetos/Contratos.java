@@ -150,7 +150,7 @@ public class Contratos implements Generable{
     @Override
     public void Baja(Integer id) {
         Transaccionable tra=new ConeccionLocal();
-        String sql="delete contratos where id="+id;
+        String sql="delete from contratos where id="+id;
         tra.guardarRegistro(sql);
     }
 
