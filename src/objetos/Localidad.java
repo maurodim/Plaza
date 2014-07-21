@@ -52,7 +52,7 @@ public class Localidad implements Generable{
         Localidad comision=new Localidad();
         comision=(Localidad)objeto;
         Transaccionable tra=new ConeccionLocal();
-        String sql="insert into localidad (descripcion,codigo) values ('"+comision.getDescripcion()+"','"+comision.getCodigo()+"')";
+        String sql="insert into localidad (descripcion) values ('"+comision.getDescripcion()+"')";
         tra.guardarRegistro(sql);
     }
 

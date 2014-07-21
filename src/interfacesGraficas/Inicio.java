@@ -8,6 +8,7 @@ import Actualizaciones.Actualiza;
 
 import Excel.InformeMensual;
 import interfaces.Cajeables;
+import interfacesGraficasInmob.Parametros;
 import interfacesGraficasInmob.PropietariosMod;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -224,7 +225,12 @@ public class Inicio extends javax.swing.JFrame {
         jMenuItem16.setText("Recargos");
         jMenu5.add(jMenuItem16);
 
-        jMenuItem18.setText("Comisiones");
+        jMenuItem18.setText("Generales");
+        jMenuItem18.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem18ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem18);
 
         jMenuBar1.add(jMenu5);
@@ -436,6 +442,13 @@ public class Inicio extends javax.swing.JFrame {
     private void jMenu8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu8ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenu8ActionPerformed
+
+    private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
+        Parametros parametro=new Parametros();
+        jDesktopPane1.add(parametro);
+        parametro.setVisible(true);
+        parametro.toFront();
+    }//GEN-LAST:event_jMenuItem18ActionPerformed
 
     /**
      * @param args the command line arguments

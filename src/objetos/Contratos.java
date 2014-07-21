@@ -35,9 +35,9 @@ public class Contratos implements Generable{
     private Usuarios usuario;
 
     public Contratos() {
-        inquilino=new Inquilinos();
-        propiedad=new Propiedades();
-        garante=new Garantes();
+       // inquilino=new Inquilinos();
+       // propiedad=new Propiedades();
+       // garante=new Garantes();
         
     }
 

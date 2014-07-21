@@ -44,7 +44,7 @@ public class Propietarios implements Generable{
     
 
     public Propietarios() {
-        propiedad=new Propiedades();
+        //propiedad=new Propiedades();
     }
 
     
@@ -142,8 +142,9 @@ public class Propietarios implements Generable{
         propietario=(Propietarios)objeto;
         Transaccionable tra=new ConeccionLocal();
         String sql="insert into proveedores (nombre,domicilio,localidad,telefono,mail,idusuario,observaciones) values ('"+propietario.getNombre()+"','"+propietario.getDomicilio()+"','"+propietario.getLocalidad()+"','"+propietario.getTelefono()+"','"+propietario.getMail()+"',"+propietario.getUsuario().getNumeroId()+",'"+propietario.getObservaciones()+"')";
+        System.out.println(sql);
         tra.guardarRegistro(sql);
-        sql="last_inset_id()";
+        sql="select numero from proveedores ";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
@@ -154,7 +155,10 @@ public class Propietarios implements Generable{
             Logger.getLogger(Propietarios.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    private Integer leerIdInsertado(){
+        String sql="select numero from proveedores order by numero desc limit 0,1";
+        return 0;
+    }
     @Override
     public void Baja(Integer id) {
         Transaccionable tra=new ConeccionLocal();

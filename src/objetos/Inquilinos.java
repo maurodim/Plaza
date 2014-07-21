@@ -35,7 +35,7 @@ public class Inquilinos implements Generable{
    private ArrayList arrayDatos;
 
     public Inquilinos() {
-        propiedad=new Propiedades();
+        //propiedad=new Propiedades();
         garantes=new Garantes();
         cuentaCorriente=new CuentaCorriente();
         

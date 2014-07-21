@@ -42,11 +42,11 @@ public class Propiedades implements Generable{
 
     public Propiedades() {
         //localidad=new Localidad();
-        rubro=new Rubro();
-        contrato=new Contratos();
-        propietario=new Propietarios();
-        cuentaCorriente=new CuentaCorriente();
-        usuario=new Usuarios();
+        //rubro=new Rubro();
+        //contrato=new Contratos();
+        //propietario=new Propietarios();
+        //cuentaCorriente=new CuentaCorriente();
+        //usuario=new Usuarios();
     }
     
     
@@ -120,9 +120,9 @@ public class Propiedades implements Generable{
         propiedad=(Propiedades)objeto;
         //Personalizable per=new Usuarios();
         Transaccionable tra=new ConeccionLocal();
-        String sql="insert into propiedades (direccion,localidad,rubro,idpropietario,idusuario) values ('"+propiedad.getDireccion()+"','"+propiedad.getLocalidad()+"',"+propiedad.getRubro().getId()+","+propiedad.getPropietario().getId()+","+propiedad.getUsuario().getNumeroId()+")";
+        String sql="insert into propiedades (direccion,localidad,rubro,idusuario) values ('"+propiedad.getDireccion()+"','"+propiedad.getLocalidad()+"',"+propiedad.getRubro().getId()+","+propiedad.getUsuario().getNumeroId()+")";
         tra.guardarRegistro(sql);
-        sql="last_insert_id()";
+        sql="select id from propiedades";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
