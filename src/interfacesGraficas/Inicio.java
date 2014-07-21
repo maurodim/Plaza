@@ -8,8 +8,7 @@ import Actualizaciones.Actualiza;
 
 import Excel.InformeMensual;
 import interfaces.Cajeables;
-
-import objetos.ClientesTango;
+import interfacesGraficasInmob.PropietariosMod;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -32,6 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import objetos.Articulos;
 import objetos.Cajas;
+import objetos.ClientesTango;
 import objetos.GastosF;
 import objetos.ListasDePrecios;
 import objetos.Proveedores;
@@ -64,7 +64,7 @@ public class Inicio extends javax.swing.JFrame {
      * Creates new form Inicio
      */
     public Inicio(Integer nivel) {
-        Articulos.CargarMap();
+        //Articulos.CargarMap();
         //if(coneccionRemota){
         //Articulos.CargarMap();
         if(Inicio.coneccionRemota){
@@ -404,7 +404,7 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     private void jMenuItem23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem23ActionPerformed
-        NuevoCliente nwCliente=new NuevoCliente();
+        PropietariosMod nwCliente=new PropietariosMod();
         jDesktopPane1.add(nwCliente);
         nwCliente.setVisible(true);
         nwCliente.toFront();

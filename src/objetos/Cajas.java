@@ -212,8 +212,8 @@ public class Cajas implements Cajeables{
 
         //Billetes.cargarLista();
         if(listBilletes.size()==0){
-            Billetes.cargarLista();
-            listBilletes=Billetes.getListadoBill();
+            //Billetes.cargarLista();
+            //listBilletes=Billetes.getListadoBill();
         }
         if(listadoOperaciones.size()==0){
         Operaciones.cargarArrayCaja();
