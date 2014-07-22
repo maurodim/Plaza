@@ -202,9 +202,12 @@ public class Menus implements Personalizable{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
     public ArrayList listarPorCuit(String cuit) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public ArrayList listarPorCuit(Integer cuit) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

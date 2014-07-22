@@ -394,10 +394,16 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
+        PropietariosMod prop=new PropietariosMod(7);
+        jDesktopPane1.add(prop);
+        prop.setVisible(true);
+        prop.toFront();
+        /*
         AbmClientes clie=new AbmClientes();
         jDesktopPane1.add(clie);
         clie.setVisible(true);
         clie.toFront();
+        */
     }//GEN-LAST:event_jMenuItem20ActionPerformed
 
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed

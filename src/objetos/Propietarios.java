@@ -7,6 +7,7 @@
 package objetos;
 
 import interfaces.Generable;
+import interfaces.Listables;
 import interfaces.Personalizable;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
@@ -33,7 +34,17 @@ public class Propietarios implements Generable{
     private Usuarios usuario;
     private Double saldo;
     private String localidad;
+    private ArrayList propiedadesP;
 
+    public ArrayList getPropiedadesP() {
+        return propiedadesP;
+    }
+
+    public void setPropiedadesP(ArrayList propiedadesP) {
+        this.propiedadesP = propiedadesP;
+    }
+
+    
     public String getLocalidad() {
         return localidad;
     }
@@ -210,6 +221,7 @@ public class Propietarios implements Generable{
     public Object Cargar(Integer id) {
         //ArrayList listado=new ArrayList();
         Generable prop=new Propiedades();
+        Listables lista=new Propiedades();
         Personalizable per=new Usuarios();
         String sql="select * from proveedores where numero="+id;
         Transaccionable tra=new ConeccionLocal();
@@ -225,13 +237,14 @@ public class Propietarios implements Generable{
                 propietario.setTelefono(rs.getString("telefono"));
                 propietario.setMail(rs.getString("mail"));
                 propietario.setSaldo(rs.getDouble("saldo"));
-                propietario.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
-                propietario.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                if(rs.getInt("idpropiedad") > 0)propietario.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
+                if(rs.getInt("idusuario") > 0)propietario.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
                 propietario.setFechaAlta(rs.getDate("fechaalta"));
                 propietario.setObservaciones(rs.getString("observaciones"));
                 //listado.add(propietario);
             }
             rs.close();
+            propietario.setPropiedadesP(lista.listarPorId(propietario.getId()));
         } catch (SQLException ex) {
             Logger.getLogger(Propietarios.class.getName()).log(Level.SEVERE, null, ex);
         }

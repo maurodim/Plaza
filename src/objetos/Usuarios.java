@@ -411,7 +411,24 @@ public class Usuarios extends TipoAcceso implements Personalizable{
 
     @Override
     public Object buscarPorNumero(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Usuarios usuario=new Usuarios();
+        String sql="select * from usuarios where numero="+id;
+        Transaccionable tra=new ConeccionLocal();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                usuario.setClave(rs.getString("clave"));
+                usuario.setNumeroId(rs.getInt("numero"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setNombreDeUsuario(rs.getString("nombreusuario"));
+                usuario.setSucursal(rs.getInt("sucursal"));
+                
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return usuario;
     }
 
     @Override

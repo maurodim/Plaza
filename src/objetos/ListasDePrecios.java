@@ -137,7 +137,6 @@ public class ListasDePrecios implements Personalizable,Editables{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
     public ArrayList listarPorCuit(String cuit) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -232,6 +231,10 @@ public class ListasDePrecios implements Personalizable,Editables{
     @Override
     public Boolean MovimientoDeAjusteDeCantidades(Object objeto, Double cantidadMovimiento, String observaciones) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public ArrayList listarPorCuit(Integer cuit) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

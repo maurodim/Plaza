@@ -7,6 +7,7 @@
 package objetos;
 
 import interfaces.Generable;
+import interfaces.Listables;
 import interfaces.Personalizable;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author Usuario
  */
-public class Propiedades implements Generable{
+public class Propiedades implements Generable,Listables{
     private Integer id;
     private String direccion;
     private String localidad;
@@ -216,6 +217,60 @@ public class Propiedades implements Generable{
             Logger.getLogger(Propiedades.class.getName()).log(Level.SEVERE, null, ex);
         }
         return propiedad;
+    }
+
+    @Override
+    public ArrayList listarPorId(Integer id) {
+        ArrayList listado=new ArrayList();
+        Generable prop=new Propietarios();
+        Generable cont=new Contratos();
+        Generable cta=new CuentaCorriente();
+        //Generable loc=new Localidad();
+        Generable rub=new Rubro();
+        Personalizable per=new Usuarios();
+        Transaccionable tra=new ConeccionLocal();
+        Propiedades propiedad=new Propiedades();
+        String sql="select * from propiedades where idpropietario="+id;
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                propiedad.setId(rs.getInt("id"));
+                propiedad.setDireccion(rs.getString("direccion"));
+                propiedad.setLocalidad(rs.getString("localidad"));
+                propiedad.setRubro((Rubro)rub.Cargar(rs.getInt("rubro")));
+                if(rs.getInt("idcontrato") > 0)propiedad.setContrato((Contratos)cont.Cargar(rs.getInt("idcontrato")));
+                //propiedad.setPropietario((Propietarios)prop.Cargar(rs.getInt("idpropietario")));
+                if(rs.getInt("idcuentascorriente") > 0)propiedad.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("idcuentascorriente")));
+                propiedad.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                propiedad.setFecha(rs.getDate("fecha"));
+                listado.add(propiedad);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Propiedades.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listado;
+    }
+
+    @Override
+    public ArrayList listarPoNombre(String parame) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorOrdenDeId() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorOrdenAlfabetico() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorEstado(Integer esta) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

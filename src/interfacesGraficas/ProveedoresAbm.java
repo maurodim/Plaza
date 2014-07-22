@@ -19,7 +19,7 @@ public class ProveedoresAbm extends javax.swing.JInternalFrame {
         initComponents();
         proveedores=prov;
         modificar=true;
-        this.setTitle("MODIFICACION DE DATOS DE PROVEEDORES");
+        this.setTitle("MODIFICACION DE DATOS DE INQUILINOS");
     }
     /**
      * Creates new form Proveedores
@@ -27,7 +27,7 @@ public class ProveedoresAbm extends javax.swing.JInternalFrame {
     
     public ProveedoresAbm() {
         initComponents();
-        this.setTitle("INGRESO NUEVO PROVEEDOR");
+        this.setTitle("INGRESO NUEVO INQUILINO");
        
     }
 

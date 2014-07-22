@@ -21,13 +21,29 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
     private Propiedades propiedad;
     private Propietarios propietario;
     private Generable geni;
+    private Generable gen;
     /**
      * Creates new form PropietariosMod
      */
     public PropietariosMod() {
         propietario=new Propietarios();
         geni=new Propiedades();
+        gen=new Propietarios();
         initComponents();
+        this.jPanel2.setVisible(false);
+    }
+    public PropietariosMod(Integer id) {
+        gen=new Propietarios();
+        propietario=new Propietarios();
+        propietario=(Propietarios)gen.Cargar(id);
+        geni=new Propiedades();
+        initComponents();
+        this.jTextField1.setText(propietario.getNombre());
+        this.jTextField2.setText(propietario.getDomicilio());
+        
+        
+        this.jTextField1.selectAll();
+        this.jTextField1.requestFocus();
         this.jPanel2.setVisible(false);
     }
 
@@ -95,11 +111,6 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
 
         jTextField4.setText("jTextField4");
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(jList1);
 
         jButton1.setText("Nueva");
@@ -158,7 +169,7 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)))))
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,18 +221,8 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
 
         jTextField7.setText("jTextField7");
 
-        jList2.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane2.setViewportView(jList2);
 
-        jList3.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane3.setViewportView(jList3);
 
         jButton4.setText("Guardar");
@@ -244,11 +245,11 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField7)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jScrollPane3)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 20, Short.MAX_VALUE)))
+                        .addGap(0, 30, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -299,7 +300,7 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         
-        Generable gen=new Propietarios();
+        
         propietario.setNombre(this.jTextField1.getText());
         propietario.setDni(this.jTextField2.getText());
         propietario.setTelefono(this.jTextField3.getText().substring(0,10));
