@@ -7,6 +7,7 @@
 package objetos;
 
 import interfaces.Generable;
+import interfaces.Listables;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author Usuario
  */
-public class Inquilinos implements Generable{
+public class Inquilinos implements Generable,Listables{
    private Integer id;
    private String nombre;
    private String dni;
@@ -151,7 +152,7 @@ public class Inquilinos implements Generable{
         Inquilinos inquilino=new Inquilinos();
         inquilino=(Inquilinos)objeto;
         Transaccionable tra=new ConeccionLocal();
-        String sql="insert into inquilinos (nombre,dni,telefono,domicilio,mail,observaciones) values ('"+inquilino.getNombre()+"','"+inquilino.getDni()+"','"+inquilino.getDomicilioRef()+"','"+inquilino.getMail()+"','"+inquilino.getObservaciones()+"')";
+        String sql="insert into inquilinos (nombre,dni,telefono,domicilio,mail,observaciones) values ('"+inquilino.getNombre()+"','"+inquilino.getDni()+"','"+inquilino.getTelefono()+"','"+inquilino.getDomicilioRef()+"','"+inquilino.getMail()+"','"+inquilino.getObservaciones()+"')";
         tra.guardarRegistro(sql);
     }
 
@@ -239,6 +240,58 @@ public class Inquilinos implements Generable{
     public Boolean NotificarPorMail(){
         
         return false;
+    }
+
+    @Override
+    public ArrayList listarPorId(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPoNombre(String parame) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorOrdenDeId() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorOrdenAlfabetico() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorEstado(Integer esta) {
+        Transaccionable tra=new ConeccionLocal();
+        Generable propi=new Propiedades();
+        Generable gar=new Garantes();
+        Generable cta=new CuentaCorriente();
+        ArrayList listado=new ArrayList();
+        String sql="select * from inquilinos where propiedad=0 order by nombre";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+       try {
+           while(rs.next()){
+               Inquilinos inquilino=new Inquilinos();
+               inquilino.setId(rs.getInt("id"));
+               inquilino.setNombre(rs.getString("nombre"));
+               inquilino.setDni(rs.getString("dni"));
+               inquilino.setTelefono(rs.getString("telefono"));
+               inquilino.setDomicilioRef(rs.getString("domicilio"));
+               inquilino.setMail(rs.getString("mail"));
+               inquilino.setObservaciones(rs.getString("observaciones"));
+               inquilino.setFechaAlta(rs.getDate("fechaalta"));
+               if(rs.getInt("propiedad") > 0)inquilino.setPropiedad((Propiedades) propi.Cargar(rs.getInt("propiedad")));
+               if(rs.getInt("garante") > 0)inquilino.setGarantes((Garantes) gar.Cargar(rs.getInt("garante")));
+               if(rs.getInt("cuentacorriente") > 0)inquilino.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("cuentacorriente")));
+               listado.add(inquilino);
+           }
+           rs.close();
+       } catch (SQLException ex) {
+           Logger.getLogger(Inquilinos.class.getName()).log(Level.SEVERE, null, ex);
+       }
+       return listado;
     }
    
 }

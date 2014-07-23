@@ -159,10 +159,13 @@ public class ArticulosAbm extends javax.swing.JInternalFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         Articulos articulo=(Articulos)listadoA.get(this.jTable1.getSelectedRow());
         System.out.println(" codigo elegido "+articulo.getCodigoAsignado());
+        
+        /*
         ArticulosMod articM=new ArticulosMod(articulo);
         Inicio.jDesktopPane1.add(articM);
         articM.setVisible(true);
         articM.toFront();
+        */
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -226,11 +229,13 @@ public class ArticulosAbm extends javax.swing.JInternalFrame {
     int posicion=listadoDeArt.jList1.getSelectedIndex();
     Articulos articulo=(Articulos)lista.get(posicion);
     System.out.println(" codigo elegido "+articulo.getCodigoAsignado());
-        ArticulosMod articM=new ArticulosMod(articulo);
+        
+    /*
+    ArticulosMod articM=new ArticulosMod(articulo);
         Inicio.jDesktopPane1.add(articM);
         articM.setVisible(true);
         articM.toFront();
-    
+    */
 }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

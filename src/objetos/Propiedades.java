@@ -196,7 +196,7 @@ public class Propiedades implements Generable,Listables{
         Personalizable per=new Usuarios();
         Transaccionable tra=new ConeccionLocal();
         Propiedades propiedad=new Propiedades();
-        String sql="select * from propieadades where id="+id;
+        String sql="select * from propiedades where id="+id;
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
@@ -270,7 +270,36 @@ public class Propiedades implements Generable,Listables{
 
     @Override
     public ArrayList listarPorEstado(Integer esta) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList listado=new ArrayList();
+        Generable prop=new Propietarios();
+        Generable cont=new Contratos();
+        Generable cta=new CuentaCorriente();
+        //Generable loc=new Localidad();
+        Generable rub=new Rubro();
+        Personalizable per=new Usuarios();
+        Transaccionable tra=new ConeccionLocal();
+        Propiedades propiedad=new Propiedades();
+        String sql="select * from propiedades where idcontrato=0";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                propiedad.setId(rs.getInt("id"));
+                propiedad.setDireccion(rs.getString("direccion"));
+                propiedad.setLocalidad(rs.getString("localidad"));
+                propiedad.setRubro((Rubro)rub.Cargar(rs.getInt("rubro")));
+                if(rs.getInt("idcontrato") > 0)propiedad.setContrato((Contratos)cont.Cargar(rs.getInt("idcontrato")));
+                //propiedad.setPropietario((Propietarios)prop.Cargar(rs.getInt("idpropietario")));
+                if(rs.getInt("idcuentascorriente") > 0)propiedad.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("idcuentascorriente")));
+                propiedad.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                propiedad.setFecha(rs.getDate("fecha"));
+                listado.add(propiedad);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Propiedades.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listado;
     }
     
     

@@ -4,7 +4,9 @@
  */
 package interfacesGraficas;
 
+import interfaces.Generable;
 import interfaces.Personalizable;
+import objetos.Inquilinos;
 import objetos.Proveedores;
 
 /**
@@ -12,14 +14,21 @@ import objetos.Proveedores;
  * @author mauro
  */
 public class ProveedoresAbm extends javax.swing.JInternalFrame {
-    private Proveedores proveedores=new Proveedores();
+    private Inquilinos proveedores=new Inquilinos();
     private Boolean modificar=false;
 
-    public ProveedoresAbm(Proveedores prov) {
+    public ProveedoresAbm(Inquilinos prov) {
         initComponents();
         proveedores=prov;
         modificar=true;
         this.setTitle("MODIFICACION DE DATOS DE INQUILINOS");
+        this.jTextField1.setText(proveedores.getNombre());
+        this.jTextField2.setText(proveedores.getDomicilioRef());
+        this.jTextField3.setText(proveedores.getDni());
+        this.jTextField4.setText(proveedores.getTelefono());
+        this.jTextField5.setText(proveedores.getMail());
+        this.jTextField1.selectAll();
+        this.jTextField1.requestFocus();
     }
     /**
      * Creates new form Proveedores
@@ -58,9 +67,9 @@ public class ProveedoresAbm extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Nombre o Razon social");
 
-        jLabel2.setText("Domicilio");
+        jLabel2.setText("Domicilio de Refer.");
 
-        jLabel3.setText("Localidad");
+        jLabel3.setText("D.N.I. :");
 
         jLabel4.setText("Telefono");
 
@@ -88,12 +97,11 @@ public class ProveedoresAbm extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField1)
-                        .addComponent(jTextField2)
-                        .addComponent(jTextField3)
-                        .addComponent(jTextField4)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)))
+                    .addComponent(jTextField1)
+                    .addComponent(jTextField2)
+                    .addComponent(jTextField3)
+                    .addComponent(jTextField4)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE))
                 .addContainerGap(192, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -121,7 +129,7 @@ public class ProveedoresAbm extends javax.swing.JInternalFrame {
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(222, Short.MAX_VALUE))
+                .addContainerGap(234, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -146,18 +154,20 @@ public class ProveedoresAbm extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         proveedores.setNombre(this.jTextField1.getText());
-        proveedores.setDireccion(this.jTextField2.getText());
-        proveedores.setLocalidad(this.jTextField3.getText());
+        //proveedores.setDireccion(this.jTextField2.getText());
+        //proveedores.setLocalidad(this.jTextField3.getText());
+        proveedores.setDomicilioRef(this.jTextField2.getText());
+        proveedores.setDni(this.jTextField3.getText());
         proveedores.setTelefono(this.jTextField4.getText());
         proveedores.setMail(this.jTextField5.getText());
-        Personalizable per=new Proveedores();
+        Generable per=new Inquilinos();
         if(modificar){
             //interface para modificar
-            per.modificar(proveedores);
+            per.Modificacion(proveedores);
             
         }else{
             //interface para cargar uno nuevo
-            per.agregar(proveedores);
+            per.Alta(proveedores);
         }
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
