@@ -132,7 +132,7 @@ public class LoguinBbsGestion extends javax.swing.JFrame {
         Inicio.usuario=usuarios;
         //Inicio.sucursal=usuarios.getSucursal();
         //Inicio.deposito=Inicio.sucursal.getDepositos();
-        in.setTitle(" SISTEMA DE GESTION ASEAVYT //   USUARIO : "+Inicio.usuario.getNombre());
+        in.setTitle(" SISTEMA DE GESTION INMOBILIARIA BAMBUSOFT //   USUARIO : "+Inicio.usuario.getNombre());
         in.setExtendedState(JFrame.MAXIMIZED_BOTH);
         in.setVisible(true);
         

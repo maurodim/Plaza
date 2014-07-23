@@ -9,13 +9,16 @@ import interfaces.Editables;
 import interfaces.Generable;
 import interfaces.Listables;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import javax.swing.JTextField;
 import objetos.Articulos;
 import objetos.Contratos;
 import objetos.Inquilinos;
 import objetos.Propiedades;
+import objetos.Propietarios;
 
 /**
  *
@@ -28,6 +31,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
     private ArrayList listadoInq;
     private ArrayList listadoProp;
     private Propiedades propiedad=new Propiedades();
+    private Inquilinos inquilino=new Inquilinos();
     
 
     public ArticulosMod(Contratos art) {
@@ -60,7 +64,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         this.jLabel6.setVisible(false);
         this.jTextField2.setVisible(false);
         this.setTitle("CARGA DE NUEVO CONTRATO");
-        Inquilinos inquilino=new Inquilinos();
+        inquilino=new Inquilinos();
         Propiedades propiedade=new Propiedades();
         Listables inq=new Inquilinos();
         Listables prop=new Propiedades();
@@ -124,9 +128,17 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Fecha Vencimiento :");
 
+        dateChooserCombo1.setFormat(2);
+
         jLabel2.setText("Monto 2 do año");
 
         jLabel3.setText("Inquilino :");
+
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Propiedad :");
 
@@ -235,13 +247,33 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String venc1=Numeros.LeerChooser(this.dateChooserCombo1.getSelectedDate());
         
         
-        Editables edit=new Articulos();
+        String venc2=Numeros.LeerChooser(this.dateChooserCombo2.getSelectedDate());
+        System.out.println(" fecha 1 "+venc1+" fecha 2 "+venc2);
+        arti.setVencimiento1(venc1);
+        arti.setMonto1(Numeros.ConvertirStringADouble(this.jTextField7.getText()));
+        arti.setVencimiento2(venc2);
+        arti.setMonto2(Numeros.ConvertirStringADouble(this.jTextField1.getText()));
+        arti.setInquilino(inquilino);
+        arti.setPropiedad(propiedad);
+        arti.setPropietario((Propietarios)propiedad.getPropietario());
+        arti.setUsuario(Inicio.usuario);
+        
+        Generable edit=new Contratos();
         if(accion==2){
-            edit.ModificaionObjeto(arti);
+            edit.Modificacion(arti);
         }else{
-            edit.AltaObjeto(arti);
+            edit.Alta(arti);
+            inquilino.setPropiedad(propiedad);
+            inquilino.setObservaciones(" ");
+            propiedad.setContrato(arti);
+            Generable in=new Inquilinos();
+            Generable pp=new Propiedades();
+            in.Modificacion(inquilino);
+            pp.Modificacion(propiedad);
+            
         }
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -252,21 +284,27 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         posicion++;
         propiedad=(Propiedades)gen.Cargar(posicion);
         try{
-        this.jLabel6.setVisible(true);
-        this.jTextField2.setVisible(true);
-        
-        this.jTextField2.setText(propiedad.getPropietario().getNombre());
-        this.jTextField2.setEnabled(false);
+            this.jLabel6.setVisible(true);
+            this.jTextField2.setVisible(true);
+
+            this.jTextField2.setText(propiedad.getPropietario().getNombre());
+            this.jTextField2.setEnabled(false);
         }catch(java.lang.NullPointerException e){
             System.err.println("DIO ERROR COMO SUPONIA");
             this.jLabel6.setVisible(false);
-        this.jTextField2.setVisible(false);
+            this.jTextField2.setVisible(false);
         }
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
        
     }//GEN-LAST:event_jComboBox2ItemStateChanged
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        Generable gen=new Inquilinos();
+        int pos=this.jComboBox1.getSelectedIndex()+ 1;
+        inquilino=(Inquilinos)gen.Cargar(pos);
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private datechooser.beans.DateChooserCombo dateChooserCombo1;

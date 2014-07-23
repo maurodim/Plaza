@@ -8,8 +8,12 @@ package interfacesGraficasInmob;
 
 import interfaces.Generable;
 import interfacesGraficas.Inicio;
+import java.util.Iterator;
+import javax.swing.DefaultListModel;
+import objetos.Localidad;
 import objetos.Propiedades;
 import objetos.Propietarios;
+import objetos.Rubro;
 import objetos.Usuarios;
 
 /**
@@ -221,8 +225,10 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
 
         jTextField7.setText("jTextField7");
 
+        jList2.setModel(new DefaultListModel());
         jScrollPane2.setViewportView(jList2);
 
+        jList3.setModel(new DefaultListModel());
         jScrollPane3.setViewportView(jList3);
 
         jButton4.setText("Guardar");
@@ -293,8 +299,6 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jPanel1.getAccessibleContext().setAccessibleName("Datos Propietario");
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -317,7 +321,20 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.jPanel2.setVisible(true);
-        
+        Localidad loc=new Localidad();
+        Rubro rub=new Rubro();
+        Generable lG=new Localidad();
+        Generable lR=new Rubro();
+        Iterator ir=lG.Listar().listIterator();
+        while(ir.hasNext()){
+            loc=(Localidad)ir.next();
+            ((DefaultListModel)this.jList2.getModel()).addElement(loc.getDescripcion());
+        }
+        Iterator iG=lR.Listar().listIterator();
+        while(iG.hasNext()){
+            rub=(Rubro)iG.next();
+            ((DefaultListModel)this.jList3.getModel()).addElement(rub.getDescripcion());
+        }
         this.jTextField7.requestFocus();
     
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -325,7 +342,9 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         propiedad=new Propiedades();
         propiedad.setUsuario((Usuarios)Inicio.usuario);
-        propiedad.setLocalidad("Santa Fe");
+        propiedad.setLocalidad(String.valueOf(this.jList2.getSelectedValue()));
+        Generable rub=new Rubro();
+        propiedad.setRubro((Rubro)rub.Cargar(1));
         propiedad.setDireccion(this.jTextField7.getText());
         geni.Alta(propiedad);
         numeroPropiedad=propiedad.getId();

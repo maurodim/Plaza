@@ -163,6 +163,9 @@
         <Component class="javax.swing.JTextField" name="jTextField7">
         </Component>
         <Component class="datechooser.beans.DateChooserCombo" name="dateChooserCombo1">
+          <Properties>
+            <Property name="dch_combo_dateFormat" type="int" value="2"/>
+          </Properties>
         </Component>
         <Component class="datechooser.beans.DateChooserCombo" name="dateChooserCombo2">
         </Component>
@@ -182,6 +185,9 @@
               <StringArray count="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBox1ActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>

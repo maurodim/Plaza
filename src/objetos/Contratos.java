@@ -24,9 +24,9 @@ public class Contratos implements Generable{
     private Integer id;
     private Date fecha;
     private Double monto1;
-    private Date vencimiento1;
+    private String vencimiento1;
     private Double monto2;
-    private Date vencimiento2;
+    private String vencimiento2;
     private Inquilinos inquilino;
     private Propiedades propiedad;
     private Propietarios propietario;
@@ -66,11 +66,11 @@ public class Contratos implements Generable{
         this.monto1 = monto1;
     }
 
-    public Date getVencimiento1() {
+    public String getVencimiento1() {
         return vencimiento1;
     }
 
-    public void setVencimiento1(Date vencimiento1) {
+    public void setVencimiento1(String vencimiento1) {
         this.vencimiento1 = vencimiento1;
     }
 
@@ -82,11 +82,11 @@ public class Contratos implements Generable{
         this.monto2 = monto2;
     }
 
-    public Date getVencimiento2() {
+    public String getVencimiento2() {
         return vencimiento2;
     }
 
-    public void setVencimiento2(Date vencimiento2) {
+    public void setVencimiento2(String vencimiento2) {
         this.vencimiento2 = vencimiento2;
     }
 
@@ -143,8 +143,18 @@ public class Contratos implements Generable{
         Transaccionable tra=new ConeccionLocal();
         Contratos contrato=new Contratos();
         contrato=(Contratos)objeto;
-        String sql="insert into contratos(monto1,fecha1,monto2,fecha2,idinquilino,idpropiedad,idpropietario,idgarante,archivo,idusuario) values ("+contrato.getMonto1()+",'"+contrato.getVencimiento1()+"',"+contrato.getMonto2()+",'"+contrato.getVencimiento2()+"',"+contrato.getInquilino().getId()+","+contrato.getPropiedad().getId()+","+contrato.getPropietario().getId()+","+contrato.getGarante().getId()+","+contrato.getArchivo()+","+contrato.getUsuario().getNumeroId()+")";
+        String sql="insert into contratos(monto1,fecha1,monto2,fecha2,idinquilino,idpropiedad,idpropietario,idusuario) values ("+contrato.getMonto1()+",'"+contrato.getVencimiento1()+"',"+contrato.getMonto2()+",'"+contrato.getVencimiento2()+"',"+contrato.getInquilino().getId()+","+contrato.getPropiedad().getId()+","+contrato.getPropietario().getId()+","+contrato.getUsuario().getNumeroId()+")";
         tra.guardarRegistro(sql);
+        sql="select id from contratos";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                contrato.setId(rs.getInt(1));
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Propietarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -180,9 +190,9 @@ public class Contratos implements Generable{
                 contrato.setId(rs.getInt("id"));
                 contrato.setFecha(rs.getDate("fecha"));
                 contrato.setMonto1(rs.getDouble("monto1"));
-                contrato.setVencimiento1(rs.getDate("fecha1"));
+                contrato.setVencimiento1(rs.getString("fecha1"));
                 contrato.setMonto2(rs.getDouble("monto2"));
-                contrato.setVencimiento2(rs.getDate("fecha2"));
+                contrato.setVencimiento2(rs.getString("fecha2"));
                 contrato.setInquilino((Inquilinos)inqui.Cargar(rs.getInt("idinquilino")));
                 contrato.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
                 contrato.setPropietario((Propietarios)propi.Cargar(rs.getInt("idpropietario")));
@@ -215,9 +225,9 @@ public class Contratos implements Generable{
                 contrato.setId(rs.getInt("id"));
                 contrato.setFecha(rs.getDate("fecha"));
                 contrato.setMonto1(rs.getDouble("monto1"));
-                contrato.setVencimiento1(rs.getDate("fecha1"));
+                contrato.setVencimiento1(rs.getString("fecha1"));
                 contrato.setMonto2(rs.getDouble("monto2"));
-                contrato.setVencimiento2(rs.getDate("fecha2"));
+                contrato.setVencimiento2(rs.getString("fecha2"));
                 contrato.setInquilino((Inquilinos)inqui.Cargar(rs.getInt("idinquilino")));
                 contrato.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
                 contrato.setPropietario((Propietarios)propi.Cargar(rs.getInt("idpropietario")));

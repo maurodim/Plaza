@@ -61,4 +61,27 @@ public class Numeros {
         Double dd=Double.parseDouble(num);
         return dd;
     }
+    public static String LeerChooser(Calendar dias){
+        DecimalFormat fr=new DecimalFormat("00");
+        
+        
+        SimpleDateFormat dia=new SimpleDateFormat("dd/mm/yyyy");
+        //Date mes=Calendar.getInstance().getTime();
+        //dateChooserCombo1.setDateFormat(dia);
+        Calendar fechaNueva=dias;
+        //mes=dia.format(fechaNueva,null,null);
+        Double pesoDia=0.00;
+        int ano=fechaNueva.get(Calendar.YEAR);
+        int mes=fechaNueva.get(Calendar.MONTH);
+        mes++;
+        int dd=fechaNueva.get(Calendar.DAY_OF_MONTH);
+        
+        //String fechaNueva=dateChooserCombo1.getText();
+        //String fechaNueva=dateChooserCombo1.getSelectedDate();
+        //String seleccion1=fechaNueva.toString();
+        //String seleccion=fr.format(dd)+"/"+fr.format(mes)+"/"+ano;
+        String seleccion=ano+"-"+fr.format(mes)+"-"+fr.format(dd);
+        //seleccion=new SimpleDateFormat(seleccion1).format(mes);
+        return seleccion;
+    }
 }

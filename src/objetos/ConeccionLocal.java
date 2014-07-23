@@ -135,7 +135,7 @@ public class ConeccionLocal implements Transaccionable{
                      PreparedStatement pstm=dbConnection.prepareStatement(sql);
                      pstm.execute();
                      pstm.close();
-                     sql="CREATE TABLE APP.contratos (id integer generated always as identity (start with 1,increment by 1),fecha date default current_date,monto1 double default 1.00,fecha1 varchar(10) default null,monto2 double default 1.00,fecha2 varchar(10) default null,idinquilino integer default 0,idpropiedad integer default 0,idpropietario integer default 0,idgarante integer default 0,archivo varchar(200) default null,idusuario integer default 0)";
+                     sql="CREATE TABLE APP.contratos (id integer generated always as identity (start with 1,increment by 1),fecha date default current_date,monto1 double default 1.00,fecha1 date default null,monto2 double default 1.00,fecha2 date default null,idinquilino integer default 0,idpropiedad integer default 0,idpropietario integer default 0,idgarante integer default 0,archivo varchar(200) default null,idusuario integer default 0)";
                      PreparedStatement pstm1=dbConnection.prepareStatement(sql);
                      pstm1.execute();
                      pstm1.close();
@@ -251,7 +251,7 @@ public class ConeccionLocal implements Transaccionable{
                     pstm24=dbConnection.prepareStatement(sql);
                     pstm24.execute();
                     pstm24.close();
-                    sql="CREATE TABLE APP.resumenes (id integer generated always as identity (start with 1,increment by 1),idpropiedad integer,numero integer,idgasto integer,montototal double,fecha date default current_date,idusuario integer,fechavencimiento date,estado integer default 0)";
+                    sql="CREATE TABLE APP.resumenes (id integer generated always as identity (start with 1,increment by 1),idpropiedad integer,numero integer,idgasto integer default 0,descripcion varchar(100) default null,idconcepto integer default 0,montototal double,fecha date default current_date,idusuario integer,fechavencimiento date,estado integer default 0)";
                     pstm24=dbConnection.prepareStatement(sql);
                     pstm24.execute();
                     pstm24.close();

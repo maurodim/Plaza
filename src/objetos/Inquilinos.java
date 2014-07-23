@@ -154,6 +154,7 @@ public class Inquilinos implements Generable,Listables{
         Transaccionable tra=new ConeccionLocal();
         String sql="insert into inquilinos (nombre,dni,telefono,domicilio,mail,observaciones) values ('"+inquilino.getNombre()+"','"+inquilino.getDni()+"','"+inquilino.getTelefono()+"','"+inquilino.getDomicilioRef()+"','"+inquilino.getMail()+"','"+inquilino.getObservaciones()+"')";
         tra.guardarRegistro(sql);
+        
     }
 
     @Override
@@ -168,7 +169,8 @@ public class Inquilinos implements Generable,Listables{
         Inquilinos inquilino=new Inquilinos();
         inquilino=(Inquilinos)objeto;
         Transaccionable tra=new ConeccionLocal();
-        String sql="update inquilinos set nombre='"+inquilino.getNombre()+"',dni='"+inquilino.getDni()+"',domicilio='"+inquilino.getDomicilioRef()+"',mail='"+inquilino.getMail()+"',observaciones='"+inquilino.getObservaciones()+"',propiedad="+inquilino.getPropiedad().getId()+",garante="+inquilino.getGarantes().getId()+",cuentacorriente="+inquilino.getCuentaCorriente().getId()+" where id="+inquilino.getId();
+        String sql="update inquilinos set nombre='"+inquilino.getNombre()+"',dni='"+inquilino.getDni()+"',domicilio='"+inquilino.getDomicilioRef()+"',mail='"+inquilino.getMail()+"',observaciones='"+inquilino.getObservaciones()+"',propiedad="+inquilino.getPropiedad().getId()+",cuentacorriente="+inquilino.getId()+" where id="+inquilino.getId();
+        System.out.println(sql);
         tra.guardarRegistro(sql);
     }
 
