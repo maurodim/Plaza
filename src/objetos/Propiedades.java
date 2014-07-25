@@ -6,6 +6,7 @@
 
 package objetos;
 
+import interfaces.Componable;
 import interfaces.Generable;
 import interfaces.Listables;
 import interfaces.Personalizable;
@@ -16,12 +17,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Usuario
  */
-public class Propiedades implements Generable,Listables{
+public class Propiedades implements Generable,Listables,Componable{
     private Integer id;
     private String direccion;
     private String localidad;
@@ -162,7 +166,7 @@ public class Propiedades implements Generable,Listables{
         Generable rub=new Rubro();
         Personalizable per=new Usuarios();
         Transaccionable tra=new ConeccionLocal();
-        String sql="select * from propieadades order by id";
+        String sql="select * from propiedades order by id";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
@@ -300,6 +304,22 @@ public class Propiedades implements Generable,Listables{
             Logger.getLogger(Propiedades.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listado;
+    }
+
+    @Override
+    public DefaultListModel LlenarList(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultTableModel LlenarTabla(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ComboBoxModel LlenarCombo(Integer id) {
+        //ACA DEVUELVO EL OBJETO CON LOS DATOS LLENOS
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

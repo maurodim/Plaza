@@ -244,7 +244,11 @@ public class Propietarios implements Generable{
                 //listado.add(propietario);
             }
             rs.close();
-            propietario.setPropiedadesP(lista.listarPorId(propietario.getId()));
+            try{
+            if(propietario.getPropiedad().getId() > 0)propietario.setPropiedadesP(lista.listarPorId(propietario.getId()));
+            }catch(java.lang.NullPointerException e){
+                
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Propietarios.class.getName()).log(Level.SEVERE, null, ex);
         }

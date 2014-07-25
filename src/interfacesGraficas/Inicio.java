@@ -292,6 +292,11 @@ public class Inicio extends javax.swing.JFrame {
         jMenu2.add(jMenuItem13);
 
         jMenuItem14.setText("Generar Resumenes");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem14);
 
         jMenuBar1.add(jMenu2);
@@ -455,6 +460,13 @@ public class Inicio extends javax.swing.JFrame {
         parametro.setVisible(true);
         parametro.toFront();
     }//GEN-LAST:event_jMenuItem18ActionPerformed
+
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        GeneradorDeResumenes res=new GeneradorDeResumenes();
+        jDesktopPane1.add(res);
+        res.setVisible(true);
+        res.toFront();
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
 
     /**
      * @param args the command line arguments
