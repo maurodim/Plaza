@@ -6,6 +6,7 @@
 
 package objetos;
 
+import interfaces.Componable;
 import interfaces.Generable;
 import interfaces.Personalizable;
 import interfaces.Transaccionable;
@@ -15,12 +16,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Usuario
  */
-public class Resumenes implements Generable{
+public class Resumenes implements Generable,Componable{
     private Integer id;
     private Propiedades propiedad;
     private ArrayList gastos;
@@ -31,6 +35,26 @@ public class Resumenes implements Generable{
     private Date vencimiento;
     private Integer estado;
     private Integer idGasto;
+    private String descripcion;
+    private Integer idConcepto;
+
+    public Integer getIdConcepto() {
+        return idConcepto;
+    }
+
+    public void setIdConcepto(Integer idConcepto) {
+        this.idConcepto = idConcepto;
+    }
+    
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    
 
     public Integer getIdGasto() {
         return idGasto;
@@ -119,7 +143,7 @@ public class Resumenes implements Generable{
         Transaccionable tra=new ConeccionLocal();
         Resumenes resumen=new Resumenes();
         resumen=(Resumenes)objeto;
-        String sql="insert into resumenes (idpropiedad,numero,idgasto,montototal,idusuario,fechavencimiento,estado) values ("+resumen.getPropiedad().getId()+","+resumen.getNumero()+","+resumen.getIdGasto()+","+resumen.getMontoTotal()+","+resumen.getUsuario().getNumeroId()+",'"+resumen.getVencimiento()+","+resumen.getEstado()+")";
+        String sql="insert into resumenes (idpropiedad,idgasto,montototal,idusuario,estado,idconcepto,descripcion) values ("+resumen.getPropiedad().getId()+","+resumen.getIdGasto()+","+resumen.getMontoTotal()+","+resumen.getUsuario().getNumeroId()+","+resumen.getEstado()+","+resumen.getIdConcepto()+",'"+resumen.getDescripcion()+"')";
         tra.guardarRegistro(sql);
     }
 
@@ -198,6 +222,62 @@ public class Resumenes implements Generable{
         }
         
         return resumen;
+    }
+
+    @Override
+    public DefaultListModel LlenarList(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultTableModel LlenarTabla(Integer id) {
+        DefaultTableModel mod=new DefaultTableModel();
+        mod.addColumn("FECHA");
+        mod.addColumn("DESCRIPCION");
+        mod.addColumn("MONTO");
+        mod.addColumn("USUARIO");
+        Object[] fila=new Object[4];
+        Transaccionable tra=new ConeccionLocal();
+        
+        Generable prop=new Propiedades();
+        Personalizable per=new Usuarios();
+        String sql="select * from resumenes where estado=0 and idpropiedad="+id+" order by id";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                fila[0]=rs.getDate("fecha");
+                fila[1]=rs.getString("descripcion");
+                fila[2]=rs.getDouble("montototal");
+                fila[3]="ADMINISTRADOR";
+                mod.addRow(fila);
+                
+                /*
+                Resumenes resumen=new Resumenes();
+                resumen.setId(rs.getInt("id"));
+                resumen.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
+                resumen.setNumero(rs.getInt("numero"));
+                resumen.setIdGasto(rs.getInt("idgasto"));
+                resumen.setMontoTotal(rs.getDouble("montototal"));
+                resumen.setFecha(rs.getDate("fecha"));
+                resumen.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                resumen.setVencimiento(rs.getDate("fechavencimiento"));
+                resumen.setEstado(rs.getInt("estado"));
+                resumen.setDescripcion(rs.getString("descripcion"));
+                */
+                
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Resumenes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return mod;
+    }
+
+    @Override
+    public ComboBoxModel LlenarCombo(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

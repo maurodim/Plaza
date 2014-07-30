@@ -6,11 +6,18 @@
 
 package interfacesGraficas;
 
+import Conversores.Numeros;
+import interfaces.Componable;
 import interfaces.Generable;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.table.DefaultTableModel;
+import objetos.Conceptos;
+import objetos.Cuentas;
+import objetos.Edificio;
 import objetos.Propiedades;
 import objetos.Resumenes;
+import objetos.Usuarios;
 
 /**
  *
@@ -21,6 +28,9 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
     private Resumenes resumen;
     private ArrayList listadoDeGastos;
     private ArrayList listadoPro;
+    private int seleccion;
+    private ArrayList listadoDeCuentas;
+    private Conceptos concepto1;
     
     
     /**
@@ -29,6 +39,7 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
     public GeneradorDeResumenes() {
         propiedad=new Propiedades();
         resumen=new Resumenes();
+        listadoDeGastos=new ArrayList();
         initComponents();
         this.jPanel3.setVisible(false);
     }
@@ -45,7 +56,6 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
-        jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -75,8 +85,11 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
             propiedad=(Propiedades)iP.next();
             this.jComboBox1.addItem(propiedad.getDireccion());
         }
-
-        jButton3.setText("Guardar");
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Emitir");
 
@@ -88,16 +101,14 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -107,18 +118,26 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(13, 13, 13)
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jButton1.setText("Agregar Cuenta");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Agregar Individual");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Eliminar");
 
@@ -145,7 +164,19 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
                 .addComponent(jButton6))
         );
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        Conceptos cuenta=new Conceptos();
+        Generable cta=new Conceptos();
+        listadoDeCuentas=cta.Listar();
+        Iterator iC=listadoDeCuentas.listIterator();
+        while(iC.hasNext()){
+            cuenta=(Conceptos)iC.next();
+            jComboBox2.addItem(cuenta.getDescripcion());
+        }
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Descripcion");
 
@@ -156,6 +187,11 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         jTextField2.setText("jTextField2");
 
         jButton5.setText("Agregar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -190,17 +226,10 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
                 .addContainerGap(80, Short.MAX_VALUE))
         );
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        DefaultTableModel modelo=new DefaultTableModel();
+        Componable comp=new Resumenes();
+        modelo=comp.LlenarTabla(2);
+        jTable2.setModel(modelo);
         jScrollPane2.setViewportView(jTable2);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -249,11 +278,85 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.jPanel3.setVisible(true);
+        seleccion=2;
+        this.jComboBox2.setVisible(false);
+        this.jTextField1.selectAll();
+        this.jTextField1.requestFocus();
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        Cuentas cuenta=new Cuentas();
+        Generable gen=new Cuentas();
+        Generable res=new Resumenes();
+        if(seleccion==1)cuenta=(Cuentas)gen.Cargar(this.jComboBox1.getSelectedIndex());
+        cuenta.setDescripcion(this.jTextField1.getText());
+        cuenta.setPropiedad(propiedad);
+        cuenta.setMonto(Numeros.ConvertirStringADouble(this.jTextField2.getText()));
+        cuenta.setEstado(0);
+        Edificio edificio=new Edificio();
+        edificio.setId(1);
+        edificio.setDescripcion("default");
+        edificio.setDomicilio(" ");
+        cuenta.setEdificio(edificio);
+        cuenta.setUsuario((Usuarios)Inicio.usuario);
+        listadoDeGastos.add(cuenta);
+        gen.Alta(cuenta);
+        resumen=new Resumenes();
+        resumen.setGastos(listadoDeGastos);
+        resumen.setDescripcion(cuenta.getDescripcion());
+        resumen.setIdGasto(cuenta.getId());
+        resumen.setMontoTotal(cuenta.getMonto());
+        resumen.setPropiedad(propiedad);
+        resumen.setUsuario((Usuarios)Inicio.usuario);
+        resumen.setEstado(0);
+        if(seleccion==1){
+        resumen.setIdConcepto(concepto1.getId());
+        }else{
+            resumen.setIdConcepto(cuenta.getId());
+        }
+        resumen.setDescripcion(cuenta.getDescripcion());
+        res.Alta(resumen);
+        this.jTable2.removeAll();
+        Componable comp=new Resumenes();
+        this.jTable2.setModel(comp.LlenarTabla(propiedad.getId()));
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        this.jPanel4.setVisible(true);
+        Generable pro=new Propiedades();
+        Componable co=new Resumenes();
+        int posicion=this.jComboBox1.getSelectedIndex();
+        posicion++;
+        propiedad=(Propiedades)pro.Cargar(posicion);
+        this.jTable2.setModel(co.LlenarTabla(propiedad.getId()));
+        
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.jPanel3.setVisible(true);
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        int posi=this.jComboBox2.getSelectedIndex();
+        //posi++;
+        concepto1=new Conceptos();
+        concepto1=(Conceptos)listadoDeCuentas.get(posi);
+        this.jTextField1.setText(concepto1.getDescripcion());
+        this.jTextField2.setText(String.valueOf(concepto1.getMonto()));
+        this.jTextField1.selectAll();
+        this.jTextField1.requestFocus();
+        
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;

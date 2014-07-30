@@ -102,6 +102,18 @@ public class Cuentas implements Generable{
         Transaccionable tra=new ConeccionLocal();
         String sql="insert into cuentas (descripcion,monto,idedificio,idpropiedad,estado,idusuario) values ('"+cuenta.getDescripcion()+"',"+cuenta.getMonto()+","+cuenta.getEdificio().getId()+","+cuenta.getPropiedad().getId()+","+cuenta.getEstado()+","+cuenta.getUsuario().getNumeroId()+")";
         tra.guardarRegistro(sql);
+        sql="select * from cuentas";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        int id=0;
+        try {
+            while(rs.next()){
+                id=rs.getByte("id");
+            }
+            rs.close();
+            cuenta.setId(id);
+        } catch (SQLException ex) {
+            Logger.getLogger(Cuentas.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
