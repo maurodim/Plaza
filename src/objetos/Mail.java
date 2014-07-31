@@ -24,12 +24,30 @@ import javax.mail.internet.MimeMultipart;
  */
 public class Mail {
     private final Properties propiedades=new Properties();
-    private String password="Sider001";
+    private String password;
     private Session sesion;
     private String direccionFile;
     private String detalleListado;
     private String asunto;
+    private ServidorDeCorreos serv;
+    private String destinatario;
 
+    public String getDestinatario() {
+        return destinatario;
+    }
+
+    public void setDestinatario(String destinatario) {
+        this.destinatario = destinatario;
+    }
+    
+
+    public Mail(ServidorDeCorreos se) {
+        serv=new ServidorDeCorreos();
+        serv=se;
+        password=serv.getClave();
+    }
+
+    
     public void setAsunto(String asunto) {
         this.asunto = asunto;
     }
@@ -45,12 +63,13 @@ public class Mail {
     }
     
     private void init(){
-        propiedades.put("mail.smtp.host","mail.sidercon.com");
-        propiedades.put("mail.smtp.starttls.enable","true");
-        propiedades.put("mail.smtp.port",587);
-        propiedades.put("mail.smtp.mail.sender","administracion@sidercon.com");
-        propiedades.put("mail.smtp.user","administracion@sidercon.com");
-        propiedades.put("mail.smtp.auth","true");
+        propiedades.put("mail.smtp.host",serv.getHost());
+        propiedades.put("mail.smtp.starttls.enable","false");//serv.isStats());
+        propiedades.put("mail.transport.protocol","smtp");
+        propiedades.put("mail.smtp.port",serv.getPuerto());
+        propiedades.put("mail.smtp.mail.sender",serv.getUsuario());
+        propiedades.put("mail.smtp.user",serv.getUsuario());
+        propiedades.put("mail.smtp.auth",serv.isAuth());
         sesion=Session.getDefaultInstance(propiedades);
         
     }
@@ -59,17 +78,17 @@ public class Mail {
         try{
             MimeMessage mensaje=new MimeMessage(sesion);
             mensaje.setFrom(new InternetAddress((String)propiedades.get("mail.smtp.mail.sender")));
-            mensaje.addRecipient(Message.RecipientType.TO,new InternetAddress("hernangonzalez@sidercon.com"));
-            mensaje.addRecipient(Message.RecipientType.TO,new InternetAddress("comercial@sidercon.com"));
+            mensaje.addRecipient(Message.RecipientType.TO,new InternetAddress(this.destinatario));
             mensaje.setSubject(asunto);
             BodyPart texto=new MimeBodyPart();
-            texto.setText("LPM GENERADA, LA MISMA SE ENCUENTRA GUARDADA EN LA CARPETA Server/Ventas/LPM   \n Saludos");
+            texto.setText("ES UN ENVIO DE PRUEBA   \n Saludos");
             BodyPart adjunto=new MimeBodyPart();
             adjunto.setDataHandler(new DataHandler(new FileDataSource(direccionFile)));
             adjunto.setFileName(detalleListado);
             MimeMultipart multiParte=new MimeMultipart();
             multiParte.addBodyPart(texto);
             multiParte.addBodyPart(adjunto);
+            
             //mensaje.setText("El reparto del vehiculo esta cerrado para el reparto. Motivo :CAPACIDAD DE CARGA COMPLETADA");
             mensaje.setContent(multiParte);
             Transport t=sesion.getTransport("smtp");

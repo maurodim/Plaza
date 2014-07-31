@@ -8,16 +8,23 @@ package interfacesGraficasInmob;
 
 import Conversores.Numeros;
 import interfaces.Generable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
+import javax.swing.JOptionPane;
 import objetos.Comisiones;
 import objetos.Localidad;
+import objetos.Mail;
 import objetos.Rubro;
+import objetos.ServidorDeCorreos;
 
 /**
  *
  * @author Usuario
  */
 public class Parametros extends javax.swing.JInternalFrame {
-
+    private ServidorDeCorreos servidor;
+    private Boolean accionDeServ;
     /**
      * Creates new form Parametros
      */
@@ -28,6 +35,20 @@ public class Parametros extends javax.swing.JInternalFrame {
         this.jPanel3.setVisible(false);
         this.jPanel4.setVisible(false);
         this.jPanel5.setVisible(false);
+        servidor=new ServidorDeCorreos();
+        Generable ge=new ServidorDeCorreos();
+        servidor=(ServidorDeCorreos) ge.Cargar(1);
+        if(servidor == null){
+            accionDeServ=true;
+        }else{
+            accionDeServ=false;
+            this.jTextField5.setText(servidor.getHost());
+            this.jTextField6.setText(servidor.getUsuario());
+            this.jTextField7.setText(servidor.getClave());
+            this.jTextField8.setText(String.valueOf(servidor.getPuerto()));
+            this.jCheckBox1.setSelected(servidor.isStats());
+            this.jCheckBox2.setSelected(servidor.isAuth());
+        }
     }
 
     /**
@@ -74,6 +95,7 @@ public class Parametros extends javax.swing.JInternalFrame {
         jCheckBox1 = new javax.swing.JCheckBox();
         jCheckBox2 = new javax.swing.JCheckBox();
         jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
 
         setClosable(true);
         setMaximizable(true);
@@ -311,6 +333,18 @@ public class Parametros extends javax.swing.JInternalFrame {
         jCheckBox2.setText("auth");
 
         jButton9.setText("Guardar");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
+        jButton10.setText("Enviar Prueba");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -340,7 +374,9 @@ public class Parametros extends javax.swing.JInternalFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -368,7 +404,8 @@ public class Parametros extends javax.swing.JInternalFrame {
                     .addComponent(jCheckBox2))
                 .addGap(18, 18, 18)
                 .addComponent(jButton9)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton10))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -455,9 +492,40 @@ public class Parametros extends javax.swing.JInternalFrame {
         this.jPanel4.setVisible(false);
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        //servidor=new ServidorDeCorreos();
+        servidor.setHost(this.jTextField5.getText());
+        servidor.setUsuario(this.jTextField6.getText());
+        servidor.setClave(this.jTextField7.getText());
+        servidor.setPuerto(Integer.parseInt(this.jTextField8.getText()));
+        servidor.setStats(this.jCheckBox1.isSelected());
+        servidor.setAuth(this.jCheckBox2.isSelected());
+        Generable gen=new ServidorDeCorreos();
+        if(accionDeServ){
+            gen.Alta(servidor);
+        }else{
+            gen.Modificacion(servidor);
+        }
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        String destino=JOptionPane.showInputDialog(this,"Ingrese la direccion de destino");
+        Mail mail=new Mail(servidor);
+        mail.setDestinatario(destino);
+        mail.setAsunto("ESTO ES UNA PRUEBA DE ENVIO");
+        mail.setDetalleListado("");
+        mail.setDireccionFile("");
+        try {
+            mail.enviarMailRepartoCargaCompleta();
+        } catch (MessagingException ex) {
+            Logger.getLogger(Parametros.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton10ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

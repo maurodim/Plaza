@@ -141,6 +141,9 @@ public class ConeccionLocal implements Transaccionable{
                      sql="create table app.conceptos (id integer generated always as identity (start with 1, increment by 1), descripcion varchar (50), monto double default 0.00)";
                      pstm1=dbConnection.prepareStatement(sql);
                      pstm1.execute();
+                     sql="create table app.servidor (id integer generated always as identity (start with 1, increment by 1), host varchar(50),usuario varchar (50), clave varchar (50), puerto integer default 587, stats boolean default true, auth boolean default true)";
+                     pstm1=dbConnection.prepareStatement(sql);
+                     pstm1.execute();
                      pstm1.close();
                      sql="CREATE TABLE APP.caja (numero integer generated always as identity (start with 1,increment by 1),numeroSucursal  INTEGER not null,numeroUsuario  INTEGER not null,tipoMovimiento  INTEGER not null,saldoinicial double not null,estado INTEGER not null,tipo INTEGER not null,saldofinal double,fechacierre varchar(30),diferencia double)";
                      PreparedStatement pstm2=dbConnection.prepareStatement(sql);
