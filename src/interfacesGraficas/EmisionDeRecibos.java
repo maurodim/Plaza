@@ -6,7 +6,7 @@
 
 package interfacesGraficas;
 
-import Impresiones.Impresora;
+
 import interfaces.Busquedas;
 import interfaces.Generable;
 import java.io.IOException;
@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.ClientesTango;
-import objetos.Cuotas;
 import tablas.Personalizabla;
 
 /**
@@ -59,6 +58,7 @@ public class EmisionDeRecibos extends javax.swing.JInternalFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Listado de Propiedades"));
 
+        /*
         Generable genera=new Cuotas();
         listadoClientes.clear();
         Cuotas cuota=new Cuotas();
@@ -82,6 +82,7 @@ public class EmisionDeRecibos extends javax.swing.JInternalFrame {
             modeloB.addRow(fila);
         }
         listadoClientes=list;
+        */
         jTable1.setModel(modeloB);
         jScrollPane1.setViewportView(jTable1);
 
@@ -102,7 +103,7 @@ public class EmisionDeRecibos extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jButton1.setText("Imprimir Recibos");
+        jButton1.setText("Emitir Resumenes");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -168,14 +169,7 @@ public class EmisionDeRecibos extends javax.swing.JInternalFrame {
             }
         }
         
-        Impresora imp=new Impresora();
-        try {
-            imp.imprimir(seleccion,1);
-        } catch (SQLException ex) {
-            Logger.getLogger(EmisionDeRecibos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(EmisionDeRecibos.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
         
     }//GEN-LAST:event_jButton1ActionPerformed

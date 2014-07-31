@@ -97,7 +97,7 @@
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Personalizabla modeloB=new Personalizabla();"/>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="Generable genera=new Cuotas();&#xa;listadoClientes.clear();&#xa;Cuotas cuota=new Cuotas();&#xa;ClientesTango clientes=new ClientesTango();&#xa;ArrayList list=new ArrayList();&#xa;list=clientes.listarCuotas();&#xa;System.out.println(&quot;cantidad &quot;+list.size());&#xa;Iterator il=list.listIterator();&#xa;modeloB.addColumn(&quot;Emite ?&quot;);&#xa;modeloB.addColumn(&quot;razon social&quot;);&#xa;modeloB.addColumn(&quot;periodo&quot;);&#xa;Object[] fila=new Object[3];&#xa;while(il.hasNext()){&#xa;ClientesTango clientes1=new ClientesTango();&#xa;    clientes1=(ClientesTango)il.next();&#xa;    fila[0]=false;&#xa;    fila[1]=clientes1.getRazonSocial();&#xa;    System.out.println(&quot;id cuota &quot;+clientes1.getIdCuota());&#xa;    cuota=(Cuotas)genera.Cargar(clientes1.getIdCuota());&#xa;fila[2]=cuota.getPeriodo();&#xa;modeloB.addRow(fila);&#xa;}&#xa;listadoClientes=list;"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="/*&#xa;Generable genera=new Cuotas();&#xa;listadoClientes.clear();&#xa;Cuotas cuota=new Cuotas();&#xa;ClientesTango clientes=new ClientesTango();&#xa;ArrayList list=new ArrayList();&#xa;list=clientes.listarCuotas();&#xa;System.out.println(&quot;cantidad &quot;+list.size());&#xa;Iterator il=list.listIterator();&#xa;modeloB.addColumn(&quot;Emite ?&quot;);&#xa;modeloB.addColumn(&quot;razon social&quot;);&#xa;modeloB.addColumn(&quot;periodo&quot;);&#xa;Object[] fila=new Object[3];&#xa;while(il.hasNext()){&#xa;ClientesTango clientes1=new ClientesTango();&#xa;    clientes1=(ClientesTango)il.next();&#xa;    fila[0]=false;&#xa;    fila[1]=clientes1.getRazonSocial();&#xa;    System.out.println(&quot;id cuota &quot;+clientes1.getIdCuota());&#xa;    cuota=(Cuotas)genera.Cargar(clientes1.getIdCuota());&#xa;fila[2]=cuota.getPeriodo();&#xa;modeloB.addRow(fila);&#xa;}&#xa;listadoClientes=list;&#xa;*/"/>
               </AuxValues>
             </Component>
           </SubComponents>
@@ -129,7 +129,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Imprimir Recibos"/>
+            <Property name="text" type="java.lang.String" value="Emitir Resumenes"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>

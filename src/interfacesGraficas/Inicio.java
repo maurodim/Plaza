@@ -174,6 +174,9 @@ public class Inicio extends javax.swing.JFrame {
         jMenuItem11 = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
         jMenuItem17 = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
+        jMenuItem19 = new javax.swing.JMenuItem();
+        jMenuItem21 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SISITEMA DE GESTION BAMBU SOFTWARE");
@@ -325,6 +328,26 @@ public class Inicio extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu9);
 
+        jMenu7.setText("Caja");
+
+        jMenuItem19.setText("Movimientos ");
+        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem19ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem19);
+
+        jMenuItem21.setText("Cierre");
+        jMenuItem21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem21ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem21);
+
+        jMenuBar1.add(jMenu7);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -468,6 +491,20 @@ public class Inicio extends javax.swing.JFrame {
         res.toFront();
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
+    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
+        CajaAbm cajaA=new CajaAbm();
+        jDesktopPane1.add(cajaA);
+        cajaA.setVisible(true);
+        cajaA.toFront();
+    }//GEN-LAST:event_jMenuItem19ActionPerformed
+
+    private void jMenuItem21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem21ActionPerformed
+        ArqueoDeCaja arq=new ArqueoDeCaja();
+        jDesktopPane1.add(arq);
+        arq.setVisible(true);
+        arq.toFront();
+    }//GEN-LAST:event_jMenuItem21ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -530,6 +567,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     public static javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu8;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
@@ -542,7 +580,9 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem18;
+    private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem20;
+    private javax.swing.JMenuItem jMenuItem21;
     private javax.swing.JMenuItem jMenuItem23;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
