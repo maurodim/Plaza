@@ -38,7 +38,7 @@ public class Parametros extends javax.swing.JInternalFrame {
         servidor=new ServidorDeCorreos();
         Generable ge=new ServidorDeCorreos();
         servidor=(ServidorDeCorreos) ge.Cargar(1);
-        if(servidor == null){
+        if(servidor.getPuerto() == 0){
             accionDeServ=true;
         }else{
             accionDeServ=false;

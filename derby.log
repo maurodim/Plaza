@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Thu Jul 31 20:57:24 ART 2014:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-0147-8edb-51df-000003fe1238 
+Fri Aug 01 15:24:55 ART 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-0147-92d1-491d-000003fd4138 
 on database directory C:\Gestion\DBG\gestion.db  with class loader sun.misc.Launcher$AppClassLoader@6ff3c5b5 
 Loaded from file:/C:/Users/Usuario/Google%20Drive/bbsGestion/dist/lib/derby.jar
 java.vendor=Oracle Corporation

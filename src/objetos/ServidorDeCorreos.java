@@ -27,6 +27,11 @@ public class ServidorDeCorreos implements Generable{
     private Boolean auth;
     private Integer id;
 
+    public ServidorDeCorreos() {
+        puerto=0;
+    }
+
+    
     public String getHost() {
         return host;
     }
