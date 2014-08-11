@@ -295,5 +295,10 @@ public class Inquilinos implements Generable,Listables{
        }
        return listado;
     }
+
+    @Override
+    public ArrayList listarPorPropietario(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
    
 }

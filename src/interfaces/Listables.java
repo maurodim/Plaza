@@ -18,4 +18,5 @@ public interface Listables {
     public ArrayList listarPorOrdenDeId();
     public ArrayList listarPorOrdenAlfabetico();
     public ArrayList listarPorEstado(Integer esta);
+    public ArrayList listarPorPropietario(Integer id);
 }

@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
+import tablas.MiModeloTablaListado;
 
 /**
  *
@@ -313,13 +314,76 @@ public class Propiedades implements Generable,Listables,Componable{
 
     @Override
     public DefaultTableModel LlenarTabla(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        MiModeloTablaListado modelo=new MiModeloTablaListado();
+        Transaccionable tra=new ConeccionLocal();
+         Generable prop=new Propiedades();
+        Personalizable per=new Usuarios();
+        modelo.addColumn("numero");
+        modelo.addColumn("direccion");
+        modelo.addColumn("localidad");
+        modelo.addColumn("categoria");
+        modelo.addColumn("num contrato");
+        Object[] fila=new Object[5];
+        String sql="select id,direccion,localidad,idcontrato,(select rubro.descripcion from rubro where rubro.id=propiedades.rubro)as idrubro from propiedades order by direccion";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                fila[0]=rs.getInt("id");
+                fila[1]=rs.getString("direccion");
+                fila[2]=rs.getString("localidad");
+                fila[3]=rs.getString("idrubro");
+                fila[4]=rs.getString("idcontrato");
+                
+                modelo.addRow(fila);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Propietarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return modelo;
     }
 
     @Override
     public ComboBoxModel LlenarCombo(Integer id) {
         //ACA DEVUELVO EL OBJETO CON LOS DATOS LLENOS
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorPropietario(Integer id) {
+        ArrayList listado=new ArrayList();
+        Generable prop=new Propietarios();
+        Generable cont=new Contratos();
+        Generable cta=new CuentaCorriente();
+        //Generable loc=new Localidad();
+        Generable rub=new Rubro();
+        Personalizable per=new Usuarios();
+        Transaccionable tra=new ConeccionLocal();
+        Propiedades propiedad=new Propiedades();
+        String sql="select * from propiedades where idpropietario="+id;
+        System.out.println(sql);
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                propiedad.setId(rs.getInt("id"));
+                propiedad.setDireccion(rs.getString("direccion"));
+                propiedad.setLocalidad(rs.getString("localidad"));
+                propiedad.setRubro((Rubro)rub.Cargar(rs.getInt("rubro")));
+                if(rs.getInt("idcontrato") > 0)propiedad.setContrato((Contratos)cont.Cargar(rs.getInt("idcontrato")));
+                propiedad.setPropietario((Propietarios)prop.Cargar(rs.getInt("idpropietario")));
+                if(rs.getInt("idcuentascorriente") > 0)propiedad.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("idcuentascorriente")));
+                propiedad.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                propiedad.setFecha(rs.getDate("fecha"));
+                listado.add(propiedad);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Propiedades.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return listado;
     }
     
     

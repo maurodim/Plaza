@@ -7,7 +7,9 @@
 package interfacesGraficasInmob;
 
 import interfaces.Generable;
+import interfaces.Listables;
 import interfacesGraficas.Inicio;
+import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.DefaultListModel;
 import objetos.Localidad;
@@ -26,6 +28,8 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
     private Propietarios propietario;
     private Generable geni;
     private Generable gen;
+    private ArrayList propList;
+    private Listables ls;
     /**
      * Creates new form PropietariosMod
      */
@@ -44,7 +48,15 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
         initComponents();
         this.jTextField1.setText(propietario.getNombre());
         this.jTextField2.setText(propietario.getDomicilio());
-        
+        ls=new Propiedades();
+        propList=ls.listarPorPropietario(propietario.getId());
+        Iterator lP=propList.listIterator();
+        Propiedades prop=new Propiedades();
+        this.jList1.removeAll();
+        while(lP.hasNext()){
+            prop=(Propiedades)lP.next();
+            ((DefaultListModel)this.jList1.getModel()).addElement(prop.getDireccion());
+        }
         
         this.jTextField1.selectAll();
         this.jTextField1.requestFocus();
@@ -111,10 +123,7 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
 
         jLabel7.setText("observaciones :");
 
-        jTextField3.setText("jTextField3");
-
-        jTextField4.setText("jTextField4");
-
+        jList1.setModel(new DefaultListModel());
         jScrollPane1.setViewportView(jList1);
 
         jButton1.setText("Nueva");
@@ -123,10 +132,6 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-
-        jTextField5.setText("jTextField5");
-
-        jTextField6.setText("jTextField6");
 
         jButton2.setText("Guardar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -223,8 +228,6 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
 
         jLabel10.setText("Categoría :");
 
-        jTextField7.setText("jTextField7");
-
         jList2.setModel(new DefaultListModel());
         jScrollPane2.setViewportView(jList2);
 
@@ -307,7 +310,9 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
         
         propietario.setNombre(this.jTextField1.getText());
         propietario.setDni(this.jTextField2.getText());
-        propietario.setTelefono(this.jTextField3.getText().substring(0,10));
+        String tel=this.jTextField3.getText();
+        if(tel.length() > 10)tel=tel.substring(0,10);
+        propietario.setTelefono(tel);
         propietario.setDomicilio(this.jTextField4.getText());
         propietario.setMail(this.jTextField5.getText());
         propietario.setObservaciones(this.jTextField6.getText());
@@ -316,6 +321,7 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
         System.out.println("id propietario :"+propietario.getId());
         propiedad.setPropietario(propietario);
         geni.Modificacion(propiedad);
+        LimpiarPanel1();
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -344,16 +350,29 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
         propiedad.setUsuario((Usuarios)Inicio.usuario);
         propiedad.setLocalidad(String.valueOf(this.jList2.getSelectedValue()));
         Generable rub=new Rubro();
-        propiedad.setRubro((Rubro)rub.Cargar(1));
+        int pos=this.jList3.getSelectedIndex();
+        propiedad.setRubro((Rubro)rub.Cargar(pos));
         propiedad.setDireccion(this.jTextField7.getText());
         geni.Alta(propiedad);
         numeroPropiedad=propiedad.getId();
         propietario.setPropiedad(propiedad);
         
+       ((DefaultListModel)this.jList1.getModel()).addElement(propiedad.getDireccion());
+        LimpiarPanel2();
         this.jPanel2.setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
-
-
+    private void LimpiarPanel1(){
+        this.jTextField1.setText("");
+        this.jTextField2.setText("");
+        this.jTextField3.setText("");
+        this.jTextField4.setText("");
+        this.jTextField5.setText("");
+        this.jTextField6.setText("");
+        this.jTextField1.requestFocus();
+    }
+    private void LimpiarPanel2(){
+        this.jTextField7.setText("");
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

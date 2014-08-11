@@ -6,6 +6,7 @@
 
 package objetos;
 
+import interfaces.Componable;
 import interfaces.Generable;
 import interfaces.Listables;
 import interfaces.Personalizable;
@@ -16,12 +17,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
+import tablas.MiModeloTablaListado;
 
 /**
  *
  * @author Usuario
  */
-public class Propietarios implements Generable{
+public class Propietarios implements Generable,Componable{
     private Integer id;
     private String nombre;
     private String dni;
@@ -253,6 +258,49 @@ public class Propietarios implements Generable{
             Logger.getLogger(Propietarios.class.getName()).log(Level.SEVERE, null, ex);
         }
         return propietario;
+    }
+
+    @Override
+    public DefaultListModel LlenarList(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultTableModel LlenarTabla(Integer id) {
+        MiModeloTablaListado modelo=new MiModeloTablaListado();
+        Transaccionable tra=new ConeccionLocal();
+         Generable prop=new Propiedades();
+        Personalizable per=new Usuarios();
+        modelo.addColumn("numero");
+        modelo.addColumn("nombre");
+        modelo.addColumn("domicilio");
+        modelo.addColumn("telefono");
+        modelo.addColumn("mail");
+        modelo.addColumn("saldo");
+        Object[] fila=new Object[6];
+        String sql="select * from proveedores order by nombre";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                fila[0]=rs.getInt("numero");
+                fila[1]=rs.getString("nombre");
+                fila[2]=rs.getString("domicilio");
+                fila[3]=rs.getString("telefono");
+                fila[4]=rs.getString("mail");
+                fila[5]=rs.getDouble("saldo");
+                modelo.addRow(fila);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Propietarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return modelo;
+    }
+
+    @Override
+    public ComboBoxModel LlenarCombo(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     
