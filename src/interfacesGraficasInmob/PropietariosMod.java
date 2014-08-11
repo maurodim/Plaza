@@ -351,6 +351,8 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
         propiedad.setLocalidad(String.valueOf(this.jList2.getSelectedValue()));
         Generable rub=new Rubro();
         int pos=this.jList3.getSelectedIndex();
+        pos++;
+        System.out.println("LA POSICION ELEGIDA ES "+pos);
         propiedad.setRubro((Rubro)rub.Cargar(pos));
         propiedad.setDireccion(this.jTextField7.getText());
         geni.Alta(propiedad);

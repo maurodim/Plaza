@@ -283,12 +283,12 @@ public class Propiedades implements Generable,Listables,Componable{
         Generable rub=new Rubro();
         Personalizable per=new Usuarios();
         Transaccionable tra=new ConeccionLocal();
-        Propiedades propiedad=new Propiedades();
+        Propiedades propiedad;
         String sql="select * from propiedades where idcontrato=0";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
-                
+                propiedad=new Propiedades();
                 propiedad.setId(rs.getInt("id"));
                 propiedad.setDireccion(rs.getString("direccion"));
                 propiedad.setLocalidad(rs.getString("localidad"));

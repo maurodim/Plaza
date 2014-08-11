@@ -6,6 +6,7 @@
 
 package objetos;
 
+import interfaces.Componable;
 import interfaces.Generable;
 import interfaces.Personalizable;
 import interfaces.Transaccionable;
@@ -15,12 +16,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
+import tablas.MiModeloTablaListado;
 
 /**
  *
  * @author Usuario
  */
-public class Contratos implements Generable{
+public class Contratos implements Generable,Componable{
     private Integer id;
     private Date fecha;
     private Double monto1;
@@ -240,6 +245,56 @@ public class Contratos implements Generable{
             Logger.getLogger(Contratos.class.getName()).log(Level.SEVERE, null, ex);
         }
         return contrato;
+    }
+
+    @Override
+    public DefaultListModel LlenarList(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultTableModel LlenarTabla(Integer id) {
+        MiModeloTablaListado modelo=new MiModeloTablaListado();
+        Transaccionable tra=new ConeccionLocal();
+         Generable prop=new Propiedades();
+        Personalizable per=new Usuarios();
+        modelo.addColumn("numero");
+        modelo.addColumn("fecha alta");
+        modelo.addColumn("valor 1");
+        modelo.addColumn("fecha hasta 1");
+        modelo.addColumn("vencimiento");
+        modelo.addColumn("valor 2");
+        modelo.addColumn("inquilino");
+        modelo.addColumn("propiedad");
+        modelo.addColumn("propietario");
+        Object[] fila=new Object[9];
+        String sql="select id,fecha,monto1,fecha1,fecha2,monto2,(select inquilinos.nombre from inquilinos where inquilinos.id=contratos.idinquilino)as inquilino,(select propiedades.direccion from propiedades where propiedades.id=contratos.idpropiedad)as propiedad,(select proveedores.nombre from proveedores where proveedores.numero=contratos.idpropietario)as propietario from contratos order by fecha";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                fila[0]=rs.getInt("id");
+                fila[1]=rs.getString("fecha");
+                fila[2]=String.valueOf(rs.getDouble("monto1"));
+                fila[3]=rs.getString("fecha2");
+                fila[4]=rs.getString("fecha1");
+                fila[5]=String.valueOf(rs.getDouble("monto2"));
+                fila[6]=rs.getString("inquilino");
+                fila[7]=rs.getString("propiedad");
+                fila[8]=rs.getString("propietario");
+                
+                modelo.addRow(fila);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Propietarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return modelo;
+    }
+
+    @Override
+    public ComboBoxModel LlenarCombo(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

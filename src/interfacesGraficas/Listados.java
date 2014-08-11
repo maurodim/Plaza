@@ -9,6 +9,8 @@ package interfacesGraficas;
 import interfaces.Componable;
 import interfaces.Generable;
 import interfaces.Listables;
+import objetos.Contratos;
+import objetos.Inquilinos;
 import objetos.Propiedades;
 import objetos.Propietarios;
 import tablas.MiModeloTablaListado;
@@ -37,6 +39,15 @@ public class Listados extends javax.swing.JInternalFrame {
                 genP=new Propiedades();
                 this.jTable1.setModel(genP.LlenarTabla(0));
                 break;
+            case 3:
+                genP=new Inquilinos();
+                this.jTable1.setModel(genP.LlenarTabla(0));
+                break;
+            case 4:
+                genP=new Contratos();
+                this.jTable1.setModel(genP.LlenarTabla(0));
+                break;
+                
         }
     }
     /**

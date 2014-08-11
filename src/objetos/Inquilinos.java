@@ -6,8 +6,10 @@
 
 package objetos;
 
+import interfaces.Componable;
 import interfaces.Generable;
 import interfaces.Listables;
+import interfaces.Personalizable;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,12 +17,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
+import tablas.MiModeloTablaListado;
 
 /**
  *
  * @author Usuario
  */
-public class Inquilinos implements Generable,Listables{
+public class Inquilinos implements Generable,Listables,Componable{
    private Integer id;
    private String nombre;
    private String dni;
@@ -298,6 +304,79 @@ public class Inquilinos implements Generable,Listables{
 
     @Override
     public ArrayList listarPorPropietario(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultListModel LlenarList(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultTableModel LlenarTabla(Integer id) {
+        MiModeloTablaListado modelo=new MiModeloTablaListado();
+        Transaccionable tra=new ConeccionLocal();
+         Generable prop=new Propiedades();
+        Personalizable per=new Usuarios();
+        modelo.addColumn("numero");
+        modelo.addColumn("nombre");
+        modelo.addColumn("dni");
+        modelo.addColumn("telefono");
+        modelo.addColumn("mail");
+        modelo.addColumn("Propiedad");
+        modelo.addColumn("saldo");
+        Object[] fila=new Object[7];
+        String sql="select id,nombre,dni,telefono,mail,(select propiedades.direccion from propiedades where propiedades.id=inquilinos.propiedad)as prop from inquilinos order by nombre";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                fila[0]=rs.getInt("id");
+                fila[1]=rs.getString("nombre");
+                fila[2]=rs.getString("dni");
+                fila[3]=rs.getString("telefono");
+                fila[4]=rs.getString("mail");
+                fila[5]=rs.getString("prop");
+                fila[6]="aca calculo de cta cte";
+                modelo.addRow(fila);
+            }
+            rs.close();
+            /*
+             Generable propi=new Propiedades();
+        Generable gar=new Garantes();
+        Generable cta=new CuentaCorriente();
+        ArrayList listado=new ArrayList();
+        String sql="select * from inquilinos order by nombre";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+       try {
+           while(rs.next()){
+               Inquilinos inquilino=new Inquilinos();
+               inquilino.setId(rs.getInt("id"));
+               inquilino.setNombre(rs.getString("nombre"));
+               inquilino.setDni(rs.getString("dni"));
+               inquilino.setTelefono(rs.getString("telefono"));
+               inquilino.setDomicilioRef(rs.getString("domicilio"));
+               inquilino.setMail(rs.getString("mail"));
+               inquilino.setObservaciones(rs.getString("observaciones"));
+               inquilino.setFechaAlta(rs.getDate("fechaalta"));
+               if(rs.getInt("propiedad") > 0)inquilino.setPropiedad((Propiedades) propi.Cargar(rs.getInt("propiedad")));
+               if(rs.getInt("garante") > 0)inquilino.setGarantes((Garantes) gar.Cargar(rs.getInt("garante")));
+               if(rs.getInt("cuentacorriente") > 0)inquilino.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("cuentacorriente")));
+               listado.add(inquilino);
+           }
+           rs.close();
+       } catch (SQLException ex) {
+           Logger.getLogger(Inquilinos.class.getName()).log(Level.SEVERE, null, ex);
+       }
+            */
+        } catch (SQLException ex) {
+            Logger.getLogger(Propietarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return modelo;
+    }
+
+    @Override
+    public ComboBoxModel LlenarCombo(Integer id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
    

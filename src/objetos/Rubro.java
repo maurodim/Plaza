@@ -86,7 +86,7 @@ public class Rubro implements Generable{
     public Object Cargar(Integer id) {
         Transaccionable tra=new ConeccionLocal();
         Rubro comision=new Rubro();
-        String sql="select * from rubro";
+        String sql="select * from rubro where id="+id;
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
