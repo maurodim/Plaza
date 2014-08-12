@@ -42,7 +42,7 @@ public class ConeccionLocal implements Transaccionable{
               //\\Fincorp-pc\c\Gestion\DBG
               //"jdbc:derby:\\\\Fincorp-pc\\c\\Gestion\\DBG\\gestion.db"
               //"jdbc:derby:C:\\Gestion\\DBG\\gestion.db"
-               String strUrl = "jdbc:derby:\\\\Fincorp-pc\\c\\Gestion\\DBG\\gestion.db";
+               String strUrl = "jdbc:derby:C:\\Gestion\\DBG\\gestion.db";
             try {
                 Class.forName(driver1).newInstance();
                 dbConnection = DriverManager.getConnection (strUrl);
