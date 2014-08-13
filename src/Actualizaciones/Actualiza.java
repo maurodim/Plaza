@@ -10,6 +10,7 @@ import interfacesGraficas.Inicio;
 import interfaces.Transaccionable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -99,7 +100,7 @@ public class Actualiza extends Thread{
         }
         return verif;
     }
-    private void VerificarErrores(){
+    private void VerificarErrores() throws IOException{
         String sql="select * from fallas where estado=0";
         ArrayList fallas=new ArrayList();
         /*
