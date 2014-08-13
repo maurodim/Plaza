@@ -302,8 +302,9 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         Generable gen=new Inquilinos();
-        int pos=this.jComboBox1.getSelectedIndex()+ 1;
-        inquilino=(Inquilinos)gen.Cargar(pos);
+        int pos=this.jComboBox1.getSelectedIndex();
+        //pos++;
+        inquilino=(Inquilinos)listadoInq.get(pos);
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
