@@ -8,6 +8,7 @@ import Actualizaciones.Actualiza;
 
 import Excel.InformeMensual;
 import interfaces.Cajeables;
+import interfaces.Transaccionable;
 import interfacesGraficasInmob.Parametros;
 import interfacesGraficasInmob.PropietariosMod;
 import java.awt.Dimension;
@@ -16,7 +17,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -33,6 +42,7 @@ import javax.swing.Timer;
 import objetos.Articulos;
 import objetos.Cajas;
 import objetos.ClientesTango;
+import objetos.ConeccionLocal;
 import objetos.GastosF;
 import objetos.ListasDePrecios;
 import objetos.Proveedores;
@@ -167,6 +177,7 @@ public class Inicio extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
@@ -289,6 +300,14 @@ public class Inicio extends javax.swing.JFrame {
 
         jMenuItem9.setText("Informes");
         jMenu1.add(jMenuItem9);
+
+        jMenuItem5.setText("Sentencias");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem5);
 
         jMenuBar1.add(jMenu1);
 
@@ -555,6 +574,43 @@ public class Inicio extends javax.swing.JFrame {
         lst.toFront();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        FileReader fR=null;
+        try {
+            File archivo=new File("C://Gestion//sentencias.txt");
+            fR = new FileReader(archivo);
+            BufferedReader bufferR=new BufferedReader(fR);
+            String archivoBase=bufferR.readLine();
+            System.out.println(archivoBase);
+             String strUrl = "jdbc:derby:C:\\Gestion\\DBG\\gestion.db;create=true";
+                    Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+                     Connection dbConnection = DriverManager.getConnection (strUrl,"","");
+                     //String sql="CREATE TABLE APP.inquilinos(id integer generated always as identity (start with 1,increment by 1), NOMBRE   varchar(49) default NULL,dni varchar(15) default null,telefono varchar(30) default null,domicilio varchar(50)default null,propiedad integer default 0,garante integer default 0,cuentacorriente integer default 0,mail varchar(100) default null,observaciones varchar(300) default null,fechaalta date default current_date)";
+                     //st=dbConnection.createStatement();
+                     PreparedStatement pstm=dbConnection.prepareStatement(archivoBase);
+                     pstm.execute();
+                     pstm.close();
+            
+            
+            //Transaccionable tra=new ConeccionLocal();
+            //tra.guardarRegistro(archivoBase);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                fR.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -637,6 +693,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem23;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;

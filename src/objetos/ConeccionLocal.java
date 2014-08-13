@@ -8,6 +8,10 @@ package objetos;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import interfaces.Transaccionable;
 import interfacesGraficas.Inicio;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,13 +40,26 @@ public class ConeccionLocal implements Transaccionable{
     private Statement st;
     private String driver1="org.apache.derby.jdbc.EmbeddedDriver";
 
-    public ConeccionLocal() {
+    public ConeccionLocal() throws FileNotFoundException, IOException {
+            File archivo=new File("C://Gestion//coneccion.txt");
+        FileReader fR=new FileReader(archivo);
+        BufferedReader bufferR=new BufferedReader(fR);
+        String archivoBase=bufferR.readLine();
               Connection dbConnection = null;
+              String strUrl=archivoBase;
+              int local=2;
+              int remota=1;
+              //Integer leido=Integer.parseInt(strUrl);
  //String strUrl = "jdbc:derby://localhost:1527/respaldo;create=true";
               //\\Fincorp-pc\c\Gestion\DBG
-              //"jdbc:derby:\\\\Fincorp-pc\\c\\Gestion\\DBG\\gestion.db"
-              //"jdbc:derby:C:\\Gestion\\DBG\\gestion.db"
-               String strUrl = "jdbc:derby:C:\\Gestion\\DBG\\gestion.db";
+              //archivoBase.trim();
+              
+              /*
+              if(remota==leido)strUrl="jdbc:derby:\\\\Fincorp-pc\\c\\Gestion\\DBG\\gestion.db";
+              if(local==leido)strUrl="jdbc:derby:C:\\Gestion\\DBG\\gestion.db";
+              */
+              strUrl="jdbc:derby:C:\\Gestion\\DBG\\gestion.db";
+               //strUrl = archivoBase;
             try {
                 Class.forName(driver1).newInstance();
                 dbConnection = DriverManager.getConnection (strUrl);
