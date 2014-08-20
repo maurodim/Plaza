@@ -40,12 +40,31 @@ public class Inquilinos implements Generable,Listables,Componable{
    private Date fechaAlta;
    private Usuarios usuario;
    private ArrayList arrayDatos;
+   private String cuit;
+   private Integer condicionIva;
+   
 
     public Inquilinos() {
         //propiedad=new Propiedades();
         //garantes=new Garantes();
         //cuentaCorriente=new CuentaCorriente();
         
+    }
+
+    public String getCuit() {
+        return cuit;
+    }
+
+    public void setCuit(String cuit) {
+        this.cuit = cuit;
+    }
+
+    public Integer getCondicionIva() {
+        return condicionIva;
+    }
+
+    public void setCondicionIva(Integer condicionIva) {
+        this.condicionIva = condicionIva;
     }
 
    
@@ -175,9 +194,15 @@ public class Inquilinos implements Generable,Listables,Componable{
         Inquilinos inquilino=new Inquilinos();
         inquilino=(Inquilinos)objeto;
         Transaccionable tra=new ConeccionLocal();
-        String sql="update inquilinos set nombre='"+inquilino.getNombre()+"',dni='"+inquilino.getDni()+"',domicilio='"+inquilino.getDomicilioRef()+"',mail='"+inquilino.getMail()+"',observaciones='"+inquilino.getObservaciones()+"',propiedad="+inquilino.getPropiedad().getId()+",cuentacorriente="+inquilino.getId()+" where id="+inquilino.getId();
+        try{
+        String sql="update inquilinos set nombre='"+inquilino.getNombre()+"',dni='"+inquilino.getDni()+"',domicilio='"+inquilino.getDomicilioRef()+"',mail='"+inquilino.getMail()+"',telefono='"+inquilino.getTelefono()+"',observaciones='"+inquilino.getObservaciones()+"',propiedad="+inquilino.getPropiedad().getId()+" where id="+inquilino.getId();
         System.out.println(sql);
         tra.guardarRegistro(sql);
+        }catch(java.lang.NullPointerException ex){
+            String sql="update inquilinos set nombre='"+inquilino.getNombre()+"',dni='"+inquilino.getDni()+"',domicilio='"+inquilino.getDomicilioRef()+"',mail='"+inquilino.getMail()+"',telefono='"+inquilino.getTelefono()+"',observaciones='"+inquilino.getObservaciones()+"' where id="+inquilino.getId();
+        System.out.println(sql);
+        tra.guardarRegistro(sql);
+        }
     }
 
     @Override
@@ -200,6 +225,8 @@ public class Inquilinos implements Generable,Listables,Componable{
                inquilino.setMail(rs.getString("mail"));
                inquilino.setObservaciones(rs.getString("observaciones"));
                inquilino.setFechaAlta(rs.getDate("fechaalta"));
+               //inquilino.setCuit(rs.getString("cuit"));
+               //inquilino.setCondicionIva(rs.getInt("cIva"));
                if(rs.getInt("propiedad") > 0)inquilino.setPropiedad((Propiedades) propi.Cargar(rs.getInt("propiedad")));
                if(rs.getInt("garante") > 0)inquilino.setGarantes((Garantes) gar.Cargar(rs.getInt("garante")));
                if(rs.getInt("cuentacorriente") > 0)inquilino.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("cuentacorriente")));

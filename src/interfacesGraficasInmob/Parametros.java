@@ -99,7 +99,7 @@ public class Parametros extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setMaximizable(true);
-        setTitle("Paramtros Generales");
+        setTitle("Parametros Generales");
 
         jButton1.setText("Editar Comisiones");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -160,8 +160,6 @@ public class Parametros extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Porcentaje");
 
-        jTextField1.setText("jTextField1");
-
         jButton4.setText("Guardar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,8 +197,6 @@ public class Parametros extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Nombre");
 
-        jTextField2.setText("jTextField2");
-
         jButton6.setText("Guardar");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -237,8 +233,6 @@ public class Parametros extends javax.swing.JInternalFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Rubros"));
 
         jLabel3.setText("Descripcion :");
-
-        jTextField3.setText("jTextField3");
 
         jButton7.setText("Guardar");
         jButton7.addActionListener(new java.awt.event.ActionListener() {

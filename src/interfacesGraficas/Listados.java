@@ -9,6 +9,7 @@ package interfacesGraficas;
 import interfaces.Componable;
 import interfaces.Generable;
 import interfaces.Listables;
+import interfacesGraficasInmob.PropietariosMod;
 import objetos.Contratos;
 import objetos.Inquilinos;
 import objetos.Propiedades;
@@ -22,26 +23,37 @@ import tablas.MiModeloTablaListado;
 public class Listados extends javax.swing.JInternalFrame {
     private Listables lsProp;
     private Componable genP;
+    private int eleccion;
     /**
      * Creates new form Listados
      */
     public Listados(int objeto) {
         initComponents();
         CargarTabla(objeto);
+        eleccion=objeto;
     }
     private void CargarTabla(int objeto){
         switch(objeto){
             case 1:
                 genP=new Propietarios();
                 this.jTable1.setModel(genP.LlenarTabla(0));
+                this.jButton1.setText("Modificar Propietario");
+                this.jButton2.setText("Eliminar Propietario");
+                this.jButton3.setVisible(false);
                 break;
             case 2:
                 genP=new Propiedades();
                 this.jTable1.setModel(genP.LlenarTabla(0));
+                this.jButton1.setText("Modificar Propiedad");
+                this.jButton2.setText("Eliminar Propiedad");
+                this.jButton3.setVisible(false);
                 break;
             case 3:
                 genP=new Inquilinos();
                 this.jTable1.setModel(genP.LlenarTabla(0));
+                this.jButton1.setText("Modificar Inquilino");
+                this.jButton2.setText("Eliminar Inquilino");
+                this.jButton3.setVisible(false);
                 break;
             case 4:
                 genP=new Contratos();
@@ -89,8 +101,18 @@ public class Listados extends javax.swing.JInternalFrame {
         );
 
         jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("jButton2");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("jButton3");
 
@@ -141,6 +163,81 @@ public class Listados extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Generable gen;
+        int renglon=0;
+        int numero=0;
+        switch (eleccion){
+            case 1:
+                Propietarios propietario=new Propietarios();
+                gen=new Propietarios();
+                renglon=this.jTable1.getSelectedRow();
+                numero=(int) this.jTable1.getValueAt(renglon,0);
+                propietario=(Propietarios)gen.Cargar(numero);
+                PropietariosMod mod=new PropietariosMod(propietario.getId());
+                Inicio.jDesktopPane1.add(mod);
+                mod.setVisible(true);
+                mod.toFront();
+                break;
+            case 2:
+                Propiedades propiedad=new Propiedades();
+                gen=new Propiedades();
+                renglon=this.jTable1.getSelectedRow();
+                numero=(int) this.jTable1.getValueAt(renglon,0);
+                propiedad=(Propiedades)gen.Cargar(numero);
+                PropiedadesMod pM=new PropiedadesMod(propiedad);
+                Inicio.jDesktopPane1.add(pM);
+                pM.setVisible(true);
+                pM.toFront();
+                break;
+            case 3:
+                Inquilinos inquilino=new Inquilinos();
+                gen=new Inquilinos();
+                renglon=this.jTable1.getSelectedRow();
+                numero=(int) this.jTable1.getValueAt(renglon,0);
+                inquilino=(Inquilinos)gen.Cargar(numero);
+                ProveedoresAbm prov=new ProveedoresAbm(inquilino);
+                Inicio.jDesktopPane1.add(prov);
+                prov.setVisible(true);
+                prov.toFront();
+                break;
+            default:
+                
+                break;
+              
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Generable gen;
+        int renglon=0;
+        int numero=0;
+        switch (eleccion){
+            case 1:
+                //Propietarios propietario=new Propietarios();
+                gen=new Propietarios();
+                renglon=this.jTable1.getSelectedRow();
+                numero=(int) this.jTable1.getValueAt(renglon,0);
+                gen.Baja(numero);
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                //Inquilinos inquilino=new Inquilinos();
+                gen=new Inquilinos();
+                renglon=this.jTable1.getSelectedRow();
+                numero=(int) this.jTable1.getValueAt(renglon,0);
+                gen.Baja(numero);
+                break;
+            default:
+                
+                break;
+              
+        }
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

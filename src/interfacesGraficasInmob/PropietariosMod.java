@@ -30,6 +30,7 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
     private Generable gen;
     private ArrayList propList;
     private Listables ls;
+    private int accion;
     /**
      * Creates new form PropietariosMod
      */
@@ -41,6 +42,7 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
         this.jPanel2.setVisible(false);
     }
     public PropietariosMod(Integer id) {
+        accion=1;
         gen=new Propietarios();
         propietario=new Propietarios();
         propietario=(Propietarios)gen.Cargar(id);
@@ -317,10 +319,18 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
         propietario.setMail(this.jTextField5.getText());
         propietario.setObservaciones(this.jTextField6.getText());
         propietario.setUsuario((Usuarios)Inicio.usuario);
+        if(accion==1){
+         gen.Modificacion(propietario);
+        }else{
         gen.Alta(propietario);
+        }
+        try{
         System.out.println("id propietario :"+propietario.getId());
         propiedad.setPropietario(propietario);
         geni.Modificacion(propiedad);
+        }catch(java.lang.NullPointerException ex){
+            System.err.println("NO SE ASIGNO PROPIEDAD");
+        }
         LimpiarPanel1();
         
     }//GEN-LAST:event_jButton2ActionPerformed

@@ -187,7 +187,7 @@ public class Propietarios implements Generable,Componable{
         Propietarios propietario=new Propietarios();
         propietario=(Propietarios)objeto;
         Transaccionable tra=new ConeccionLocal();
-        String sql="update proveedores set nombre='"+propietario.getNombre()+"',domicilio='"+propietario.getDomicilio()+"',localidad='"+propietario.getLocalidad()+"',telefono='"+propietario.getTelefono()+"',mail='"+propietario.getMail()+"',observaciones='"+propietario.getObservaciones()+"',saldo="+propietario.getSaldo()+",idpropiedad="+propietario.getPropiedad().getId()+" where numero="+propietario.getId();        
+        String sql="update proveedores set nombre='"+propietario.getNombre()+"',domicilio='"+propietario.getDomicilio()+"',localidad='"+propietario.getLocalidad()+"',telefono='"+propietario.getTelefono()+"',mail='"+propietario.getMail()+"',observaciones='"+propietario.getObservaciones()+"',saldo="+propietario.getSaldo()+" where numero="+propietario.getId();        
         tra.guardarRegistro(sql);
     }
 
