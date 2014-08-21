@@ -55,7 +55,7 @@ public class ConeccionLocal implements Transaccionable{
               if(remota==leido)strUrl="jdbc:derby:\\\\Fincorp-pc\\c\\Gestion\\DBG\\gestion.db";
               if(local==leido)strUrl="jdbc:derby:C:\\Gestion\\DBG\\gestion.db";
               */
-              String strUrl="jdbc:derby:C:\\Gestion\\DBG\\gestion.db";
+              String strUrl="jdbc:derby:\\\\Fincorp-pc\\c\\Gestion\\DBG\\gestion.db";
                //strUrl = archivoBase;
             try {
                 Class.forName(driver1).newInstance();

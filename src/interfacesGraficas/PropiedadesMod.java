@@ -7,10 +7,13 @@
 package interfacesGraficas;
 
 import interfaces.Generable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import objetos.Localidad;
 import objetos.Propiedades;
+import objetos.Propietarios;
 import objetos.Rubro;
 import objetos.Usuarios;
 
@@ -21,12 +24,14 @@ import objetos.Usuarios;
 public class PropiedadesMod extends javax.swing.JInternalFrame {
     Propiedades propiedad;
     Generable geni;
+    Propietarios propietario;
     /**
      * Creates new form PropiedadesMod
      */
     public PropiedadesMod(Propiedades prop) {
         initComponents();
         propiedad=(Propiedades)prop;
+        this.jTextField7.setText(propiedad.getDireccion());
         Localidad loc=new Localidad();
         Rubro rub=new Rubro();
         Generable lG=new Localidad();
@@ -42,6 +47,7 @@ public class PropiedadesMod extends javax.swing.JInternalFrame {
             ((DefaultListModel)this.jList3.getModel()).addElement(rub.getDescripcion());
         }
         this.jTextField7.requestFocus();
+        this.jButton1.setVisible(false);
     }
 
     /**
@@ -63,6 +69,7 @@ public class PropiedadesMod extends javax.swing.JInternalFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jList3 = new javax.swing.JList();
         jButton4 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setClosable(true);
         setMaximizable(true);
@@ -106,7 +113,7 @@ public class PropiedadesMod extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 51, Short.MAX_VALUE)))
+                        .addGap(0, 108, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -126,23 +133,36 @@ public class PropiedadesMod extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton4)
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addContainerGap(132, Short.MAX_VALUE))
         );
+
+        jButton1.setText("Propietario");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 436, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addComponent(jButton1)
+                .addContainerGap(300, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(38, 38, 38)
+                    .addContainerGap()
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(39, 39, 39)))
+                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 457, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(207, 207, 207)
+                .addComponent(jButton1)
+                .addContainerGap(239, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -154,7 +174,8 @@ public class PropiedadesMod extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        propiedad=new Propiedades();
+        //propiedad=new Propiedades();
+        geni=new Propiedades();
         propiedad.setUsuario((Usuarios)Inicio.usuario);
         propiedad.setLocalidad(String.valueOf(this.jList2.getSelectedValue()));
         Generable rub=new Rubro();
@@ -172,12 +193,29 @@ public class PropiedadesMod extends javax.swing.JInternalFrame {
         LimpiarPanel2();
         this.jPanel2.setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        propietario=new Propietarios();
+        Propietarios temporal=new Propietarios();
+        ArrayList listadoPp=new ArrayList();
+        String[] combL = null;
+        Generable gg=new Propietarios();
+        listadoPp=gg.Listar();
+        Iterator it=listadoPp.listIterator();
+        while(it.hasNext()){
+            temporal=(Propietarios)it.next();
+            combL=new String[]{temporal.getNombre()};
+        }
+        String posicion=(String) JOptionPane.showInputDialog(this,"Seleccione propietario","Seleccion de propietario",JOptionPane.QUESTION_MESSAGE,null,combL,combL[0]);
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 private void LimpiarPanel2(){
     this.jTextField7.setText("");
     this.jTextField7.requestFocus();
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel8;

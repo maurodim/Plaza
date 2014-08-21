@@ -58,6 +58,9 @@ public class Listados extends javax.swing.JInternalFrame {
             case 4:
                 genP=new Contratos();
                 this.jTable1.setModel(genP.LlenarTabla(0));
+                this.jButton1.setText("Modificar Contrato");
+                this.jButton2.setText("Eliminar Contrato");
+                this.jButton3.setVisible(false);
                 break;
                 
         }
@@ -222,11 +225,20 @@ public class Listados extends javax.swing.JInternalFrame {
                 gen.Baja(numero);
                 break;
             case 2:
-                
+                gen=new Propiedades();
+                renglon=this.jTable1.getSelectedRow();
+                numero=(int) this.jTable1.getValueAt(renglon,0);
+                gen.Baja(numero);
                 break;
             case 3:
                 //Inquilinos inquilino=new Inquilinos();
                 gen=new Inquilinos();
+                renglon=this.jTable1.getSelectedRow();
+                numero=(int) this.jTable1.getValueAt(renglon,0);
+                gen.Baja(numero);
+                break;
+            case 4:
+                gen=new Contratos();
                 renglon=this.jTable1.getSelectedRow();
                 numero=(int) this.jTable1.getValueAt(renglon,0);
                 gen.Baja(numero);
