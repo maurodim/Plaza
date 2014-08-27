@@ -262,7 +262,25 @@ public class Propietarios implements Generable,Componable{
 
     @Override
     public DefaultListModel LlenarList(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        DefaultListModel modelo=new DefaultListModel();
+        Transaccionable tra=new ConeccionLocal();
+         Generable prop=new Propiedades();
+        Personalizable per=new Usuarios();
+        
+        String sql="select * from proveedores order by nombre";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                
+                modelo.addElement(rs.getString("nombre"));
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Propietarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return modelo;
     }
 
     @Override
@@ -300,6 +318,11 @@ public class Propietarios implements Generable,Componable{
 
     @Override
     public ComboBoxModel LlenarCombo(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultListModel LlenarListConArray(ArrayList listado) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

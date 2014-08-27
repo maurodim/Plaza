@@ -64,7 +64,7 @@ public class Mail {
     
     private void init(){
         propiedades.put("mail.smtp.host",serv.getHost());
-        propiedades.put("mail.smtp.starttls.enable","false");//serv.isStats());
+        propiedades.put("mail.smtp.starttls.enable","true");//serv.isStats());
         propiedades.put("mail.transport.protocol","smtp");
         propiedades.put("mail.smtp.port",serv.getPuerto());
         propiedades.put("mail.smtp.mail.sender",serv.getUsuario());

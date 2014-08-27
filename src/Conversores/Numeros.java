@@ -84,4 +84,11 @@ public class Numeros {
         //seleccion=new SimpleDateFormat(seleccion1).format(mes);
         return seleccion;
     }
+    public static Calendar ConvertirStringEnCalendar(String fecha){
+        Calendar calendar=Calendar.getInstance();
+        
+        
+        
+        return calendar;
+    }
 }

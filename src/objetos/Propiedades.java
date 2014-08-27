@@ -385,6 +385,11 @@ public class Propiedades implements Generable,Listables,Componable{
         
         return listado;
     }
+
+    @Override
+    public DefaultListModel LlenarListConArray(ArrayList listado) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }

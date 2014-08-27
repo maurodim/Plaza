@@ -26,7 +26,8 @@ import objetos.Usuarios;
 public class PropiedadesMod extends javax.swing.JInternalFrame {
     Propiedades propiedad;
     Generable geni;
-    Propietarios propietario;
+    public static Propietarios propietario;
+    public static Generable gen;
     /**
      * Creates new form PropiedadesMod
      */
@@ -39,15 +40,20 @@ public class PropiedadesMod extends javax.swing.JInternalFrame {
         Generable lG=new Localidad();
         Generable lR=new Rubro();
         Iterator ir=lG.Listar().listIterator();
+        int locPos=0;
+        int sel=0;
         while(ir.hasNext()){
             loc=(Localidad)ir.next();
             ((DefaultListModel)this.jList2.getModel()).addElement(loc.getDescripcion());
+            locPos++;
+            if(propiedad.getLocalidad().equals(loc.getDescripcion()))this.jList2.setSelectedIndex(locPos);
         }
         Iterator iG=lR.Listar().listIterator();
         while(iG.hasNext()){
             rub=(Rubro)iG.next();
             ((DefaultListModel)this.jList3.getModel()).addElement(rub.getDescripcion());
         }
+        this.jList3.setSelectedIndex(propiedad.getRubro().getId());
         this.jTextField7.requestFocus();
         this.jButton1.setVisible(false);
     }
@@ -197,6 +203,7 @@ public class PropiedadesMod extends javax.swing.JInternalFrame {
         System.out.println("LA POSICION ELEGIDA ES "+pos);
         propiedad.setRubro((Rubro)rub.Cargar(pos));
         propiedad.setDireccion(this.jTextField7.getText());
+        propiedad.setPropietario(propietario);
         //geni.Alta(propiedad);
         geni.Modificacion(propiedad);
         //numeroPropiedad=propiedad.getId();
@@ -224,22 +231,32 @@ public class PropiedadesMod extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        PropietariosL prop=new PropietariosL();
         
-       
-        DefaultTableModel modelo=new DefaultTableModel();
+        
+       ArrayList listado=new ArrayList();
+        DefaultListModel modelo=new DefaultListModel();
         Componable comp=new Propietarios();
-        modelo=comp.LlenarTabla(1);
-        prop.jTable1.setModel(modelo);
+        gen=new Propietarios();
+        Propietarios propietarios=new Propietarios();
+        listado=gen.Listar();
+        Iterator it=listado.listIterator();
+        while(it.hasNext()){
+            propietarios=(Propietarios)it.next();
+            modelo.addElement(propietarios.getNombre());
+        }
+//modelo=comp.LlenarList(1);
+        PropietariosL prop=new PropietariosL();
+        PropietariosL.jList1.setModel(modelo);
          prop.setVisible(true);
-         prop.jTable1.requestFocus();
-        Propietarios propietario=new Propietarios();
-                Generable gen=new Propietarios();
-                int renglon=prop.jTable1.getSelectedRow();
+         PropietariosL.jList1.requestFocus();
+        //Propietarios propietario=new Propietarios();
+                //Generable gen=new Propietarios();
+                int renglon=PropietariosL.jList1.getSelectedIndex();
                 System.out.println("renglon "+renglon);
-                int numero=(int) prop.jTable1.getValueAt(renglon,0);
-                propietario=(Propietarios)gen.Cargar(numero);
-        System.out.println("PROPIETARIO "+propietario.getNombre());
+                int numero=renglon;
+                propietarios=(Propietarios)listado.get(renglon);
+        System.out.println("PROPIETARIO "+propietarios.getNombre());
+        propietario=propietarios;
     }//GEN-LAST:event_jButton2ActionPerformed
 private void LimpiarPanel2(){
     this.jTextField7.setText("");

@@ -236,7 +236,11 @@ public class Contratos implements Generable,Componable{
                 contrato.setInquilino((Inquilinos)inqui.Cargar(rs.getInt("idinquilino")));
                 contrato.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
                 contrato.setPropietario((Propietarios)propi.Cargar(rs.getInt("idpropietario")));
+                try{
                 contrato.setGarante((Garantes)gar.Cargar(rs.getInt("idgarante")));
+                }catch(java.lang.UnsupportedOperationException ex){
+                    System.err.println(ex);
+                }
                 contrato.setArchivo(rs.getString("archivo"));
                 contrato.setUsuario((Usuarios)usu.buscarPorNumero(rs.getInt("idusuario")));
                 //listado.add(contrato);
@@ -294,6 +298,11 @@ public class Contratos implements Generable,Componable{
 
     @Override
     public ComboBoxModel LlenarCombo(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultListModel LlenarListConArray(ArrayList listado) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

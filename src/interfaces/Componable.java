@@ -6,6 +6,7 @@
 
 package interfaces;
 
+import java.util.ArrayList;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
@@ -18,5 +19,6 @@ public interface Componable {
    public DefaultListModel LlenarList(Integer id);
    public DefaultTableModel LlenarTabla(Integer id);
    public ComboBoxModel LlenarCombo(Integer id);
+   public DefaultListModel LlenarListConArray(ArrayList listado);
    
 }

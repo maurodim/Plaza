@@ -9,9 +9,12 @@ import interfaces.Editables;
 import interfaces.Generable;
 import interfaces.Listables;
 import java.awt.event.KeyEvent;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import javax.swing.JTextField;
 import objetos.Articulos;
@@ -34,10 +37,45 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
     private Inquilinos inquilino=new Inquilinos();
     
 
-    public ArticulosMod(Contratos art) {
+    public ArticulosMod(Contratos art) throws ParseException {
         arti=art;
+        inquilino=new Inquilinos();
+        Propiedades propiedade=new Propiedades();
+        Calendar calendar=new GregorianCalendar();
+        SimpleDateFormat ff=new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println(arti.getVencimiento2());
+        Date fecha1=ff.parse(arti.getVencimiento2());
+        //calendar.setTime(arti.getVencimiento2());
         initComponents();
         this.setTitle("MODIFICACION DE CONTRATO");
+        calendar.setTime(fecha1);
+        System.out.println(fecha1);
+        this.dateChooserCombo1.setSelectedDate(calendar);
+        fecha1=ff.parse(arti.getVencimiento1());
+        calendar.setTime(fecha1);
+        this.dateChooserCombo2.setSelectedDate(calendar);
+        this.jTextField7.setText(String.valueOf(arti.getMonto1()));
+        this.jTextField1.setText(String.valueOf(arti.getMonto2()));
+        Listables inq=new Inquilinos();
+        Listables prop=new Propiedades();
+        listadoInq=inq.listarPorEstado(0);
+        listadoProp=prop.listarPorEstado(0);
+        Iterator iInq=listadoInq.listIterator();
+        Iterator iProp=listadoProp.listIterator();
+        while(iInq.hasNext()){
+            inquilino=(Inquilinos)iInq.next();
+            this.jComboBox1.addItem(inquilino.getNombre());
+        }
+        while(iProp.hasNext()){
+            propiedade=(Propiedades)iProp.next();
+            this.jComboBox2.addItem(propiedade.getDireccion());
+        }
+        //this.jComboBox1.setSelectedItem(arti.getInquilino().getNombre());
+        //this.jComboBox2.setSelectedItem(arti.getPropiedad().getDireccion());
+        this.jTextField2.setText(arti.getPropiedad().getPropietario().getNombre());
+        this.jTextField7.selectAll();
+        this.jTextField7.requestFocus();
+        
         /*
         this.jTextField1.setText(arti.getDescripcionArticulo());
         this.jTextField2.setText(String.valueOf(arti.getStockActual()));
@@ -117,6 +155,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Fecha Modificacion Valores");
 
+        jTextField1.setText("0");
+
         jLabel5.setText("Monto 1 er año");
 
         jButton1.setText("Guardar");
@@ -127,6 +167,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         });
 
         jLabel7.setText("Fecha Vencimiento :");
+
+        jTextField7.setText("0");
 
         dateChooserCombo1.setFormat(2);
 

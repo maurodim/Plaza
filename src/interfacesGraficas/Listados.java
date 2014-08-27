@@ -10,6 +10,9 @@ import interfaces.Componable;
 import interfaces.Generable;
 import interfaces.Listables;
 import interfacesGraficasInmob.PropietariosMod;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import objetos.Contratos;
 import objetos.Inquilinos;
 import objetos.Propiedades;
@@ -204,6 +207,21 @@ public class Listados extends javax.swing.JInternalFrame {
                 Inicio.jDesktopPane1.add(prov);
                 prov.setVisible(true);
                 prov.toFront();
+                break;
+            case 4:
+                Contratos contrato=new Contratos();
+                gen=new Contratos();
+                renglon=this.jTable1.getSelectedRow();
+                numero=(int) this.jTable1.getValueAt(renglon,0);
+                contrato=(Contratos) gen.Cargar(numero);
+        try {
+            ArticulosMod articu=new ArticulosMod(contrato);
+            Inicio.jDesktopPane1.add(articu);
+            articu.setVisible(true);
+            articu.toFront();
+        } catch (ParseException ex) {
+            Logger.getLogger(Listados.class.getName()).log(Level.SEVERE, null, ex);
+        }
                 break;
             default:
                 
