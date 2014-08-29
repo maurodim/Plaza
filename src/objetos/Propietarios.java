@@ -40,6 +40,25 @@ public class Propietarios implements Generable,Componable{
     private Double saldo;
     private String localidad;
     private ArrayList propiedadesP;
+    private String cuit;
+    private String condIva;
+
+    public String getCuit() {
+        return cuit;
+    }
+
+    public void setCuit(String cuit) {
+        this.cuit = cuit;
+    }
+
+    public String getCondIva() {
+        return condIva;
+    }
+
+    public void setCondIva(String condIva) {
+        this.condIva = condIva;
+    }
+    
 
     public ArrayList getPropiedadesP() {
         return propiedadesP;
@@ -157,7 +176,7 @@ public class Propietarios implements Generable,Componable{
         Propietarios propietario=new Propietarios();
         propietario=(Propietarios)objeto;
         Transaccionable tra=new ConeccionLocal();
-        String sql="insert into proveedores (nombre,domicilio,localidad,telefono,mail,idusuario,observaciones) values ('"+propietario.getNombre()+"','"+propietario.getDomicilio()+"','"+propietario.getLocalidad()+"','"+propietario.getTelefono()+"','"+propietario.getMail()+"',"+propietario.getUsuario().getNumeroId()+",'"+propietario.getObservaciones()+"')";
+        String sql="insert into proveedores (nombre,domicilio,localidad,telefono,mail,idusuario,observaciones,cuit,iva) values ('"+propietario.getNombre()+"','"+propietario.getDomicilio()+"','"+propietario.getLocalidad()+"','"+propietario.getTelefono()+"','"+propietario.getMail()+"',"+propietario.getUsuario().getNumeroId()+",'"+propietario.getObservaciones()+"','"+propietario.getCuit()+"','"+propietario.getCondIva()+"')";
         System.out.println(sql);
         tra.guardarRegistro(sql);
         sql="select numero from proveedores ";
@@ -187,7 +206,7 @@ public class Propietarios implements Generable,Componable{
         Propietarios propietario=new Propietarios();
         propietario=(Propietarios)objeto;
         Transaccionable tra=new ConeccionLocal();
-        String sql="update proveedores set nombre='"+propietario.getNombre()+"',domicilio='"+propietario.getDomicilio()+"',localidad='"+propietario.getLocalidad()+"',telefono='"+propietario.getTelefono()+"',mail='"+propietario.getMail()+"',observaciones='"+propietario.getObservaciones()+"',saldo="+propietario.getSaldo()+" where numero="+propietario.getId();        
+        String sql="update proveedores set nombre='"+propietario.getNombre()+"',cuit='"+propietario.getCuit()+"',domicilio='"+propietario.getDomicilio()+"',localidad='"+propietario.getLocalidad()+"',telefono='"+propietario.getTelefono()+"',mail='"+propietario.getMail()+"',observaciones='"+propietario.getObservaciones()+"',saldo="+propietario.getSaldo()+" where numero="+propietario.getId();        
         tra.guardarRegistro(sql);
     }
 
@@ -213,6 +232,8 @@ public class Propietarios implements Generable,Componable{
                 propietario.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
                 propietario.setFechaAlta(rs.getDate("fechaalta"));
                 propietario.setObservaciones(rs.getString("observaciones"));
+                propietario.setCuit(rs.getString("cuit"));
+                propietario.setCondIva(rs.getString("iva"));
                 listado.add(propietario);
             }
             rs.close();
@@ -247,6 +268,8 @@ public class Propietarios implements Generable,Componable{
                 propietario.setFechaAlta(rs.getDate("fechaalta"));
                 propietario.setObservaciones(rs.getString("observaciones"));
                 //listado.add(propietario);
+                propietario.setCuit(rs.getString("cuit"));
+                propietario.setCondIva(rs.getString("iva"));
             }
             rs.close();
             try{
