@@ -217,7 +217,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables{
         Generable prop=new Propiedades();
         Personalizable per=new Usuarios();
         Resumenes resumen=new Resumenes();
-        String sql="select * from resumenes where estado=0 order by id";
+        String sql="select * from resumenes where id="+id;
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
