@@ -1,8 +1,11 @@
 2014-09-20 Agregar campo dni a propietario
-2014-09-22 Agregar en la base encabezado de resumenes, para que ahi se vaya llevando el saldo, la numeración del resumen
+2014-09-22 Agregar en la base encabezado de resumenes, para que ahi se vaya llevando el saldo,
+ la numeración del resumen
 , el estado y para relación en cuanto a la cuenta dle inquilino, propiedad o contrato.
-Además de ahi debe leer la fecha de vencimiento, así se sabe si esta al día o vencido el período.
-El monto fijo de alquiler pasaría a ser un monto fijo dle detalle del resumen, para que salga impreso y se agregue.
+Además de ahi debe leer la fecha de vencimiento, así se sabe si esta al día o vencido el
+ período.
+El monto fijo de alquiler pasaría a ser un monto fijo dle detalle del resumen, para que
+ salga impreso y se agregue.
 estructura
 
 nombre:resumenid
@@ -15,15 +18,25 @@ campos:
 +estado  --- 0 predeterminado (adeudado) - 1 pagado
 +monto
 +idusuario
-+estadoPropietario - 0 predeterminado (aun no se rindio) - 1 pagado
++estadopropietario: 0 default (en proceso) - 1 emitido(no pagado) - 2 pagado
 +saldo 
 
 ---- Se debe agregar campo idresumen a la tabla resumen-------
 
+se puede reemplazar por la tabla cuenta, pero hay qu agregarle idresumen y la tabla resumen es la que maneja el monto total
+
+resumenes:
+estado: 0 default (en proceso) - 1 emitido(no pagado) - 2 pagado
+
 CALCULO DE INTERESES
-CADA VEZ QUE HAYA UN MOVIMIENTO DE PAGO DEBO AJUSTAR EL SALDO EN LA TABLA RESUMENID
-PARA EL CALCULO DE INTERES DEBO VER CALCULAR ESE SALDO + LOS INTERES Y ESO SUMARLO AL SALDO DEL RESUMEN
+CADA VEZ QUE HAYA UN MOVIMIENTO DE PAGO DEBO AJUSTAR EL SALDO EN LA TABLA
+ RESUMENID
+PARA EL CALCULO DE INTERES DEBO VER CALCULAR ESE SALDO + LOS INTERES Y ESO
+ SUMARLO AL SALDO DEL RESUMEN
 -- DEBERIA HACER UNA CLASE INTERESES CON SU INTERFAZ--
+lee el porcentaje de recargo de la tabla coeficientelistas
+
+
 
 
 

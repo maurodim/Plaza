@@ -29,6 +29,16 @@ public class Cuentas implements Generable{
     private Integer estado;
     private Usuarios usuario;
     private Double monto;
+    private Integer idResumen;
+
+    public Integer getIdResumen() {
+        return idResumen;
+    }
+
+    public void setIdResumen(Integer idResumen) {
+        this.idResumen = idResumen;
+    }
+    
 
     public Double getMonto() {
         return monto;
@@ -100,7 +110,7 @@ public class Cuentas implements Generable{
         Cuentas cuenta=new Cuentas();
         cuenta=(Cuentas)objeto;
         Transaccionable tra=new ConeccionLocal();
-        String sql="insert into cuentas (descripcion,monto,idedificio,idpropiedad,estado,idusuario) values ('"+cuenta.getDescripcion()+"',"+cuenta.getMonto()+","+cuenta.getEdificio().getId()+","+cuenta.getPropiedad().getId()+","+cuenta.getEstado()+","+cuenta.getUsuario().getNumeroId()+")";
+        String sql="insert into cuentas (descripcion,monto,idedificio,idpropiedad,estado,idusuario,idresumen) values ('"+cuenta.getDescripcion()+"',"+cuenta.getMonto()+","+cuenta.getEdificio().getId()+","+cuenta.getPropiedad().getId()+","+cuenta.getEstado()+","+cuenta.getUsuario().getNumeroId()+","+cuenta.getIdResumen()+")";
         tra.guardarRegistro(sql);
         sql="select * from cuentas";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);

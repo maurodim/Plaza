@@ -81,7 +81,8 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         jLabel1.setText("Seleccionar Propiedad");
 
         Generable gen=new Propiedades();
-        Iterator iP=gen.Listar().listIterator();
+        listadoPro=gen.Listar();
+        Iterator iP=listadoPro.listIterator();
         while(iP.hasNext()){
             propiedad=(Propiedades)iP.next();
             this.jComboBox1.addItem(propiedad.getDireccion());
@@ -322,7 +323,15 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
             resumen.setIdConcepto(cuenta.getId());
         }
         resumen.setDescripcion(cuenta.getDescripcion());
-        res.Alta(resumen);
+        if(propiedad.getIdResumen() == 0){
+            res.Alta(resumen);
+        }else{
+            resumen.setId(propiedad.getIdResumen());
+        }
+        System.out.println(" id resumen "+resumen.getId());
+        cuenta.setIdResumen(resumen.getId());
+        
+        gen.Alta(cuenta);
         this.jTable2.removeAll();
         Componable comp=new Resumenes();
         this.jTable2.setModel(comp.LlenarTabla(propiedad.getId()));
@@ -334,9 +343,11 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         Generable pro=new Propiedades();
         Componable co=new Resumenes();
         int posicion=this.jComboBox1.getSelectedIndex();
-        posicion++;
-        propiedad=(Propiedades)pro.Cargar(posicion);
+        //posicion++;
+        propiedad=(Propiedades)listadoPro.get(posicion);
         this.jTable2.setModel(co.LlenarTabla(propiedad.getId()));
+        propiedad.setIdResumen((Integer) this.jTable2.getValueAt(0,3));
+        System.out.println("id resumen en tabla "+propiedad.getIdResumen());
         
     }//GEN-LAST:event_jComboBox1ActionPerformed
 

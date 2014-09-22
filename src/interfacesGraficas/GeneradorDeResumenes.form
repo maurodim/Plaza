@@ -114,7 +114,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBox1ActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="Generable gen=new Propiedades();&#xa;Iterator iP=gen.Listar().listIterator();&#xa;while(iP.hasNext()){&#xa;    propiedad=(Propiedades)iP.next();&#xa;this.jComboBox1.addItem(propiedad.getDireccion());&#xa;}"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="Generable gen=new Propiedades();&#xa;listadoPro=gen.Listar();&#xa;Iterator iP=listadoPro.listIterator();&#xa;while(iP.hasNext()){&#xa;    propiedad=(Propiedades)iP.next();&#xa;this.jComboBox1.addItem(propiedad.getDireccion());&#xa;}"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="jButton4">

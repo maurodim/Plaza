@@ -147,6 +147,20 @@ public class Resumenes implements Generable,Componable,Emitible{
         resumen=(Resumenes)objeto;
         String sql="insert into resumenes (idpropiedad,idgasto,montototal,idusuario,estado,idconcepto,descripcion) values ("+resumen.getPropiedad().getId()+","+resumen.getIdGasto()+","+resumen.getMontoTotal()+","+resumen.getUsuario().getNumeroId()+","+resumen.getEstado()+","+resumen.getIdConcepto()+",'"+resumen.getDescripcion()+"')";
         tra.guardarRegistro(sql);
+        sql="select id from resumenes order by id";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        Integer ultimoResumen=0;
+        try {
+            while(rs.next()){
+                ultimoResumen=rs.getInt("id");
+            }
+            rs.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Resumenes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        resumen.setId(ultimoResumen);
+        objeto=resumen;
     }
 
     @Override
@@ -202,7 +216,7 @@ public class Resumenes implements Generable,Componable,Emitible{
         Generable prop=new Propiedades();
         Personalizable per=new Usuarios();
         Resumenes resumen=new Resumenes();
-        String sql="select * from resumenes order by id";
+        String sql="select * from resumenes where estado=0 order by id";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
@@ -237,20 +251,21 @@ public class Resumenes implements Generable,Componable,Emitible{
         mod.addColumn("FECHA");
         mod.addColumn("DESCRIPCION");
         mod.addColumn("MONTO");
-        mod.addColumn("USUARIO");
+        mod.addColumn("Num RESUMEN");
         Object[] fila=new Object[4];
         Transaccionable tra=new ConeccionLocal();
         
         Generable prop=new Propiedades();
         Personalizable per=new Usuarios();
         String sql="select * from resumenes where estado=0 and idpropiedad="+id+" order by id";
+        System.out.println(sql);
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
                 fila[0]=rs.getDate("fecha");
                 fila[1]=rs.getString("descripcion");
                 fila[2]=rs.getDouble("montototal");
-                fila[3]="ADMINISTRADOR";
+                fila[3]=rs.getInt("id");
                 mod.addRow(fila);
                 
                 /*

@@ -36,6 +36,25 @@ public class Propiedades implements Generable,Listables,Componable{
     private CuentaCorriente cuentaCorriente;
     private Usuarios usuario;
     private Date fecha;
+    private Integer idResumen;
+    private Integer estadoResumen;
+
+    public Integer getIdResumen() {
+        return idResumen;
+    }
+
+    public void setIdResumen(Integer idResumen) {
+        this.idResumen = idResumen;
+    }
+
+    public Integer getEstadoResumen() {
+        return estadoResumen;
+    }
+
+    public void setEstadoResumen(Integer estadoResumen) {
+        this.estadoResumen = estadoResumen;
+    }
+    
 
     public Date getFecha() {
         return fecha;
@@ -203,6 +222,7 @@ public class Propiedades implements Generable,Listables,Componable{
         Transaccionable tra=new ConeccionLocal();
         Propiedades propiedad=new Propiedades();
         String sql="select * from propiedades where id="+id;
+        System.out.println(sql);
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
@@ -216,6 +236,8 @@ public class Propiedades implements Generable,Listables,Componable{
                 propiedad.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("idcuentascorriente")));
                 propiedad.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
                 propiedad.setFecha(rs.getDate("fecha"));
+                //propiedad.setIdResumen(rs.getInt("idresumen"));
+                //propiedad.setEstadoResumen(0);
                 //listado.add(propiedad);
             }
             rs.close();
@@ -326,6 +348,7 @@ public class Propiedades implements Generable,Listables,Componable{
         modelo.addColumn("num contrato");
         Object[] fila=new Object[5];
         String sql="select id,direccion,localidad,idcontrato,(select rubro.descripcion from rubro where rubro.id=propiedades.rubro)as idrubro from propiedades order by direccion";
+        System.out.println(sql);
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
