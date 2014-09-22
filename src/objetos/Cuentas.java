@@ -7,6 +7,7 @@
 package objetos;
 
 import interfaces.Generable;
+import interfaces.Listables;
 import interfaces.Personalizable;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author Usuario
  */
-public class Cuentas implements Generable{
+public class Cuentas implements Generable,Listables{
     private Integer id;
     private String descripcion;
     private Edificio edificio;
@@ -203,6 +204,62 @@ public class Cuentas implements Generable{
         
         
         return cuentas;
+    }
+
+    @Override
+    public ArrayList listarPorId(Integer id) {
+        ArrayList listado=new ArrayList();
+        Transaccionable tra=new ConeccionLocal();
+        Generable edif=new Edificio();
+        Generable prop=new Propiedades();
+        Personalizable per=new Usuarios();
+        String sql="select * from cuentas where idresumen="+id;
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                Cuentas cuentas=new Cuentas();
+                cuentas.setId(rs.getInt("id"));
+                cuentas.setDescripcion(rs.getString("descripcion"));
+                cuentas.setMonto(rs.getDouble("monto"));
+                if(rs.getInt("idedificio") > 0)cuentas.setEdificio((Edificio)edif.Cargar(rs.getInt("idedificio")));
+                cuentas.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
+                cuentas.setFechaalta(rs.getDate("fechaalta"));
+                cuentas.setEstado(rs.getInt("estado"));
+                cuentas.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                listado.add(cuentas);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Cuentas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return listado;
+    }
+
+    @Override
+    public ArrayList listarPoNombre(String parame) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorOrdenDeId() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorOrdenAlfabetico() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorEstado(Integer esta) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorPropietario(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

@@ -9,6 +9,7 @@ package objetos;
 import interfaces.Componable;
 import interfaces.Emitible;
 import interfaces.Generable;
+import interfaces.Listables;
 import interfaces.Personalizable;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
@@ -26,7 +27,7 @@ import tablas.MiModeloTablaCargaHdr;
  *
  * @author Usuario
  */
-public class Resumenes implements Generable,Componable,Emitible{
+public class Resumenes implements Generable,Componable,Emitible,Listables{
     private Integer id;
     private Propiedades propiedad;
     private ArrayList gastos;
@@ -233,6 +234,8 @@ public class Resumenes implements Generable,Componable,Emitible{
                 
             }
             rs.close();
+            Listables ls=new Cuentas();
+            resumen.setGastos(ls.listarPorId(resumen.getId()));
         } catch (SQLException ex) {
             Logger.getLogger(Resumenes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -348,6 +351,36 @@ public class Resumenes implements Generable,Componable,Emitible{
         
         
         return mod;
+    }
+
+    @Override
+    public ArrayList listarPorId(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPoNombre(String parame) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorOrdenDeId() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorOrdenAlfabetico() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorEstado(Integer esta) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorPropietario(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     
