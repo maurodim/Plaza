@@ -14,12 +14,10 @@ public class MiModeloTablaCargaHdr extends DefaultTableModel{
     @Override
       public Class getColumnClass(int colum){
         
-          if(colum==4) {
+          if(colum==0) {
               return Boolean.class;
           }
-          if(colum==6) {
-              return Boolean.class;
-          }
+          
         return String.class;
       }
       }

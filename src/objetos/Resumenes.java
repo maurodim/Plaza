@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
+import tablas.MiModeloTablaCargaHdr;
 
 /**
  *
@@ -288,7 +289,7 @@ public class Resumenes implements Generable,Componable,Emitible{
 
     @Override
     public DefaultTableModel LlenarTablaParaSeleccionar() {
-        DefaultTableModel mod=new DefaultTableModel();
+        MiModeloTablaCargaHdr mod=new MiModeloTablaCargaHdr();
         mod.addColumn("FECHA");
         mod.addColumn("PROPIEDAD");
         mod.addColumn("MONTO");

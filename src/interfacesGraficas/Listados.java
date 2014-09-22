@@ -20,6 +20,7 @@ import objetos.Inquilinos;
 import objetos.Propiedades;
 import objetos.Propietarios;
 import objetos.Resumenes;
+import tablas.MiModeloTablaCargaHdr;
 import tablas.MiModeloTablaListado;
 
 /**
@@ -70,6 +71,8 @@ public class Listados extends javax.swing.JInternalFrame {
                 break;
             case 5:
                 Emitible emi=new Resumenes();
+                //MiModeloTablaCargaHdr mmod=new MiModeloTablaCargaHdr();
+                //mmod=(MiModeloTablaCargaHdr) emi.LlenarTablaParaSeleccionar();
                 this.jTable1.setModel(emi.LlenarTablaParaSeleccionar());
                 this.jButton1.setText("Emitir");
                 this.jButton2.setVisible(false);

@@ -10,7 +10,9 @@ import interfaces.Componable;
 import interfaces.Generable;
 import interfaces.Listables;
 import interfaces.Personalizable;
+import interfaces.Saldable;
 import interfaces.Transaccionable;
+import interfacesGraficas.Inicio;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import tablas.MiModeloTablaListado;
  *
  * @author Usuario
  */
-public class Inquilinos implements Generable,Listables,Componable{
+public class Inquilinos implements Generable,Listables,Componable,Saldable{
    private Integer id;
    private String nombre;
    private String dni;
@@ -409,6 +411,30 @@ public class Inquilinos implements Generable,Listables,Componable{
 
     @Override
     public DefaultListModel LlenarListConArray(ArrayList listado) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Double calcularSaldoActual(Integer id) {
+        // ACA TENGO QUE VER COMO HAGO CON LO PENDIENTE
+        Transaccionable tt=new ConeccionLocal();
+        Double saldo=0.00;
+        String sql="select * from resumenid where idinquilino="+id+" and estado =0 and fecha > '"+Inicio.fechaDia+"'";
+        ResultSet rs=tt.leerConjuntoDeRegistros(sql);
+       try {
+           while(rs.next()){
+               saldo=rs.getDouble("monto");
+           }
+           rs.close();
+       } catch (SQLException ex) {
+           Logger.getLogger(Inquilinos.class.getName()).log(Level.SEVERE, null, ex);
+       }
+        
+        return saldo;
+    }
+
+    @Override
+    public Boolean ajustarSaldo(Integer id, Double movimiento) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
    
