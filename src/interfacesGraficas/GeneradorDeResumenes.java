@@ -42,6 +42,7 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         listadoDeGastos=new ArrayList();
         initComponents();
         this.jPanel3.setVisible(false);
+        this.jPanel4.setVisible(true);
     }
 
     /**
@@ -92,6 +93,7 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         });
 
         jButton4.setText("Emitir");
+        jButton4.setEnabled(false);
 
         jLabel4.setText("Total Resumen");
 
@@ -180,11 +182,13 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Descripcion");
 
-        jTextField1.setText("jTextField1");
-
         jLabel3.setText("Importe");
 
-        jTextField2.setText("jTextField2");
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Agregar");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -352,6 +356,10 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         this.jTextField1.requestFocus();
         
     }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

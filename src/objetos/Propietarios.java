@@ -206,7 +206,7 @@ public class Propietarios implements Generable,Componable{
         Propietarios propietario=new Propietarios();
         propietario=(Propietarios)objeto;
         Transaccionable tra=new ConeccionLocal();
-        String sql="update proveedores set nombre='"+propietario.getNombre()+"',cuit='"+propietario.getCuit()+"',domicilio='"+propietario.getDomicilio()+"',localidad='"+propietario.getLocalidad()+"',telefono='"+propietario.getTelefono()+"',mail='"+propietario.getMail()+"',observaciones='"+propietario.getObservaciones()+"',saldo="+propietario.getSaldo()+" where numero="+propietario.getId();        
+        String sql="update proveedores set nombre='"+propietario.getNombre()+"',cuit='"+propietario.getCuit()+"',domicilio='"+propietario.getDomicilio()+"',localidad='"+propietario.getLocalidad()+"',telefono='"+propietario.getTelefono()+"',mail='"+propietario.getMail()+"',observaciones='"+propietario.getObservaciones()+"',saldo="+propietario.getSaldo()+",dni='"+propietario.getDni()+"' where numero="+propietario.getId();        
         tra.guardarRegistro(sql);
     }
 
@@ -270,6 +270,7 @@ public class Propietarios implements Generable,Componable{
                 //listado.add(propietario);
                 propietario.setCuit(rs.getString("cuit"));
                 propietario.setCondIva(rs.getString("iva"));
+                propietario.setDni(rs.getString("dni"));
             }
             rs.close();
             try{

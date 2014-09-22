@@ -20,6 +20,11 @@ public class EmisionDeResumen extends javax.swing.JDialog {
         initComponents();
     }
 
+    public EmisionDeResumen() {
+        
+        initComponents();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,7 +43,7 @@ public class EmisionDeResumen extends javax.swing.JDialog {
         setTitle("Emision de Resumen");
         setModal(true);
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setText("fecha de vencimiento");
 
         jLabel2.setText("jLabel2");
 

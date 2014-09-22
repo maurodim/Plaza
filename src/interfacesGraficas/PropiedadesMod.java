@@ -46,12 +46,29 @@ public class PropiedadesMod extends javax.swing.JInternalFrame {
             loc=(Localidad)ir.next();
             ((DefaultListModel)this.jList2.getModel()).addElement(loc.getDescripcion());
             locPos++;
-            if(propiedad.getLocalidad().equals(loc.getDescripcion()))this.jList2.setSelectedIndex(locPos);
+            try{
+            if(propiedad.getLocalidad().equals(loc.getDescripcion())){
+                this.jList2.setSelectedValue(loc.getDescripcion(),true);
+                //this.jList2.setSelectedIndex(locPos);
+                System.out.println("elemento seleccionado "+locPos);
+            }
+            }catch(java.lang.NullPointerException ee){
+                
+            }
         }
         Iterator iG=lR.Listar().listIterator();
         while(iG.hasNext()){
             rub=(Rubro)iG.next();
             ((DefaultListModel)this.jList3.getModel()).addElement(rub.getDescripcion());
+            try{
+            if(propiedad.getRubro().getDescripcion().equals(rub.getDescripcion())){
+                this.jList3.setSelectedValue(rub.getDescripcion(),true);
+                //this.jList2.setSelectedIndex(locPos);
+                System.out.println("elemento seleccionado "+locPos);
+            }
+            }catch(java.lang.NullPointerException ed){
+                
+            }
         }
         //this.jList3.setSelectedIndex(propiedad.getRubro().getId());
         try{

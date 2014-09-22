@@ -49,8 +49,12 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
         geni=new Propiedades();
         initComponents();
         this.jTextField1.setText(propietario.getNombre());
-        this.jTextField2.setText(propietario.getDomicilio());
+        this.jTextField4.setText(propietario.getDomicilio());
         this.jTextField8.setText(propietario.getCuit());
+        this.jTextField3.setText(propietario.getTelefono());
+        this.jTextField2.setText(propietario.getDni());
+        this.jTextField5.setText(propietario.getMail());
+        this.jTextField6.setText(propietario.getObservaciones());
         ls=new Propiedades();
         propList=ls.listarPorPropietario(propietario.getId());
         Iterator lP=propList.listIterator();
@@ -362,6 +366,10 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
             System.err.println("NO SE ASIGNO PROPIEDAD");
         }
         LimpiarPanel1();
+        if(accion ==1){
+            
+            this.dispose();
+        }
         
     }//GEN-LAST:event_jButton2ActionPerformed
 

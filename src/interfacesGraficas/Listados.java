@@ -7,8 +7,10 @@
 package interfacesGraficas;
 
 import interfaces.Componable;
+import interfaces.Emitible;
 import interfaces.Generable;
 import interfaces.Listables;
+import interfacesGraficasInmob.EmisionDeResumen;
 import interfacesGraficasInmob.PropietariosMod;
 import java.text.ParseException;
 import java.util.logging.Level;
@@ -17,6 +19,7 @@ import objetos.Contratos;
 import objetos.Inquilinos;
 import objetos.Propiedades;
 import objetos.Propietarios;
+import objetos.Resumenes;
 import tablas.MiModeloTablaListado;
 
 /**
@@ -65,7 +68,13 @@ public class Listados extends javax.swing.JInternalFrame {
                 this.jButton2.setText("Eliminar Contrato");
                 this.jButton3.setVisible(false);
                 break;
-                
+            case 5:
+                Emitible emi=new Resumenes();
+                this.jTable1.setModel(emi.LlenarTablaParaSeleccionar());
+                this.jButton1.setText("Emitir");
+                this.jButton2.setVisible(false);
+                this.jButton3.setVisible(false);
+                break;
         }
     }
     /**
@@ -87,6 +96,36 @@ public class Listados extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setMaximizable(true);
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameActivated(evt);
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
+            }
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
+            }
+        });
 
         MiModeloTablaListado modelo=new MiModeloTablaListado();
         jTable1.setModel(modelo);
@@ -223,6 +262,11 @@ public class Listados extends javax.swing.JInternalFrame {
             Logger.getLogger(Listados.class.getName()).log(Level.SEVERE, null, ex);
         }
                 break;
+            case 5:
+                EmisionDeResumen emi=new EmisionDeResumen();
+                emi.setVisible(true);
+                emi.toFront();
+                break;
             default:
                 
                 break;
@@ -266,8 +310,29 @@ public class Listados extends javax.swing.JInternalFrame {
                 break;
               
         }
-        this.dispose();
+        CargarTabla(eleccion);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        System.out.println("ENTRO CON SHOWN");
+        this.jTable1.removeAll();
+        CargarTabla(eleccion);
+    }//GEN-LAST:event_formComponentShown
+
+    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
+        System.out.println("ENTRO CON el foco");
+    }//GEN-LAST:event_formFocusGained
+
+    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        System.out.println("ENTRO CON el resized");
+    }//GEN-LAST:event_formComponentResized
+
+    private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
+        System.out.println("ENTRO CON el activado");
+        
+        this.jTable1.removeAll();
+        CargarTabla(eleccion);
+    }//GEN-LAST:event_formInternalFrameActivated
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

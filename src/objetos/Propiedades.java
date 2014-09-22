@@ -154,6 +154,7 @@ public class Propiedades implements Generable,Listables,Componable{
         //Personalizable per=new Usuarios();
         Transaccionable tra=new ConeccionLocal();
         String sql="update propiedades set direccion='"+propiedad.getDireccion()+"',localidad='"+propiedad.getLocalidad()+"',rubro="+propiedad.getRubro().getId()+",idpropietario="+propiedad.getPropietario().getId()+" where id="+propiedad.getId();
+        System.out.println(sql);
         tra.guardarRegistro(sql);
     }
 

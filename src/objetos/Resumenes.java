@@ -7,6 +7,7 @@
 package objetos;
 
 import interfaces.Componable;
+import interfaces.Emitible;
 import interfaces.Generable;
 import interfaces.Personalizable;
 import interfaces.Transaccionable;
@@ -24,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Usuario
  */
-public class Resumenes implements Generable,Componable{
+public class Resumenes implements Generable,Componable,Emitible{
     private Integer id;
     private Propiedades propiedad;
     private ArrayList gastos;
@@ -283,6 +284,54 @@ public class Resumenes implements Generable,Componable{
     @Override
     public DefaultListModel LlenarListConArray(ArrayList listado) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultTableModel LlenarTablaParaSeleccionar() {
+        DefaultTableModel mod=new DefaultTableModel();
+        mod.addColumn("FECHA");
+        mod.addColumn("PROPIEDAD");
+        mod.addColumn("MONTO");
+        mod.addColumn("USUARIO");
+        Object[] fila=new Object[4];
+        Transaccionable tra=new ConeccionLocal();
+        Propiedades pp;
+        Generable prop=new Propiedades();
+        Personalizable per=new Usuarios();
+        String sql="select resumenes.IDPROPIEDAD,sum(resumenes.MONTOTOTAL)as total from resumenes where estado=0 group by resumenes.IDPROPIEDAD";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                pp=new Propiedades();
+                pp=(Propiedades) prop.Cargar(rs.getInt("idpropiedad"));
+                fila[0]=true;
+                fila[1]=pp.getDireccion();
+                fila[2]=rs.getDouble("total");
+                fila[3]="ADMINISTRADOR";
+                mod.addRow(fila);
+                
+                /*
+                Resumenes resumen=new Resumenes();
+                resumen.setId(rs.getInt("id"));
+                resumen.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
+                resumen.setNumero(rs.getInt("numero"));
+                resumen.setIdGasto(rs.getInt("idgasto"));
+                resumen.setMontoTotal(rs.getDouble("montototal"));
+                resumen.setFecha(rs.getDate("fecha"));
+                resumen.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                resumen.setVencimiento(rs.getDate("fechavencimiento"));
+                resumen.setEstado(rs.getInt("estado"));
+                resumen.setDescripcion(rs.getString("descripcion"));
+                */
+                
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Resumenes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return mod;
     }
     
     
