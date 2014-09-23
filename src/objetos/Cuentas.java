@@ -119,18 +119,7 @@ public class Cuentas implements Generable,Listables,Componable{
         Transaccionable tra=new ConeccionLocal();
         String sql="insert into cuentas (descripcion,monto,idedificio,idpropiedad,estado,idusuario,idresumen) values ('"+cuenta.getDescripcion()+"',"+cuenta.getMonto()+","+cuenta.getEdificio().getId()+","+cuenta.getPropiedad().getId()+","+cuenta.getEstado()+","+cuenta.getUsuario().getNumeroId()+","+cuenta.getIdResumen()+")";
         tra.guardarRegistro(sql);
-        sql="select * from cuentas";
-        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
-        int id=0;
-        try {
-            while(rs.next()){
-                id=rs.getByte("id");
-            }
-            rs.close();
-            cuenta.setId(id);
-        } catch (SQLException ex) {
-            Logger.getLogger(Cuentas.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
 
     @Override
@@ -219,7 +208,7 @@ public class Cuentas implements Generable,Listables,Componable{
         Generable edif=new Edificio();
         Generable prop=new Propiedades();
         Personalizable per=new Usuarios();
-        String sql="select * from cuentas where idresumen="+id;
+        String sql="select * from cuentas where idresumen="+id+" and estado =0";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
@@ -292,7 +281,7 @@ public class Cuentas implements Generable,Listables,Componable{
     public DefaultTableModel LlenarTablaConArray(ArrayList listado) {
         MiModeloTablaCargaHdr mod=new MiModeloTablaCargaHdr();
         mod.addColumn("Emite ?");
-        mod.addColumn("PROPIEDAD");
+        mod.addColumn("DESCRIPCION");
         mod.addColumn("MONTO");
         mod.addColumn("Num resumen");
         Object[] fila=new Object[4];
@@ -306,7 +295,7 @@ public class Cuentas implements Generable,Listables,Componable{
                 cta=(Cuentas)itl.next();
                 pp=(Propiedades) cta.getPropiedad();
                 fila[0]=true;
-                fila[1]=pp.getDireccion();
+                fila[1]=cta.getDescripcion();
                 fila[2]=cta.getMonto();
                 fila[3]=cta.getIdResumen();
                 total=total + cta.getMonto();

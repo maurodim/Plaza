@@ -89,6 +89,16 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
             propiedad=(Propiedades)iP.next();
             this.jComboBox1.addItem(propiedad.getDireccion());
         }
+        jComboBox1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jComboBox1MouseClicked(evt);
+            }
+        });
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -309,10 +319,31 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         edificio.setDomicilio(" ");
         cuenta.setEdificio(edificio);
         cuenta.setUsuario((Usuarios)Inicio.usuario);
+        int nuevo=0;
+        if(listadoDeGastos.size() == 0){
+            nuevo=1;
+            resumen=new Resumenes();
+            resumen.setGastos(listadoDeGastos);
+            resumen.setDescripcion(cuenta.getDescripcion());
+            resumen.setIdGasto(cuenta.getId());
+            resumen.setMontoTotal(cuenta.getMonto());
+            resumen.setPropiedad(propiedad);
+            resumen.setUsuario((Usuarios)Inicio.usuario);
+            resumen.setEstado(0);
+            if(seleccion==1){
+            resumen.setIdConcepto(concepto1.getId());
+            }else{
+                resumen.setIdConcepto(cuenta.getId());
+            }
+            resumen.setDescripcion(cuenta.getDescripcion());
+        }
         listadoDeGastos.add(cuenta);
         // a partir de aca esta mal
         
         //gen.Alta(cuenta);
+        
+        
+        /*
         resumen=new Resumenes();
         resumen.setGastos(listadoDeGastos);
         resumen.setDescripcion(cuenta.getDescripcion());
@@ -327,7 +358,13 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
             resumen.setIdConcepto(cuenta.getId());
         }
         resumen.setDescripcion(cuenta.getDescripcion());
-        if(propiedad.getIdResumen() > 0){
+                
+                */
+        // si hay una cuenta asignada no tengo que leer en propiedad
+        // el numero de resumen, lo debo hacer en resumen
+        // en prinicipio lo que es nuevo es la cuenta no como estoy haciendo aca al comienzo
+        
+        if(nuevo == 0){
             resumen.setId(propiedad.getIdResumen());
             cuenta.setIdResumen(resumen.getId());
         
@@ -347,11 +384,13 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         ArrayList ctas=new ArrayList();
         propiedad.setIdResumen(resumen.getId());
             ctas=lts.listarPorId(resumen.getId());
-            this.jTable2.setModel(co.LlenarTablaConArray(ctas));
+            this.jTable2.setModel(co.LlenarTablaConArray(listadoDeGastos));
+            nuevo=0;
         
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+
         this.jPanel4.setVisible(true);
         Generable pro=new Propiedades();
         Componable co=new Cuentas();
@@ -365,8 +404,9 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         resumen=(Resumenes) ppR.cargarPorIdPropiedad(propiedad.getId());
         if(resumen.getId() > 0){
             propiedad.setIdResumen(resumen.getId());
-            ctas=lts.listarPorId(resumen.getId());
-            this.jTable2.setModel(co.LlenarTablaConArray(ctas));
+            listadoDeGastos.clear();
+            listadoDeGastos=lts.listarPorId(resumen.getId());
+            this.jTable2.setModel(co.LlenarTablaConArray(listadoDeGastos));
         }else{
             propiedad.setIdResumen(0);
         }
@@ -396,6 +436,14 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jComboBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
