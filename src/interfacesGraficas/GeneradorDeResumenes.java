@@ -310,7 +310,9 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         cuenta.setEdificio(edificio);
         cuenta.setUsuario((Usuarios)Inicio.usuario);
         listadoDeGastos.add(cuenta);
-        gen.Alta(cuenta);
+        // a partir de aca esta mal
+        
+        //gen.Alta(cuenta);
         resumen=new Resumenes();
         resumen.setGastos(listadoDeGastos);
         resumen.setDescripcion(cuenta.getDescripcion());
@@ -327,17 +329,25 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         resumen.setDescripcion(cuenta.getDescripcion());
         if(propiedad.getIdResumen() > 0){
             resumen.setId(propiedad.getIdResumen());
+            cuenta.setIdResumen(resumen.getId());
+        
+        gen.Alta(cuenta);
             
         }else{
             res.Alta(resumen);
-        }
-        System.out.println(" id resumen "+resumen.getId());
-        cuenta.setIdResumen(resumen.getId());
+            cuenta.setIdResumen(resumen.getId());
         
         gen.Alta(cuenta);
+        }
+        System.out.println(" id resumen "+resumen.getId());
+        
         this.jTable2.removeAll();
-        Componable comp=new Resumenes();
-        this.jTable2.setModel(comp.LlenarTabla(propiedad.getId()));
+        Componable co=new Cuentas();
+        Listables lts=new Cuentas();
+        ArrayList ctas=new ArrayList();
+        propiedad.setIdResumen(resumen.getId());
+            ctas=lts.listarPorId(resumen.getId());
+            this.jTable2.setModel(co.LlenarTablaConArray(ctas));
         
     }//GEN-LAST:event_jButton5ActionPerformed
 
