@@ -349,6 +349,11 @@ public class Propietarios implements Generable,Componable{
     public DefaultListModel LlenarListConArray(ArrayList listado) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public DefaultTableModel LlenarTablaConArray(ArrayList listado) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }

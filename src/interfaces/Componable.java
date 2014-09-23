@@ -20,5 +20,6 @@ public interface Componable {
    public DefaultTableModel LlenarTabla(Integer id);
    public ComboBoxModel LlenarCombo(Integer id);
    public DefaultListModel LlenarListConArray(ArrayList listado);
+   public DefaultTableModel LlenarTablaConArray(ArrayList listado);
    
 }

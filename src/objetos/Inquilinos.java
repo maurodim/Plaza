@@ -437,5 +437,10 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable{
     public Boolean ajustarSaldo(Integer id, Double movimiento) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public DefaultTableModel LlenarTablaConArray(ArrayList listado) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
    
 }

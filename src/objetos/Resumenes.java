@@ -11,6 +11,7 @@ import interfaces.Emitible;
 import interfaces.Generable;
 import interfaces.Listables;
 import interfaces.Personalizable;
+import interfaces.Propietables;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,7 +28,7 @@ import tablas.MiModeloTablaCargaHdr;
  *
  * @author Usuario
  */
-public class Resumenes implements Generable,Componable,Emitible,Listables{
+public class Resumenes implements Generable,Componable,Emitible,Listables,Propietables{
     private Integer id;
     private Propiedades propiedad;
     private ArrayList gastos;
@@ -380,6 +381,49 @@ public class Resumenes implements Generable,Componable,Emitible,Listables{
 
     @Override
     public ArrayList listarPorPropietario(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultTableModel LlenarTablaConArray(ArrayList listado) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object cargarPorIdPropiedad(Integer id) {
+        Transaccionable tra=new ConeccionLocal();
+        //ArrayList listado=new ArrayList();
+        Generable prop=new Propiedades();
+        Personalizable per=new Usuarios();
+        Resumenes resumen=new Resumenes();
+        String sql="select * from resumenes where idpropiedad="+id+" and estado=0";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                resumen.setId(rs.getInt("id"));
+                resumen.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
+                resumen.setNumero(rs.getInt("numero"));
+                resumen.setIdGasto(rs.getInt("idgasto"));
+                resumen.setMontoTotal(rs.getDouble("montototal"));
+                resumen.setFecha(rs.getDate("fecha"));
+                resumen.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                resumen.setVencimiento(rs.getDate("fechavencimiento"));
+                resumen.setEstado(rs.getInt("estado"));
+                
+            }
+            rs.close();
+            Listables ls=new Cuentas();
+            resumen.setGastos(ls.listarPorId(resumen.getId()));
+        } catch (SQLException ex) {
+            Logger.getLogger(Resumenes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return resumen;
+    }
+
+    @Override
+    public ArrayList listarPorIdPropiedad(Integer id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

@@ -6,6 +6,7 @@
 
 package objetos;
 
+import interfaces.Componable;
 import interfaces.Generable;
 import interfaces.Listables;
 import interfaces.Personalizable;
@@ -14,14 +15,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
+import tablas.MiModeloTablaCargaHdr;
 
 /**
  *
  * @author Usuario
  */
-public class Cuentas implements Generable,Listables{
+public class Cuentas implements Generable,Listables,Componable{
     private Integer id;
     private String descripcion;
     private Edificio edificio;
@@ -260,6 +266,75 @@ public class Cuentas implements Generable,Listables{
     @Override
     public ArrayList listarPorPropietario(Integer id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultListModel LlenarList(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultTableModel LlenarTabla(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ComboBoxModel LlenarCombo(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultListModel LlenarListConArray(ArrayList listado) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultTableModel LlenarTablaConArray(ArrayList listado) {
+        MiModeloTablaCargaHdr mod=new MiModeloTablaCargaHdr();
+        mod.addColumn("Emite ?");
+        mod.addColumn("PROPIEDAD");
+        mod.addColumn("MONTO");
+        mod.addColumn("Num resumen");
+        Object[] fila=new Object[4];
+        Cuentas cta=new Cuentas();
+        Propiedades pp=new Propiedades();
+        Generable prop=new Propiedades();
+        Personalizable per=new Usuarios();
+        Double total=0.00;
+        Iterator itl=listado.listIterator();
+            while(itl.hasNext()){
+                cta=(Cuentas)itl.next();
+                pp=(Propiedades) cta.getPropiedad();
+                fila[0]=true;
+                fila[1]=pp.getDireccion();
+                fila[2]=cta.getMonto();
+                fila[3]=cta.getIdResumen();
+                total=total + cta.getMonto();
+                mod.addRow(fila);
+                
+                /*
+                Resumenes resumen=new Resumenes();
+                resumen.setId(rs.getInt("id"));
+                resumen.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
+                resumen.setNumero(rs.getInt("numero"));
+                resumen.setIdGasto(rs.getInt("idgasto"));
+                resumen.setMontoTotal(rs.getDouble("montototal"));
+                resumen.setFecha(rs.getDate("fecha"));
+                resumen.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                resumen.setVencimiento(rs.getDate("fechavencimiento"));
+                resumen.setEstado(rs.getInt("estado"));
+                resumen.setDescripcion(rs.getString("descripcion"));
+                */
+                
+            }
+                fila[0]=false;
+                fila[1]="";
+                fila[2]="TOTAL";
+                fila[3]=total;
+                mod.addRow(fila);
+        
+        
+        return mod;
     }
     
     

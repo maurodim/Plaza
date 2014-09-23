@@ -9,6 +9,8 @@ package interfacesGraficas;
 import Conversores.Numeros;
 import interfaces.Componable;
 import interfaces.Generable;
+import interfaces.Listables;
+import interfaces.Propietables;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.table.DefaultTableModel;
@@ -341,11 +343,17 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         this.jPanel4.setVisible(true);
         Generable pro=new Propiedades();
-        Componable co=new Resumenes();
+        Componable co=new Cuentas();
+        Listables lts=new Cuentas();
+        ArrayList ctas=new ArrayList();
+        Propietables ppR=new Resumenes();
+        Resumenes resumen=new Resumenes();
         int posicion=this.jComboBox1.getSelectedIndex();
         //posicion++;
         propiedad=(Propiedades)listadoPro.get(posicion);
-        this.jTable2.setModel(co.LlenarTabla(propiedad.getId()));
+        resumen=(Resumenes) ppR.cargarPorIdPropiedad(propiedad.getId());
+        ctas=lts.listarPorId(resumen.getId());
+        this.jTable2.setModel(co.LlenarTablaConArray(ctas));
         propiedad.setIdResumen((Integer) this.jTable2.getValueAt(0,3));
         System.out.println("id resumen en tabla "+propiedad.getIdResumen());
         
