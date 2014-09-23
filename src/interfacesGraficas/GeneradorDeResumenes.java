@@ -325,10 +325,11 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
             resumen.setIdConcepto(cuenta.getId());
         }
         resumen.setDescripcion(cuenta.getDescripcion());
-        if(propiedad.getIdResumen() == 0){
-            res.Alta(resumen);
-        }else{
+        if(propiedad.getIdResumen() > 0){
             resumen.setId(propiedad.getIdResumen());
+            
+        }else{
+            res.Alta(resumen);
         }
         System.out.println(" id resumen "+resumen.getId());
         cuenta.setIdResumen(resumen.getId());
@@ -352,9 +353,15 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         //posicion++;
         propiedad=(Propiedades)listadoPro.get(posicion);
         resumen=(Resumenes) ppR.cargarPorIdPropiedad(propiedad.getId());
-        ctas=lts.listarPorId(resumen.getId());
-        this.jTable2.setModel(co.LlenarTablaConArray(ctas));
-        propiedad.setIdResumen((Integer) this.jTable2.getValueAt(0,3));
+        if(resumen.getId() > 0){
+            propiedad.setIdResumen(resumen.getId());
+            ctas=lts.listarPorId(resumen.getId());
+            this.jTable2.setModel(co.LlenarTablaConArray(ctas));
+        }else{
+            propiedad.setIdResumen(0);
+        }
+        
+        //propiedad.setIdResumen((Integer) this.jTable2.getValueAt(0,3));
         System.out.println("id resumen en tabla "+propiedad.getIdResumen());
         
     }//GEN-LAST:event_jComboBox1ActionPerformed

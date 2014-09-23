@@ -10,6 +10,7 @@ import interfaces.Componable;
 import interfaces.Generable;
 import interfaces.Listables;
 import interfaces.Personalizable;
+import interfaces.Propietables;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -183,6 +184,8 @@ public class Propiedades implements Generable,Listables,Componable{
         Generable prop=new Propietarios();
         Generable cont=new Contratos();
         Generable cta=new CuentaCorriente();
+        Propietables ppR=new Resumenes();
+        Resumenes res=new Resumenes();
         //Generable loc=new Localidad();
         Generable rub=new Rubro();
         Personalizable per=new Usuarios();
@@ -201,6 +204,8 @@ public class Propiedades implements Generable,Listables,Componable{
                 propiedad.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("idcuentascorriente")));
                 propiedad.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
                 propiedad.setFecha(rs.getDate("fecha"));
+                res=(Resumenes) ppR.cargarPorIdPropiedadSolo(propiedad.getId());
+                propiedad.setIdResumen(res.getId());
                 listado.add(propiedad);
             }
             rs.close();
