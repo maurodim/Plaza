@@ -37,7 +37,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
     private Integer numero;
     private Date fecha;
     private Usuarios usuario;
-    private Date vencimiento;
+    private String vencimiento;
     private Integer estado;
     private Integer idGasto;
     private String descripcion;
@@ -118,11 +118,11 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
         this.usuario = usuario;
     }
 
-    public Date getVencimiento() {
+    public String getVencimiento() {
         return vencimiento;
     }
 
-    public void setVencimiento(Date vencimiento) {
+    public void setVencimiento(String vencimiento) {
         this.vencimiento = vencimiento;
     }
 
@@ -200,7 +200,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
                 resumen.setMontoTotal(rs.getDouble("montototal"));
                 resumen.setFecha(rs.getDate("fecha"));
                 resumen.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
-                resumen.setVencimiento(rs.getDate("fechavencimiento"));
+                resumen.setVencimiento(rs.getString("fechavencimiento"));
                 resumen.setEstado(rs.getInt("estado"));
                 listado.add(resumen);
             }
@@ -231,7 +231,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
                 resumen.setMontoTotal(rs.getDouble("montototal"));
                 resumen.setFecha(rs.getDate("fecha"));
                 resumen.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
-                resumen.setVencimiento(rs.getDate("fechavencimiento"));
+                resumen.setVencimiento(rs.getString("fechavencimiento"));
                 resumen.setEstado(rs.getInt("estado"));
                 
             }
@@ -329,29 +329,12 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
                 fila[1]=pp.getDireccion();
                 fila[2]=rs.getDouble("total");
                 fila[3]=rs.getInt("id");
-                mod.addRow(fila);
-                
-                /*
-                Resumenes resumen=new Resumenes();
-                resumen.setId(rs.getInt("id"));
-                resumen.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
-                resumen.setNumero(rs.getInt("numero"));
-                resumen.setIdGasto(rs.getInt("idgasto"));
-                resumen.setMontoTotal(rs.getDouble("montototal"));
-                resumen.setFecha(rs.getDate("fecha"));
-                resumen.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
-                resumen.setVencimiento(rs.getDate("fechavencimiento"));
-                resumen.setEstado(rs.getInt("estado"));
-                resumen.setDescripcion(rs.getString("descripcion"));
-                */
-                
+                mod.addRow(fila);    
             }
             rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(Resumenes.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
         return mod;
     }
 
@@ -409,7 +392,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
                 resumen.setMontoTotal(rs.getDouble("montototal"));
                 resumen.setFecha(rs.getDate("fecha"));
                 resumen.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
-                resumen.setVencimiento(rs.getDate("fechavencimiento"));
+                resumen.setVencimiento(rs.getString("fechavencimiento"));
                 resumen.setEstado(rs.getInt("estado"));
                 
             }
@@ -447,7 +430,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
                 resumen.setMontoTotal(rs.getDouble("montototal"));
                 resumen.setFecha(rs.getDate("fecha"));
                 resumen.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
-                resumen.setVencimiento(rs.getDate("fechavencimiento"));
+                resumen.setVencimiento(rs.getString("fechavencimiento"));
                 resumen.setEstado(rs.getInt("estado"));
                 
             }
@@ -473,11 +456,14 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
         Generable gen=new Resumenes();
         while(it.hasNext()){
             resumen=(Resumenes)it.next();
-            sql="update resumenes set vencimiento='"+resumen.getVencimiento()+"', estado=1 where id="+resumen.getId();
-            tra.guardarRegistro(sql);
-            sql="update cuentas set vencimiento='"+resumen.getVencimiento()+"', estado=1 where idresumen="+resumen.getId();
+            sql="update resumenes set fechavencimiento='"+resumen.getVencimiento()+"', estado=1 where id="+resumen.getId();
             tra.guardarRegistro(sql);
             //aca debo leer el monto del alquiler e insertarlo como items de ctas
+            
+            sql="update cuentas set vencimiento='"+resumen.getVencimiento()+"', estado=1 where idresumen="+resumen.getId();
+            tra.guardarRegistro(sql);
+            
+            
         }
     }
     

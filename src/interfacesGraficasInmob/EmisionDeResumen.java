@@ -10,6 +10,7 @@ import Conversores.Numeros;
 import interfaces.Emitible;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import objetos.Resumenes;
 
@@ -114,13 +115,14 @@ public class EmisionDeResumen extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Calendar vencimiento=this.dateChooserCombo1.getSelectedDate();
+        String vencimiento=Numeros.LeerChooser(this.dateChooserCombo1.getSelectedDate());
         Iterator itR=lstResumenes.listIterator();
         Resumenes res;
         Emitible em=new Resumenes();
         while(itR.hasNext()){
             res=(Resumenes)itR.next();
-            res.setVencimiento(Numeros.ConvertirStringEnDate(String.valueOf(vencimiento)));
+            res.setVencimiento(vencimiento);
+            //res.setVencimiento(Numeros.ConvertirStringEnDate(String.valueOf(vencimiento)));
             res.setEstado(1);
             
         }

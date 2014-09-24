@@ -273,12 +273,16 @@ public class Listados extends javax.swing.JInternalFrame {
                 ArrayList listadoResumenes=new ArrayList();
                 Resumenes resum;
                 Generable ge=new Resumenes();
+                Boolean selec=false;
                 for(int i=0; i < cantidad;i++){
+                    selec=(Boolean) this.jTable1.getValueAt(i,0);
+                    if(selec){
                     numeroR=(int) this.jTable1.getValueAt(i, 3);
                     resum=new Resumenes();
                     resum=(Resumenes) ge.Cargar(numeroR);
                     System.out.println("NUMERO RESUMEN "+numeroR);
                     listadoResumenes.add(resum);
+                    }
                 }
                 EmisionDeResumen emi=new EmisionDeResumen(listadoResumenes);
                 
