@@ -54,6 +54,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         fecha1=ff.parse(arti.getVencimiento1());
         calendar.setTime(fecha1);
         this.dateChooserCombo2.setSelectedDate(calendar);
+        try{
         this.jTextField7.setText(String.valueOf(arti.getMonto1()));
         this.jTextField1.setText(String.valueOf(arti.getMonto2()));
         Listables inq=new Inquilinos();
@@ -73,6 +74,9 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         //this.jComboBox1.setSelectedItem(arti.getInquilino().getNombre());
         //this.jComboBox2.setSelectedItem(arti.getPropiedad().getDireccion());
         this.jTextField2.setText(arti.getPropiedad().getPropietario().getNombre());
+        }catch(java.lang.NullPointerException ec){
+            System.err.println(ec);
+        }
         this.jTextField7.selectAll();
         this.jTextField7.requestFocus();
         

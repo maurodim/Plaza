@@ -330,7 +330,6 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
                 fila[2]=rs.getDouble("total");
                 fila[3]=rs.getInt("id");
                 mod.addRow(fila);   
-                
             }
             rs.close();
         } catch (SQLException ex) {

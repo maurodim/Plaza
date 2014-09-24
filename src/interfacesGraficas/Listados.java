@@ -72,7 +72,7 @@ public class Listados extends javax.swing.JInternalFrame {
                 break;
             case 5:
                 this.setTitle("EMISOR DE RESUMENES ");
-                Emitible emi=new Resumenes();
+                Emitible emi=new Contratos();
                 //MiModeloTablaCargaHdr mmod=new MiModeloTablaCargaHdr();
                 //mmod=(MiModeloTablaCargaHdr) emi.LlenarTablaParaSeleccionar();
                 this.jTable1.setModel(emi.LlenarTablaParaSeleccionar());

@@ -7,9 +7,11 @@
 package objetos;
 
 import interfaces.Componable;
+import interfaces.Emitible;
 import interfaces.Generable;
 import interfaces.Personalizable;
 import interfaces.Transaccionable;
+import interfacesGraficas.Inicio;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,13 +21,14 @@ import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
+import tablas.MiModeloTablaCargaHdr;
 import tablas.MiModeloTablaListado;
 
 /**
  *
  * @author Usuario
  */
-public class Contratos implements Generable,Componable{
+public class Contratos implements Generable,Componable,Emitible{
     private Integer id;
     private Date fecha;
     private Double monto1;
@@ -308,6 +311,45 @@ public class Contratos implements Generable,Componable{
 
     @Override
     public DefaultTableModel LlenarTablaConArray(ArrayList listado) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DefaultTableModel LlenarTablaParaSeleccionar() {
+        MiModeloTablaCargaHdr mod=new MiModeloTablaCargaHdr();
+        mod.addColumn("FECHA");
+        mod.addColumn("PROPIEDAD");
+        mod.addColumn("MONTO");
+        mod.addColumn("N resumen");
+        mod.addColumn("ID contrato");
+        Object[] fila=new Object[5];
+        Transaccionable tra=new ConeccionLocal();
+        Propiedades pp;
+        Generable prop=new Propiedades();
+        Personalizable per=new Usuarios();
+        String sql="select contratos.id,contratos.monto1,contratos.monto2,contratos.fecha1,contratos.idpropiedad from contratos where contratos.fecha2 > '"+Inicio.fechaDia+"'";
+        System.out.println(sql);
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                pp=new Propiedades();
+                pp=(Propiedades) prop.Cargar(rs.getInt("idpropiedad"));
+                fila[0]=true;
+                fila[1]=pp.getDireccion();
+                fila[2]=rs.getDouble("monto1");
+                fila[3]=rs.getInt("id");
+                fila[4]="idResumen";
+                mod.addRow(fila);   
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Resumenes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return mod;
+    }
+
+    @Override
+    public void GuardarArrayParaEmitir(ArrayList listado) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
