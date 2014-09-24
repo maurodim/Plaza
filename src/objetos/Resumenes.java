@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
@@ -312,13 +313,13 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
         mod.addColumn("FECHA");
         mod.addColumn("PROPIEDAD");
         mod.addColumn("MONTO");
-        mod.addColumn("USUARIO");
+        mod.addColumn("N RESUMEN");
         Object[] fila=new Object[4];
         Transaccionable tra=new ConeccionLocal();
         Propiedades pp;
         Generable prop=new Propiedades();
         Personalizable per=new Usuarios();
-        String sql="select resumenes.IDPROPIEDAD,sum(resumenes.MONTOTOTAL)as total from resumenes where estado=0 group by resumenes.IDPROPIEDAD";
+        String sql="select resumenes.ID,resumenes.IDPROPIEDAD,(resumenes.MONTOTOTAL)as total from resumenes where estado=0";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
@@ -327,7 +328,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
                 fila[0]=true;
                 fila[1]=pp.getDireccion();
                 fila[2]=rs.getDouble("total");
-                fila[3]="ADMINISTRADOR";
+                fila[3]=rs.getInt("id");
                 mod.addRow(fila);
                 
                 /*
@@ -458,6 +459,26 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
         }
         
         return resumen;
+    }
+
+    @Override
+    public void GuardarArrayParaEmitir(ArrayList listado) {
+        //ACA HAGO UN UPDATE DE A FECHA DE VENCIMIENTO, EL ESTADO DE LOS RESUMENES E ITEMS DE LAS CUENTAS
+        //AGREGO TAMBIEN COMO ITEMS EL VALOR DEL ALQUILER
+        Transaccionable tra=new ConeccionLocal();
+        Iterator it=listado.listIterator();
+        String sql="";
+        Resumenes resumen=new Resumenes();
+        Cuentas cuenta=new Cuentas();
+        Generable gen=new Resumenes();
+        while(it.hasNext()){
+            resumen=(Resumenes)it.next();
+            sql="update resumenes set vencimiento='"+resumen.getVencimiento()+"', estado=1 where id="+resumen.getId();
+            tra.guardarRegistro(sql);
+            sql="update cuentas set vencimiento='"+resumen.getVencimiento()+"', estado=1 where idresumen="+resumen.getId();
+            tra.guardarRegistro(sql);
+            //aca debo leer el monto del alquiler e insertarlo como items de ctas
+        }
     }
     
     

@@ -17,6 +17,7 @@ public class MiModeloTablaCargaHdr extends DefaultTableModel{
           if(colum==0) {
               return Boolean.class;
           }
+          if(colum==3)return Integer.class;
           
         return String.class;
       }

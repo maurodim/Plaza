@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -13,4 +14,5 @@ import javax.swing.table.DefaultTableModel;
  */
 public interface Emitible {
     public DefaultTableModel LlenarTablaParaSeleccionar();
+    public void GuardarArrayParaEmitir(ArrayList listado);
 }

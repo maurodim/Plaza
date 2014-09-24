@@ -13,6 +13,7 @@ import interfaces.Listables;
 import interfacesGraficasInmob.EmisionDeResumen;
 import interfacesGraficasInmob.PropietariosMod;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.Contratos;
@@ -70,6 +71,7 @@ public class Listados extends javax.swing.JInternalFrame {
                 this.jButton3.setVisible(false);
                 break;
             case 5:
+                this.setTitle("EMISOR DE RESUMENES ");
                 Emitible emi=new Resumenes();
                 //MiModeloTablaCargaHdr mmod=new MiModeloTablaCargaHdr();
                 //mmod=(MiModeloTablaCargaHdr) emi.LlenarTablaParaSeleccionar();
@@ -266,7 +268,20 @@ public class Listados extends javax.swing.JInternalFrame {
         }
                 break;
             case 5:
-                EmisionDeResumen emi=new EmisionDeResumen();
+                int cantidad=this.jTable1.getRowCount();
+                int numeroR=0;
+                ArrayList listadoResumenes=new ArrayList();
+                Resumenes resum;
+                Generable ge=new Resumenes();
+                for(int i=0; i < cantidad;i++){
+                    numeroR=(int) this.jTable1.getValueAt(i, 3);
+                    resum=new Resumenes();
+                    resum=(Resumenes) ge.Cargar(numeroR);
+                    System.out.println("NUMERO RESUMEN "+numeroR);
+                    listadoResumenes.add(resum);
+                }
+                EmisionDeResumen emi=new EmisionDeResumen(listadoResumenes);
+                
                 emi.setVisible(true);
                 emi.toFront();
                 break;
