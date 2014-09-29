@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.table.DefaultTableModel;
 import objetos.Conceptos;
+import objetos.Contratos;
 import objetos.Cuentas;
 import objetos.Edificio;
 import objetos.Propiedades;
@@ -82,11 +83,13 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Seleccionar Propiedad");
 
-        Generable gen=new Propiedades();
+        Generable gen=new Contratos();
+        Contratos contrato=new Contratos();
         listadoPro=gen.Listar();
         Iterator iP=listadoPro.listIterator();
         while(iP.hasNext()){
-            propiedad=(Propiedades)iP.next();
+            contrato=(Contratos)iP.next();
+            propiedad=(Propiedades)contrato.getPropiedad();
             this.jComboBox1.addItem(propiedad.getDireccion());
         }
         jComboBox1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -399,8 +402,10 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         Propietables ppR=new Resumenes();
         Resumenes resumen=new Resumenes();
         int posicion=this.jComboBox1.getSelectedIndex();
+        Contratos contrato=new Contratos();
         //posicion++;
-        propiedad=(Propiedades)listadoPro.get(posicion);
+        contrato=(Contratos)listadoPro.get(posicion);
+        propiedad=contrato.getPropiedad();
         resumen=(Resumenes) ppR.cargarPorIdPropiedad(propiedad.getId());
         if(resumen.getId() > 0){
             propiedad.setIdResumen(resumen.getId());

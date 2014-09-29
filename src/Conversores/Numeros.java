@@ -91,4 +91,27 @@ public class Numeros {
         
         return calendar;
     }
-}
+    public static Integer CalcularDiasAFechaActual(Date ff){
+        Integer diferencia=0;
+        DecimalFormat fr=new DecimalFormat("00");
+        Calendar c1=Calendar.getInstance();
+	Calendar c2=new GregorianCalendar();
+	String dia=Integer.toString(c2.get(Calendar.DAY_OF_MONTH));
+	String mes=Integer.toString(c2.get(Calendar.MONTH));
+	String ano=Integer.toString(c2.get(Calendar.YEAR));
+	
+        int da=Integer.parseInt(dia);
+        int me=Integer.parseInt(mes);
+        int ann=Integer.parseInt(ano);
+        me++;
+        dia=fr.format(da);
+        mes=fr.format(me);
+        c1.set(ann,me,da);
+        long miliss1=c1.getTimeInMillis();
+        Date f2=Inicio.fechaVal;
+        
+        
+        
+        return diferencia;
+    }
+    }

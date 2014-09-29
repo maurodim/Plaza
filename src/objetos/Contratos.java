@@ -189,7 +189,7 @@ public class Contratos implements Generable,Componable,Emitible{
         Generable propi=new Propietarios();
         Personalizable usu=new Usuarios();
         Generable gar=new Garantes();
-        String sql="select * from contratos";
+        String sql="select * from contratos where contratos.fecha2 > '"+Inicio.fechaDia+"'";
         Transaccionable tra=new ConeccionLocal();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -204,8 +204,12 @@ public class Contratos implements Generable,Componable,Emitible{
                 contrato.setInquilino((Inquilinos)inqui.Cargar(rs.getInt("idinquilino")));
                 contrato.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
                 contrato.setPropietario((Propietarios)propi.Cargar(rs.getInt("idpropietario")));
+                try{
                 contrato.setGarante((Garantes)gar.Cargar(rs.getInt("idgarante")));
                 contrato.setArchivo(rs.getString("archivo"));
+                }catch(java.lang.UnsupportedOperationException exx){
+                    
+                }
                 contrato.setUsuario((Usuarios)usu.buscarPorNumero(rs.getInt("idusuario")));
                 listado.add(contrato);
             }
@@ -327,7 +331,7 @@ public class Contratos implements Generable,Componable,Emitible{
         Propiedades pp;
         Generable prop=new Propiedades();
         Personalizable per=new Usuarios();
-        String sql="select contratos.id,contratos.monto1,contratos.monto2,contratos.fecha1,contratos.idpropiedad from contratos where contratos.fecha2 > '"+Inicio.fechaDia+"'";
+        String sql="select contratos.id,contratos.monto1,contratos.monto2,contratos.fecha1,contratos.idpropiedad,(select resumenes.id from resumenes where resumenes.IDPROPIEDAD=contratos.idpropiedad and estado=0)as idresumen from contratos where contratos.fecha2 > '"+Inicio.fechaDia+"'";
         System.out.println(sql);
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -336,9 +340,13 @@ public class Contratos implements Generable,Componable,Emitible{
                 pp=(Propiedades) prop.Cargar(rs.getInt("idpropiedad"));
                 fila[0]=true;
                 fila[1]=pp.getDireccion();
+                if(Inicio.fechaVal.before(rs.getDate("fecha1"))){
                 fila[2]=rs.getDouble("monto1");
-                fila[3]=rs.getInt("id");
-                fila[4]="idResumen";
+                }else{
+                    fila[2]=rs.getDouble("monto2");
+                }
+                fila[3]=rs.getInt("idresumen");
+                fila[4]=rs.getInt("id");
                 mod.addRow(fila);   
             }
             rs.close();
