@@ -96,11 +96,12 @@ public class Numeros {
         DecimalFormat fr=new DecimalFormat("00");
         Calendar c1=Calendar.getInstance();
 	Calendar c2=new GregorianCalendar();
+        c2.setTime(ff);
 	String dia=Integer.toString(c2.get(Calendar.DAY_OF_MONTH));
 	String mes=Integer.toString(c2.get(Calendar.MONTH));
 	String ano=Integer.toString(c2.get(Calendar.YEAR));
 	
-        int da=Integer.parseInt(dia);
+        int da=1;
         int me=Integer.parseInt(mes);
         int ann=Integer.parseInt(ano);
         me++;
@@ -109,9 +110,20 @@ public class Numeros {
         c1.set(ann,me,da);
         long miliss1=c1.getTimeInMillis();
         Date f2=Inicio.fechaVal;
+        c1.setTime(f2);
+        dia=Integer.toString(c1.get(Calendar.DAY_OF_MONTH));
+	mes=Integer.toString(c1.get(Calendar.MONTH));
+	ano=Integer.toString(c1.get(Calendar.YEAR));
+	
+        da=Integer.parseInt(dia);
+        me=Integer.parseInt(mes);
+        ann=Integer.parseInt(ano);
+        long miliss2=c1.getTimeInMillis();
+        long diffDias=miliss2 - miliss1;
         
-        
-        
+        String difer=String.valueOf(diffDias / (24 * 60 * 60 * 1000));
+        diferencia=Integer.parseInt(difer);
+        System.out.println("DIAS DE ATRASO "+diferencia);
         return diferencia;
     }
     }
