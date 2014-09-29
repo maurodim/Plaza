@@ -6,6 +6,7 @@
 
 package objetos;
 
+import Conversores.Numeros;
 import interfaces.Componable;
 import interfaces.Generable;
 import interfaces.Listables;
@@ -347,6 +348,7 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable{
         Transaccionable tra=new ConeccionLocal();
          Generable prop=new Propiedades();
         Personalizable per=new Usuarios();
+        Saldable sal=new Inquilinos();
         modelo.addColumn("numero");
         modelo.addColumn("nombre");
         modelo.addColumn("dni");
@@ -355,7 +357,7 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable{
         modelo.addColumn("Propiedad");
         modelo.addColumn("saldo");
         Object[] fila=new Object[7];
-        String sql="select id,nombre,dni,telefono,mail,(select propiedades.direccion from propiedades where propiedades.id=inquilinos.propiedad)as prop from inquilinos order by nombre";
+        String sql="select id,nombre,dni,telefono,mail,propiedad,(select propiedades.direccion from propiedades where propiedades.id=inquilinos.propiedad)as prop from inquilinos order by nombre";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
@@ -366,7 +368,8 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable{
                 fila[3]=rs.getString("telefono");
                 fila[4]=rs.getString("mail");
                 fila[5]=rs.getString("prop");
-                fila[6]="aca calculo de cta cte";
+                sal.calcularSaldoActual(rs.getInt("propiedad"));
+                fila[6]="";
                 modelo.addRow(fila);
             }
             rs.close();
@@ -419,11 +422,13 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable{
         // ACA TENGO QUE VER COMO HAGO CON LO PENDIENTE
         Transaccionable tt=new ConeccionLocal();
         Double saldo=0.00;
-        String sql="select * from resumenid where idinquilino="+id+" and estado =0 and fecha > '"+Inicio.fechaDia+"'";
+        String sql="select * from resumenes where idpropiedad="+id+" and estado =1 and fechavencimiento > '"+Inicio.fechaDia+"'";
         ResultSet rs=tt.leerConjuntoDeRegistros(sql);
+        Integer dias=0;
        try {
            while(rs.next()){
-               saldo=rs.getDouble("monto");
+               saldo=rs.getDouble("montototal");
+               dias=Numeros.CalcularDiasAFechaActual(rs.getDate("fechavencimiento"));
            }
            rs.close();
        } catch (SQLException ex) {

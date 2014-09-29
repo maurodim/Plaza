@@ -94,21 +94,23 @@ public class Numeros {
     public static Integer CalcularDiasAFechaActual(Date ff){
         Integer diferencia=0;
         DecimalFormat fr=new DecimalFormat("00");
-        Calendar c1=Calendar.getInstance();
+        Calendar c1=new GregorianCalendar();
 	Calendar c2=new GregorianCalendar();
         c2.setTime(ff);
 	String dia=Integer.toString(c2.get(Calendar.DAY_OF_MONTH));
 	String mes=Integer.toString(c2.get(Calendar.MONTH));
 	String ano=Integer.toString(c2.get(Calendar.YEAR));
-	
+	String dia1;
+        String dia2;
         int da=1;
         int me=Integer.parseInt(mes);
         int ann=Integer.parseInt(ano);
         me++;
         dia=fr.format(da);
         mes=fr.format(me);
-        c1.set(ann,me,da);
-        long miliss1=c1.getTimeInMillis();
+        dia1=dia+"-"+me+"-"+ann;
+        c2.set(ann,me,da);
+        long miliss1=c2.getTimeInMillis();
         Date f2=Inicio.fechaVal;
         c1.setTime(f2);
         dia=Integer.toString(c1.get(Calendar.DAY_OF_MONTH));
@@ -118,12 +120,15 @@ public class Numeros {
         da=Integer.parseInt(dia);
         me=Integer.parseInt(mes);
         ann=Integer.parseInt(ano);
+        me++;
+        dia2=dia+"-"+me+"-"+ann;
+        c1.set(ann,me,da);
         long miliss2=c1.getTimeInMillis();
         long diffDias=miliss2 - miliss1;
         
         String difer=String.valueOf(diffDias / (24 * 60 * 60 * 1000));
         diferencia=Integer.parseInt(difer);
-        System.out.println("DIAS DE ATRASO "+diferencia);
+        System.out.println("DIAS DE ATRASO "+diferencia+" dia 1:"+dia1+" dia2:"+dia2);
         return diferencia;
     }
     }

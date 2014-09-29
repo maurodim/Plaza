@@ -64,6 +64,11 @@ public class EmisionDeResumen extends javax.swing.JDialog {
         });
 
         jButton2.setText("Enviar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -129,6 +134,17 @@ public class EmisionDeResumen extends javax.swing.JDialog {
         em.GuardarArrayParaEmitir(lstResumenes);
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       Iterator iR=lstResumenes.listIterator();
+       Resumenes resum=new Resumenes();
+       Date venc;
+       while(iR.hasNext()){
+           resum=(Resumenes)iR.next();
+           venc=Numeros.ConvertirStringEnDate(resum.getVencimiento());
+           System.out.println(" dias resumenes "+Numeros.CalcularDiasAFechaActual(venc));
+       }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -105,11 +105,12 @@ public class Inicio extends javax.swing.JFrame {
         String fh=ano+"-"+mes+"-"+dia;
         SimpleDateFormat ff=new SimpleDateFormat("yyyy-mm-dd");
         fechaVal = null;    
-        try {
-            fechaVal = ff.parse(fh);
-        } catch (ParseException ex) {
-            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //try {
+            //fechaVal = ff.parse(fh);
+            fechaVal=new Date();
+        //} catch (ParseException ex) {
+        //    Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        //}
         
         //}else{
         
