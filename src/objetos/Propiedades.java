@@ -7,10 +7,12 @@
 package objetos;
 
 import interfaces.Componable;
+import interfaces.Contratable;
 import interfaces.Generable;
 import interfaces.Listables;
 import interfaces.Personalizable;
 import interfaces.Propietables;
+import interfaces.Resumible;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import tablas.MiModeloTablaListado;
 
@@ -27,7 +30,7 @@ import tablas.MiModeloTablaListado;
  *
  * @author Usuario
  */
-public class Propiedades implements Generable,Listables,Componable{
+public class Propiedades implements Generable,Listables,Componable,Contratable,Resumible{
     private Integer id;
     private String direccion;
     private String localidad;
@@ -218,8 +221,8 @@ public class Propiedades implements Generable,Listables,Componable{
     @Override
     public Object Cargar(Integer id) {
         //ArrayList listado=new ArrayList();
-        Generable prop=new Propietarios();
-        Generable cont=new Contratos();
+        Propietables prop=new Propietarios();
+        Propietables cont=new Contratos();
         Generable cta=new CuentaCorriente();
         //Generable loc=new Localidad();
         Generable rub=new Rubro();
@@ -228,6 +231,8 @@ public class Propiedades implements Generable,Listables,Componable{
         Propiedades propiedad=new Propiedades();
         String sql="select * from propiedades where id="+id;
         System.out.println(sql);
+        String modificar="";
+        int idcontrato;
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
@@ -236,8 +241,14 @@ public class Propiedades implements Generable,Listables,Componable{
                 propiedad.setDireccion(rs.getString("direccion"));
                 propiedad.setLocalidad(rs.getString("localidad"));
                 propiedad.setRubro((Rubro)rub.Cargar(rs.getInt("rubro")));
-                propiedad.setContrato((Contratos)cont.Cargar(rs.getInt("idcontrato")));
-                propiedad.setPropietario((Propietarios)prop.Cargar(rs.getInt("idpropietario")));
+                if(rs.getInt("idcontrato")==0){
+                    idcontrato=Integer.parseInt(JOptionPane.showInputDialog("Ingrese ID del contrato","ID contrato"));
+                    modificar="update propiedades set idcontrato="+idcontrato+" where id="+propiedad.getId();
+                    propiedad.setContrato((Contratos)cont.cargarDesdePropiedad(idcontrato));
+                }else{
+                propiedad.setContrato((Contratos)cont.cargarDesdePropiedad(rs.getInt("idcontrato")));
+                }
+                propiedad.setPropietario((Propietarios)prop.cargarDesdePropiedad(rs.getInt("idpropietario")));
                 propiedad.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("idcuentascorriente")));
                 propiedad.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
                 propiedad.setFecha(rs.getDate("fecha"));
@@ -246,6 +257,8 @@ public class Propiedades implements Generable,Listables,Componable{
                 //listado.add(propiedad);
             }
             rs.close();
+            if(modificar.length() > 2)tra.guardarRegistro(modificar);
+            
         } catch (SQLException ex) {
             Logger.getLogger(Propiedades.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -422,6 +435,96 @@ public class Propiedades implements Generable,Listables,Componable{
 
     @Override
     public DefaultTableModel LlenarTablaConArray(ArrayList listado) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object CargarDesdeContratos(Integer id) {
+        Generable prop=new Propietarios();
+        Generable cont=new Contratos();
+        Generable cta=new CuentaCorriente();
+        //Generable loc=new Localidad();
+        Generable rub=new Rubro();
+        Personalizable per=new Usuarios();
+        Transaccionable tra=new ConeccionLocal();
+        Propiedades propiedad=new Propiedades();
+        String sql="select * from propiedades where id="+id;
+        System.out.println(sql);
+        String modificar="";
+        int idcontrato;
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                propiedad.setId(rs.getInt("id"));
+                propiedad.setDireccion(rs.getString("direccion"));
+                propiedad.setLocalidad(rs.getString("localidad"));
+                propiedad.setRubro((Rubro)rub.Cargar(rs.getInt("rubro")));
+
+                propiedad.setPropietario((Propietarios)prop.Cargar(rs.getInt("idpropietario")));
+                propiedad.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("idcuentascorriente")));
+                propiedad.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                propiedad.setFecha(rs.getDate("fecha"));
+                //propiedad.setIdResumen(rs.getInt("idresumen"));
+                //propiedad.setEstadoResumen(0);
+                //listado.add(propiedad);
+            }
+            rs.close();
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Propiedades.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return propiedad;
+    }
+
+    @Override
+    public Object GenerarNuevoResumen(Object objeto) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object CargarDesdeResumen(Integer id) {
+        Generable prop=new Propietarios();
+        Generable cont=new Contratos();
+        Generable cta=new CuentaCorriente();
+        //Generable loc=new Localidad();
+        Generable rub=new Rubro();
+        Personalizable per=new Usuarios();
+        Transaccionable tra=new ConeccionLocal();
+        Propiedades propiedad=new Propiedades();
+        String sql="select * from propiedades where id="+id;
+        System.out.println(sql);
+        String modificar="";
+        int idcontrato;
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                propiedad.setId(rs.getInt("id"));
+                propiedad.setDireccion(rs.getString("direccion"));
+                propiedad.setLocalidad(rs.getString("localidad"));
+                propiedad.setRubro((Rubro)rub.Cargar(rs.getInt("rubro")));
+
+                propiedad.setPropietario((Propietarios)prop.Cargar(rs.getInt("idpropietario")));
+                propiedad.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("idcuentascorriente")));
+                propiedad.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                propiedad.setFecha(rs.getDate("fecha"));
+                //propiedad.setIdResumen(rs.getInt("idresumen"));
+                //propiedad.setEstadoResumen(0);
+                //listado.add(propiedad);
+            }
+            rs.close();
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Propiedades.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return propiedad;
+    }
+
+    @Override
+    public Double AjustarMontoTotal(Integer id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

@@ -8,6 +8,7 @@ package objetos;
 
 import Conversores.Numeros;
 import interfaces.Componable;
+import interfaces.Contratable;
 import interfaces.Generable;
 import interfaces.Listables;
 import interfaces.Personalizable;
@@ -29,7 +30,7 @@ import tablas.MiModeloTablaListado;
  *
  * @author Usuario
  */
-public class Inquilinos implements Generable,Listables,Componable,Saldable{
+public class Inquilinos implements Generable,Listables,Componable,Saldable,Contratable{
    private Integer id;
    private String nombre;
    private String dni;
@@ -447,6 +448,37 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable{
     @Override
     public DefaultTableModel LlenarTablaConArray(ArrayList listado) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object CargarDesdeContratos(Integer id) {
+        Transaccionable tra=new ConeccionLocal();
+        Generable propi=new Propiedades();
+        Generable gar=new Garantes();
+        Generable cta=new CuentaCorriente();
+        ArrayList listado=new ArrayList();
+        Inquilinos inquilino=new Inquilinos();
+        String sql="select * from inquilinos where id="+id;
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+       try {
+           while(rs.next()){
+               
+               inquilino.setId(rs.getInt("id"));
+               inquilino.setNombre(rs.getString("nombre"));
+               inquilino.setDni(rs.getString("dni"));
+               inquilino.setTelefono(rs.getString("telefono"));
+               inquilino.setDomicilioRef(rs.getString("domicilio"));
+               inquilino.setMail(rs.getString("mail"));
+               inquilino.setObservaciones(rs.getString("observaciones"));
+               inquilino.setFechaAlta(rs.getDate("fechaalta"));
+               
+               //listado.add(inquilino);
+           }
+           rs.close();
+       } catch (SQLException ex) {
+           Logger.getLogger(Inquilinos.class.getName()).log(Level.SEVERE, null, ex);
+       }
+       return inquilino;    
     }
    
 }

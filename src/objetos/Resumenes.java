@@ -11,8 +11,10 @@ import interfaces.Componable;
 import interfaces.Emitible;
 import interfaces.Generable;
 import interfaces.Listables;
+import interfaces.Montable;
 import interfaces.Personalizable;
 import interfaces.Propietables;
+import interfaces.Resumible;
 import interfaces.Saldable;
 import interfaces.Transaccionable;
 import interfacesGraficas.Inicio;
@@ -32,7 +34,7 @@ import tablas.MiModeloTablaCargaHdr;
  *
  * @author Usuario
  */
-public class Resumenes implements Generable,Componable,Emitible,Listables,Propietables,Saldable{
+public class Resumenes implements Generable,Componable,Emitible,Listables,Propietables,Saldable,Resumible{
     private Integer id;
     private Propiedades propiedad;
     private ArrayList gastos;
@@ -150,6 +152,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
     public void Alta(Object objeto) {
         Transaccionable tra=new ConeccionLocal();
         Resumenes resumen=new Resumenes();
+        Montable mont=new Contratos();
         resumen=(Resumenes)objeto;
         String sql="insert into resumenes (idpropiedad,idgasto,montototal,idusuario,estado,idconcepto,descripcion) values ("+resumen.getPropiedad().getId()+","+resumen.getIdGasto()+","+resumen.getMontoTotal()+","+resumen.getUsuario().getNumeroId()+","+resumen.getEstado()+","+resumen.getIdConcepto()+",'"+resumen.getDescripcion()+"')";
         tra.guardarRegistro(sql);
@@ -166,6 +169,10 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
             Logger.getLogger(Resumenes.class.getName()).log(Level.SEVERE, null, ex);
         }
         resumen.setId(ultimoResumen);
+        String desc="alquiler";
+        sql="insert into cuentas (descripcion,monto,idpropiedad,estado,idusuario,idresumen,vencimiento) values ('"+desc+"',"+mont.LeerMontoActual(resumen.getPropiedad().getContrato().getId())+","+resumen.getPropiedad().getId()+",0,"+Inicio.usuario.getNumeroId()+","+resumen.getId()+","+resumen.getVencimiento()+")";
+        System.err.println(sql);
+        tra.guardarRegistro(sql);
         objeto=resumen;
     }
 
@@ -219,7 +226,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
     public Object Cargar(Integer id) {
         Transaccionable tra=new ConeccionLocal();
         //ArrayList listado=new ArrayList();
-        Generable prop=new Propiedades();
+        Resumible prop=new Propiedades();
         Personalizable per=new Usuarios();
         Resumenes resumen=new Resumenes();
         String sql="select * from resumenes where id="+id;
@@ -228,7 +235,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
             while(rs.next()){
                 
                 resumen.setId(rs.getInt("id"));
-                resumen.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
+                resumen.setPropiedad((Propiedades)prop.CargarDesdeResumen(rs.getInt("idpropiedad")));
                 resumen.setNumero(rs.getInt("numero"));
                 resumen.setIdGasto(rs.getInt("idgasto"));
                 resumen.setMontoTotal(rs.getDouble("montototal"));
@@ -453,6 +460,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
         //AGREGO TAMBIEN COMO ITEMS EL VALOR DEL ALQUILER
         Transaccionable tra=new ConeccionLocal();
         Iterator it=listado.listIterator();
+        Montable mont=new Contratos();
         String sql="";
         Resumenes resumen=new Resumenes();
         Cuentas cuenta=new Cuentas();
@@ -462,7 +470,8 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
             sql="update resumenes set fechavencimiento='"+resumen.getVencimiento()+"', estado=1 where id="+resumen.getId();
             tra.guardarRegistro(sql);
             //aca debo leer el monto del alquiler e insertarlo como items de ctas
-            
+            //sql="insert into cuentas (descripcion,monto,idpropiedad,estado,idusuario,idresumen,vencimiento) values ('alquiler',"+mont.LeerMontoActual(resumen.getPropiedad().getContrato().getId())+","+resumen.getPropiedad().getId()+",1,"+Inicio.usuario.getNumeroId()+","+resumen.getId()+","+resumen.getVencimiento()+")";
+            //tra.guardarRegistro(sql);
             sql="update cuentas set vencimiento='"+resumen.getVencimiento()+"', estado=1 where idresumen="+resumen.getId();
             tra.guardarRegistro(sql);
             
@@ -508,6 +517,61 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
         correcto=tra.guardarRegistro(sql);
         
         return correcto;
+    }
+
+    @Override
+    public Object GenerarNuevoResumen(Object objeto) {
+        Transaccionable tra=new ConeccionLocal();
+        Resumenes resumen=new Resumenes();
+        Montable mon=new Contratos();
+        Contratos contrato=new Contratos();
+        contrato=(Contratos)objeto;
+        String sql="insert into resumenes (idpropiedad,idgasto,montototal,idusuario,estado,idconcepto,descripcion) values ("+resumen.getPropiedad().getId()+","+resumen.getIdGasto()+","+resumen.getMontoTotal()+","+resumen.getUsuario().getNumeroId()+","+resumen.getEstado()+","+resumen.getIdConcepto()+",'"+resumen.getDescripcion()+"')";
+        tra.guardarRegistro(sql);
+        sql="select id from resumenes order by id";
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        Integer ultimoResumen=0;
+        try {
+            while(rs.next()){
+                ultimoResumen=rs.getInt("id");
+            }
+            rs.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Resumenes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        resumen.setId(ultimoResumen);
+        return resumen;
+    }
+
+    @Override
+    public Object cargarDesdePropiedad(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object CargarDesdeResumen(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Double AjustarMontoTotal(Integer id) {
+        Double monto=0.00;
+        String sql="select * from cuentas where idresumen="+id+" and estado=0";
+        System.out.println(sql);
+        Transaccionable tra=new ConeccionLocal();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                monto=monto + rs.getDouble("monto");
+            }
+            rs.close();
+            sql="update resumenes set montototal="+monto+" where id="+id;
+            tra.guardarRegistro(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(Resumenes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return monto;
     }
     
     

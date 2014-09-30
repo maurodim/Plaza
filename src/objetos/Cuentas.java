@@ -10,6 +10,7 @@ import interfaces.Componable;
 import interfaces.Generable;
 import interfaces.Listables;
 import interfaces.Personalizable;
+import interfaces.Resumible;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -206,18 +207,19 @@ public class Cuentas implements Generable,Listables,Componable{
         ArrayList listado=new ArrayList();
         Transaccionable tra=new ConeccionLocal();
         Generable edif=new Edificio();
-        Generable prop=new Propiedades();
+        Resumible prop=new Propiedades();
         Personalizable per=new Usuarios();
         String sql="select * from cuentas where idresumen="+id+" and estado =0";
-        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        
             while(rs.next()){
                 Cuentas cuentas=new Cuentas();
                 cuentas.setId(rs.getInt("id"));
                 cuentas.setDescripcion(rs.getString("descripcion"));
                 cuentas.setMonto(rs.getDouble("monto"));
                 if(rs.getInt("idedificio") > 0)cuentas.setEdificio((Edificio)edif.Cargar(rs.getInt("idedificio")));
-                cuentas.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
+                cuentas.setPropiedad((Propiedades)prop.CargarDesdeResumen(rs.getInt("idpropiedad")));
                 cuentas.setFechaalta(rs.getDate("fechaalta"));
                 cuentas.setEstado(rs.getInt("estado"));
                 cuentas.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));

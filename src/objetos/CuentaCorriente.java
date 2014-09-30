@@ -9,6 +9,7 @@ package objetos;
 import interfaces.Facturar;
 import interfaces.Generable;
 import interfaces.Personalizable;
+import interfaces.Propietables;
 import interfaces.Transaccionable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author Usuario
  */
-public class CuentaCorriente implements Generable{
+public class CuentaCorriente implements Generable,Propietables{
     private Integer id;
     private Inquilinos inquilino;
     private Double monto;
@@ -176,6 +177,48 @@ public class CuentaCorriente implements Generable{
                 cta.setInquilino((Inquilinos)inq.Cargar(rs.getInt("idinquilino")));
                 cta.setResumen((Resumenes)res.Cargar(rs.getInt("idresumen")));
                 cta.setRecibo((Comprobantes)fact.cargarPorCodigoAsignado(rs.getInt("idrecibo")));
+                cta.setMonto(rs.getDouble("monto"));
+                cta.setTipoMovimiento(rs.getInt("tipomovimiento"));
+                cta.setFecha(rs.getDate("fecha"));
+                //listado.add(cta);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CuentaCorriente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cta;
+    }
+
+    @Override
+    public Object cargarPorIdPropiedad(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object cargarPorIdPropiedadSolo(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorIdPropiedad(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object cargarDesdePropiedad(Integer id) {
+        Transaccionable tra=new ConeccionLocal();
+        Generable inq=new Inquilinos();
+        Generable res=new Resumenes();
+        Facturar fact=new Comprobantes();
+        Personalizable per=new Usuarios();
+        CuentaCorriente cta=new CuentaCorriente();
+        String sql="select * from cuentascorrientes where id="+id;
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                cta.setId(rs.getInt("id"));
+                
                 cta.setMonto(rs.getDouble("monto"));
                 cta.setTipoMovimiento(rs.getInt("tipomovimiento"));
                 cta.setFecha(rs.getDate("fecha"));

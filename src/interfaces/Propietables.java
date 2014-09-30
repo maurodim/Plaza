@@ -15,4 +15,6 @@ public interface Propietables {
     public Object cargarPorIdPropiedad(Integer id);
     public Object cargarPorIdPropiedadSolo(Integer id);
     public ArrayList listarPorIdPropiedad(Integer id);
+    public Object cargarDesdePropiedad(Integer id);
+    
 }

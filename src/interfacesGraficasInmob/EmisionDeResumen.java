@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import objetos.PdfJava;
 import objetos.Resumenes;
 
 /**
@@ -124,11 +125,13 @@ public class EmisionDeResumen extends javax.swing.JDialog {
         Iterator itR=lstResumenes.listIterator();
         Resumenes res;
         Emitible em=new Resumenes();
+        PdfJava pdf = new PdfJava();
         while(itR.hasNext()){
             res=(Resumenes)itR.next();
             res.setVencimiento(vencimiento);
             //res.setVencimiento(Numeros.ConvertirStringEnDate(String.valueOf(vencimiento)));
             res.setEstado(1);
+            pdf.GenerarPdfResumen(res);
             
         }
         em.GuardarArrayParaEmitir(lstResumenes);

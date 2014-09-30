@@ -6,12 +6,14 @@
 
 package interfacesGraficas;
 
+import Excel.ListadosXls;
 import interfaces.Componable;
 import interfaces.Emitible;
 import interfaces.Generable;
 import interfaces.Listables;
 import interfacesGraficasInmob.EmisionDeResumen;
 import interfacesGraficasInmob.PropietariosMod;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -43,6 +45,7 @@ public class Listados extends javax.swing.JInternalFrame {
     private void CargarTabla(int objeto){
         switch(objeto){
             case 1:
+                this.setTitle("LISTADO DE PROPIETARIOS ");
                 genP=new Propietarios();
                 this.jTable1.setModel(genP.LlenarTabla(0));
                 this.jButton1.setText("Modificar Propietario");
@@ -50,6 +53,7 @@ public class Listados extends javax.swing.JInternalFrame {
                 this.jButton3.setVisible(false);
                 break;
             case 2:
+                this.setTitle("LISTADO DE PROPIEDADES ");
                 genP=new Propiedades();
                 this.jTable1.setModel(genP.LlenarTabla(0));
                 this.jButton1.setText("Modificar Propiedad");
@@ -57,6 +61,7 @@ public class Listados extends javax.swing.JInternalFrame {
                 this.jButton3.setVisible(false);
                 break;
             case 3:
+                this.setTitle("LISTADO DE INQUILINOS");
                 genP=new Inquilinos();
                 this.jTable1.setModel(genP.LlenarTabla(0));
                 this.jButton1.setText("Modificar Inquilino");
@@ -64,11 +69,13 @@ public class Listados extends javax.swing.JInternalFrame {
                 this.jButton3.setVisible(false);
                 break;
             case 4:
+                this.setTitle("LISTADO DE CONTRATOS");
                 genP=new Contratos();
                 this.jTable1.setModel(genP.LlenarTabla(0));
                 this.jButton1.setText("Modificar Contrato");
                 this.jButton2.setText("Eliminar Contrato");
-                this.jButton3.setVisible(false);
+                this.jButton3.setVisible(true);
+                this.jButton3.setText("Emitir Excell");
                 break;
             case 5:
                 this.setTitle("EMISOR DE RESUMENES ");
@@ -165,6 +172,11 @@ public class Listados extends javax.swing.JInternalFrame {
         });
 
         jButton3.setText("jButton3");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -271,6 +283,7 @@ public class Listados extends javax.swing.JInternalFrame {
                 int cantidad=this.jTable1.getRowCount();
                 int numeroR=0;
                 ArrayList listadoResumenes=new ArrayList();
+                
                 Resumenes resum;
                 Generable ge=new Resumenes();
                 Boolean selec=false;
@@ -355,6 +368,16 @@ public class Listados extends javax.swing.JInternalFrame {
         this.jTable1.removeAll();
         CargarTabla(eleccion);
     }//GEN-LAST:event_formInternalFrameActivated
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        ListadosXls listados=new ListadosXls(1);
+        try {
+            listados.ListadoDeContratos();
+        } catch (SQLException ex) {
+            Logger.getLogger(Listados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

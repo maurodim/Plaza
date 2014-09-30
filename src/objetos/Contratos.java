@@ -7,9 +7,13 @@
 package objetos;
 
 import interfaces.Componable;
+import interfaces.Contratable;
 import interfaces.Emitible;
 import interfaces.Generable;
+import interfaces.Montable;
 import interfaces.Personalizable;
+import interfaces.Propietables;
+import interfaces.Resumible;
 import interfaces.Transaccionable;
 import interfacesGraficas.Inicio;
 import java.sql.ResultSet;
@@ -28,7 +32,7 @@ import tablas.MiModeloTablaListado;
  *
  * @author Usuario
  */
-public class Contratos implements Generable,Componable,Emitible{
+public class Contratos implements Generable,Componable,Emitible,Montable,Propietables{
     private Integer id;
     private Date fecha;
     private Double monto1;
@@ -184,9 +188,9 @@ public class Contratos implements Generable,Componable,Emitible{
     @Override
     public ArrayList Listar() {
         ArrayList listado=new ArrayList();
-        Generable inqui=new Inquilinos();
-        Generable prop=new Propiedades();
-        Generable propi=new Propietarios();
+        Contratable inqui=new Inquilinos();
+        Contratable prop=new Propiedades();
+        Contratable propi=new Propietarios();
         Personalizable usu=new Usuarios();
         Generable gar=new Garantes();
         String sql="select * from contratos where contratos.fecha2 > '"+Inicio.fechaDia+"'";
@@ -201,9 +205,11 @@ public class Contratos implements Generable,Componable,Emitible{
                 contrato.setVencimiento1(rs.getString("fecha1"));
                 contrato.setMonto2(rs.getDouble("monto2"));
                 contrato.setVencimiento2(rs.getString("fecha2"));
-                contrato.setInquilino((Inquilinos)inqui.Cargar(rs.getInt("idinquilino")));
-                contrato.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
-                contrato.setPropietario((Propietarios)propi.Cargar(rs.getInt("idpropietario")));
+                contrato.setInquilino((Inquilinos)inqui.CargarDesdeContratos(rs.getInt("idinquilino")));
+                System.out.println("ID CONTRATO :"+contrato.getId());
+                contrato.setPropiedad((Propiedades)prop.CargarDesdeContratos(rs.getInt("idpropiedad")));
+                
+                contrato.setPropietario((Propietarios)propi.CargarDesdeContratos(rs.getInt("idpropietario")));
                 try{
                 contrato.setGarante((Garantes)gar.Cargar(rs.getInt("idgarante")));
                 contrato.setArchivo(rs.getString("archivo"));
@@ -222,9 +228,9 @@ public class Contratos implements Generable,Componable,Emitible{
     @Override
     public Object Cargar(Integer id) {
         //ArrayList listado=new ArrayList();
-        Generable inqui=new Inquilinos();
-        Generable prop=new Propiedades();
-        Generable propi=new Propietarios();
+        Contratable inqui=new Inquilinos();
+        Contratable prop=new Propiedades();
+        Contratable propi=new Propietarios();
         Personalizable usu=new Usuarios();
         Generable gar=new Garantes();
         Contratos contrato=new Contratos();
@@ -240,9 +246,9 @@ public class Contratos implements Generable,Componable,Emitible{
                 contrato.setVencimiento1(rs.getString("fecha1"));
                 contrato.setMonto2(rs.getDouble("monto2"));
                 contrato.setVencimiento2(rs.getString("fecha2"));
-                contrato.setInquilino((Inquilinos)inqui.Cargar(rs.getInt("idinquilino")));
-                contrato.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
-                contrato.setPropietario((Propietarios)propi.Cargar(rs.getInt("idpropietario")));
+                contrato.setInquilino((Inquilinos)inqui.CargarDesdeContratos(rs.getInt("idinquilino")));
+                contrato.setPropiedad((Propiedades)prop.CargarDesdeContratos(rs.getInt("idpropiedad")));
+                contrato.setPropietario((Propietarios)propi.CargarDesdeContratos(rs.getInt("idpropietario")));
                 try{
                 contrato.setGarante((Garantes)gar.Cargar(rs.getInt("idgarante")));
                 }catch(java.lang.UnsupportedOperationException ex){
@@ -329,23 +335,50 @@ public class Contratos implements Generable,Componable,Emitible{
         Object[] fila=new Object[5];
         Transaccionable tra=new ConeccionLocal();
         Propiedades pp;
-        Generable prop=new Propiedades();
+        Contratable prop=new Propiedades();
         Personalizable per=new Usuarios();
+        Resumenes resumen=new Resumenes();
+        Resumible resu=new Resumenes();
+        Generable gen=new Resumenes();
+        Generable genC=new Contratos();
+        Contratos contrato;
+        int resumenId=0;
         String sql="select contratos.id,contratos.monto1,contratos.monto2,contratos.fecha1,contratos.idpropiedad,(select resumenes.id from resumenes where resumenes.IDPROPIEDAD=contratos.idpropiedad and estado=0)as idresumen from contratos where contratos.fecha2 > '"+Inicio.fechaDia+"'";
         System.out.println(sql);
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        Double montot=0.00;
         try {
             while(rs.next()){
                 pp=new Propiedades();
-                pp=(Propiedades) prop.Cargar(rs.getInt("idpropiedad"));
+                pp=(Propiedades) prop.CargarDesdeContratos(rs.getInt("idpropiedad"));
+                contrato=(Contratos) genC.Cargar(rs.getInt("id"));
+                pp.setContrato(contrato);
                 fila[0]=true;
                 fila[1]=pp.getDireccion();
                 if(Inicio.fechaVal.before(rs.getDate("fecha1"))){
-                fila[2]=rs.getDouble("monto1");
+                    montot=rs.getDouble("monto1");
+                    fila[2]=montot;
                 }else{
-                    fila[2]=rs.getDouble("monto2");
+                    montot=rs.getDouble("monto2");
+                    fila[2]=montot;
                 }
-                fila[3]=rs.getInt("idresumen");
+                if(rs.getInt("idresumen")==0){
+                    resumen=new Resumenes();
+                    resumen.setPropiedad(pp);
+                    resumen.setIdGasto(1);
+                    resumen.setMontoTotal(montot);
+                    resumen.setUsuario(Inicio.usuario);
+                    resumen.setEstado(0);
+                    resumen.setIdConcepto(1);
+                    resumen.setDescripcion("alquiler");
+                    gen.Alta(resumen);
+                    resumenId=resumen.getId();
+                    fila[3]=resumen.getId();
+                }else{
+                    resumenId=rs.getInt("idresumen");
+                    fila[3]=rs.getInt("idresumen");
+                }
+                resu.AjustarMontoTotal(resumenId);
                 fila[4]=rs.getInt("id");
                 mod.addRow(fila);   
             }
@@ -359,6 +392,77 @@ public class Contratos implements Generable,Componable,Emitible{
     @Override
     public void GuardarArrayParaEmitir(ArrayList listado) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Double LeerMontoActual(Integer id) {
+        Double mod=0.00;
+        Transaccionable tra=new ConeccionLocal();
+        Propiedades pp;
+        Generable prop=new Propiedades();
+        Personalizable per=new Usuarios();
+        String sql="select * from contratos where id="+id;
+        System.out.println(sql);
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                if(Inicio.fechaVal.before(rs.getDate("fecha1"))){
+                    mod=rs.getDouble("monto1");
+                }else{
+                    mod=rs.getDouble("monto2");
+                }
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Resumenes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return mod;
+    }
+
+    @Override
+    public Object cargarPorIdPropiedad(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object cargarPorIdPropiedadSolo(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList listarPorIdPropiedad(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object cargarDesdePropiedad(Integer id) {
+         Generable inqui=new Inquilinos();
+        Generable prop=new Propiedades();
+        Generable propi=new Propietarios();
+        Personalizable usu=new Usuarios();
+        Generable gar=new Garantes();
+        Contratos contrato=new Contratos();
+        String sql="select * from contratos where id="+id;
+        Transaccionable tra=new ConeccionLocal();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                
+                contrato.setId(rs.getInt("id"));
+                contrato.setFecha(rs.getDate("fecha"));
+                contrato.setMonto1(rs.getDouble("monto1"));
+                contrato.setVencimiento1(rs.getString("fecha1"));
+                contrato.setMonto2(rs.getDouble("monto2"));
+                contrato.setVencimiento2(rs.getString("fecha2"));
+                
+                contrato.setUsuario((Usuarios)usu.buscarPorNumero(rs.getInt("idusuario")));
+                //listado.add(contrato);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Contratos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return contrato;
     }
     
     

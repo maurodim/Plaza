@@ -11,6 +11,7 @@ import interfaces.Componable;
 import interfaces.Generable;
 import interfaces.Listables;
 import interfaces.Propietables;
+import interfaces.Resumible;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.table.DefaultTableModel;
@@ -46,6 +47,7 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         initComponents();
         this.jPanel3.setVisible(false);
         this.jPanel4.setVisible(true);
+        this.jButton1.setVisible(false);
     }
 
     /**
@@ -374,13 +376,15 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         gen.Alta(cuenta);
             
         }else{
+            
             res.Alta(resumen);
             cuenta.setIdResumen(resumen.getId());
         
         gen.Alta(cuenta);
         }
         System.out.println(" id resumen "+resumen.getId());
-        
+        Resumible resu=new Resumenes();
+        resu.AjustarMontoTotal(resumen.getId());
         this.jTable2.removeAll();
         Componable co=new Cuentas();
         Listables lts=new Cuentas();
