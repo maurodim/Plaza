@@ -40,6 +40,11 @@ public class ConeccionLocal implements Transaccionable{
     private Statement st;
     private String driver1="org.apache.derby.jdbc.EmbeddedDriver";
 
+    public Connection getCon() {
+        return con;
+    }
+    
+    
     public ConeccionLocal(){
             
               Connection dbConnection = null;
@@ -60,6 +65,7 @@ public class ConeccionLocal implements Transaccionable{
             try {
                 Class.forName(driver1).newInstance();
                 dbConnection = DriverManager.getConnection (strUrl);
+                this.con=dbConnection;
                 st=dbConnection.createStatement();
             } catch (InstantiationException ex) {
             Logger.getLogger(ConeccionLocal.class.getName()).log(Level.SEVERE, null, ex);

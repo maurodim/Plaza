@@ -5,24 +5,32 @@
  */
 package objetos;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import interfaces.Pdfable;
 import interfaces.Transaccionable;
 import interfacesGraficas.Inicio;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.MessagingException;
+import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 /**
  *
@@ -32,55 +40,68 @@ public class PdfJava implements Pdfable{
 
     @Override
     public String GenerarPdfResumen(Object objeto) {
-        Transaccionable tra=new ConeccionLocal();
-        
+        //Transaccionable tra=new ConeccionLocal();
+        ConeccionLocal con=new ConeccionLocal();
+        Connection ch=con.getCon();
         
             
             String detalle = null;
             Resumenes resumen=new Resumenes();
             resumen=(Resumenes)objeto;
             String direccion="";
-            String sql="select * from cuentas where idresumen="+resumen.getId();
-            ResultSet rs=tra.leerConjuntoDeRegistros(sql);
-        try {
-            while(rs.next()){
-                detalle+=rs.getString("descripcion")+" monto: "+rs.getDouble("monto")+"";
-            }
-            rs.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(PdfJava.class.getName()).log(Level.SEVERE, null, ex);
-        }
             
-            try{
+         Map listConsolidado=new HashMap();
+        listConsolidado.put("idResumen1",resumen.getId());   
+            String master="C://Gestion//Plantillas//resumenesPdf.jasper";
             direccion="C://Gestion//Resumenes//"+resumen.getId()+"_Resumen.pdf";
-            try (OutputStream texto_salida = new FileOutputStream(direccion)) {
-                Document doc=new Document();
-                PdfWriter writer=PdfWriter.getInstance(doc, texto_salida);
-                doc.open();
-                PdfContentByte pcb=writer.getDirectContent();
-                BaseFont bf=BaseFont.createFont(BaseFont.COURIER,BaseFont.CP1250,BaseFont.NOT_EMBEDDED);
-                pcb.setFontAndSize(bf,12);
-                pcb.beginText();
-                
-                pcb.setTextMatrix(20,320);
-                pcb.showText("Fecha :"+Inicio.fechaDia);
-                pcb.setTextMatrix(30,50);
-                pcb.showText("Inquilino : mauro Di");
-                pcb.setTextMatrix(50,320);
-                pcb.showText("Resumen N° :"+resumen.getId());
-                pcb.endText();
-                //doc.add(new Paragraph(detalle));
-                doc.close();
-                texto_salida.close();
-            }
-        } catch (DocumentException ex) {
-            Logger.getLogger(PdfJava.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(PdfJava.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+            String destino=direccion;
+        String destino2=direccion;
+        JasperReport reporte = null;
+        try {
+            reporte = (JasperReport)JRLoader.loadObject(master);
+        } catch (JRException ex) {
             Logger.getLogger(PdfJava.class.getName()).log(Level.SEVERE, null, ex);
         }
-            return direccion;
+        JasperPrint jasperPrint = null;
+        try {
+            jasperPrint = JasperFillManager.fillReport(reporte, listConsolidado,ch);
+        } catch (JRException ex) {
+            Logger.getLogger(PdfJava.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        JRExporter exporter=new JRPdfExporter();
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint);
+        exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File(destino));
+        exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File(destino2));
+        try {
+            exporter.exportReport();
+                     //cnn.close();
+        } catch (JRException ex) {
+            Logger.getLogger(PdfJava.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                 
+            File f=new File(destino2);
+        
+            if(f.exists()){
+            JOptionPane.showMessageDialog(null,"pdf generado "+destino2);
+              /*  
+                try {
+                Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+destino2);
+                Mail mail=new Mail();
+                mail.setDireccionFile(destino2);
+                mail.setDetalleListado(resumen.getId()+"hdr.pdf");
+                mail.setAsunto("Resumen de Liquidacion emitido N° :"+resumen.getId());
+                         try {
+                             mail.enviarMailRepartoCargaCompleta();
+                         } catch (MessagingException ex) {
+                             Logger.getLogger(PdfJava.class.getName()).log(Level.SEVERE, null, ex);
+                         }
+            } catch (IOException ex) {
+                Logger.getLogger(PdfJava.class.getName()).log(Level.SEVERE, null, ex);
+            }
+              */  
+                
+}
+       return direccion;
     }
     
 }
