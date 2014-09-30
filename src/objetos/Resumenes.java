@@ -6,13 +6,16 @@
 
 package objetos;
 
+import Conversores.Numeros;
 import interfaces.Componable;
 import interfaces.Emitible;
 import interfaces.Generable;
 import interfaces.Listables;
 import interfaces.Personalizable;
 import interfaces.Propietables;
+import interfaces.Saldable;
 import interfaces.Transaccionable;
+import interfacesGraficas.Inicio;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,7 +32,7 @@ import tablas.MiModeloTablaCargaHdr;
  *
  * @author Usuario
  */
-public class Resumenes implements Generable,Componable,Emitible,Listables,Propietables{
+public class Resumenes implements Generable,Componable,Emitible,Listables,Propietables,Saldable{
     private Integer id;
     private Propiedades propiedad;
     private ArrayList gastos;
@@ -465,6 +468,46 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
             
             
         }
+    }
+
+    @Override
+    public Double calcularSaldoActual(Integer id) {
+        //SE CALCULA EL SALDO POR EL ID DEL CONTRATO, ASI SIRVE PARA TODOS LOS PARTICIPANTES
+        // INQUILINOS, PROPIETARIOS Y PROPIEDADES
+        Double saldo=0.00;
+        Double total=0.00;
+        Integer dias=0;
+        String sql="select * from resumenes where idpropiedad="+id+" and estado=1";
+        Transaccionable tra=new ConeccionLocal();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+                if(Inicio.fechaVal.after(rs.getDate("fechavencimiento"))){
+                    dias=Numeros.CalcularDiasAFechaActual(rs.getDate("fechavencimiento"));
+                    saldo=rs.getDouble("saldo") * Inicio.porcentajeRecargo * dias;
+                    System.out.println("SALDO :"+saldo+" propiedad "+id);
+                }
+                total=total + saldo;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Resumenes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return total;
+    }
+
+    @Override
+    public Boolean ajustarSaldo(Integer id, Double movimiento) {
+        Boolean correcto=false;
+        String sql;
+        if(movimiento==0.00){
+            sql="update resumenes set saldo="+movimiento+",estado=2 where id="+id;
+        }else{
+            sql="update resumenes set saldo="+movimiento+" where id="+id;
+        }
+        Transaccionable tra=new ConeccionLocal();
+        correcto=tra.guardarRegistro(sql);
+        
+        return correcto;
     }
     
     

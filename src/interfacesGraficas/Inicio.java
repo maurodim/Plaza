@@ -61,6 +61,7 @@ public class Inicio extends javax.swing.JFrame {
     public static String fechaDia;
     public static Date fechaVal;
     public static Integer numeroCajaAdministradora=0;
+    public static Double porcentajeRecargo=0.04;
     private BufferedImage img;
     public static Boolean coneccionRemota=true;
     private static Actualiza actu=new Actualiza();

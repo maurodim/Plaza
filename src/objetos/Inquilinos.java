@@ -349,6 +349,7 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable{
          Generable prop=new Propiedades();
         Personalizable per=new Usuarios();
         Saldable sal=new Inquilinos();
+        Saldable salR=new Resumenes();
         modelo.addColumn("numero");
         modelo.addColumn("nombre");
         modelo.addColumn("dni");
@@ -368,8 +369,8 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable{
                 fila[3]=rs.getString("telefono");
                 fila[4]=rs.getString("mail");
                 fila[5]=rs.getString("prop");
-                sal.calcularSaldoActual(rs.getInt("propiedad"));
-                fila[6]="";
+                //sal.calcularSaldoActual(rs.getInt("propiedad"));
+                fila[6]=salR.calcularSaldoActual(rs.getInt("propiedad"));
                 modelo.addRow(fila);
             }
             rs.close();
