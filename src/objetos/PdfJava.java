@@ -6,6 +6,7 @@
 package objetos;
 
 
+import interfaces.Generable;
 import interfaces.Pdfable;
 import interfaces.Transaccionable;
 import interfacesGraficas.Inicio;
@@ -82,7 +83,27 @@ public class PdfJava implements Pdfable{
             File f=new File(destino2);
         
             if(f.exists()){
-            JOptionPane.showMessageDialog(null,"pdf generado "+destino2);
+            //JOptionPane.showMessageDialog(null,"pdf generado "+destino2);
+            ServidorDeCorreos servidor=new ServidorDeCorreos();
+            Boolean accionDeServ;
+        Generable ge=new ServidorDeCorreos();
+        servidor=(ServidorDeCorreos) ge.Cargar(1);
+        if(servidor.getPuerto() == 0){
+            accionDeServ=true;
+        }else{
+            accionDeServ=false;
+           
+        }
+        Mail mail=new Mail(servidor);
+                mail.setDireccionFile(destino2);
+                mail.setDetalleListado(resumen.getId()+"_resumen.pdf");
+                mail.setAsunto("Resumen de Liquidacion emitido N° :"+resumen.getId());
+                mail.setDestinatario("contacto@bambusoft.com.ar");
+                         try {
+                             mail.enviarMailRepartoCargaCompleta();
+                         } catch (MessagingException ex) {
+                             Logger.getLogger(PdfJava.class.getName()).log(Level.SEVERE, null, ex);
+                         }
               /*  
                 try {
                 Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+destino2);

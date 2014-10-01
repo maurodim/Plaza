@@ -45,6 +45,7 @@ public class Mail {
         serv=new ServidorDeCorreos();
         serv=se;
         password=serv.getClave();
+        System.out.println("clave "+password);
     }
 
     
@@ -64,7 +65,7 @@ public class Mail {
     
     private void init(){
         propiedades.put("mail.smtp.host",serv.getHost());
-        propiedades.put("mail.smtp.starttls.enable","true");//serv.isStats());
+        propiedades.put("mail.smtp.starttls.enable","false");//serv.isStats());
         propiedades.put("mail.transport.protocol","smtp");
         propiedades.put("mail.smtp.port",serv.getPuerto());
         propiedades.put("mail.smtp.mail.sender",serv.getUsuario());
@@ -76,6 +77,7 @@ public class Mail {
     public void enviarMailRepartoCargaCompleta() throws MessagingException{
         init();
         try{
+            System.out.println(direccionFile);
             MimeMessage mensaje=new MimeMessage(sesion);
             mensaje.setFrom(new InternetAddress((String)propiedades.get("mail.smtp.mail.sender")));
             mensaje.addRecipient(Message.RecipientType.TO,new InternetAddress(this.destinatario));
