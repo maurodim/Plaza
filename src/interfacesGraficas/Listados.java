@@ -87,6 +87,11 @@ public class Listados extends javax.swing.JInternalFrame {
                 this.jButton2.setVisible(false);
                 this.jButton3.setVisible(false);
                 break;
+            case 6:
+                this.setTitle("LISTADO DE RESUMENES GENERADOS");
+                genP=new Resumenes();
+                this.jTable1.setModel(genP.LlenarTabla(0));
+                break;
         }
     }
     /**

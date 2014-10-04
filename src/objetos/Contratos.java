@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import tablas.MiModeloTablaCargaHdr;
 import tablas.MiModeloTablaListado;
@@ -250,7 +251,7 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
                 contrato.setPropiedad((Propiedades)prop.CargarDesdeContratos(rs.getInt("idpropiedad")));
                 contrato.setPropietario((Propietarios)propi.CargarDesdeContratos(rs.getInt("idpropietario")));
                 try{
-                contrato.setGarante((Garantes)gar.Cargar(rs.getInt("idgarante")));
+                //contrato.setGarante((Garantes)gar.Cargar(rs.getInt("idgarante")));
                 }catch(java.lang.UnsupportedOperationException ex){
                     System.err.println(ex);
                 }
@@ -349,6 +350,7 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
         Double montot=0.00;
         try {
             while(rs.next()){
+                if(rs.getInt("idpropiedad") > 0){
                 pp=new Propiedades();
                 pp=(Propiedades) prop.CargarDesdeContratos(rs.getInt("idpropiedad"));
                 contrato=(Contratos) genC.Cargar(rs.getInt("id"));
@@ -365,6 +367,11 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
                 if(rs.getInt("idresumen")==0){
                     resumen=new Resumenes();
                     resumen.setPropiedad(pp);
+                    if(pp.getId() > 0){
+                        
+                    }else{
+                        JOptionPane.showMessageDialog(null, "la propiedad que no carga es id "+rs.getInt("idpropiedad"));
+                    }
                     resumen.setIdGasto(1);
                     resumen.setMontoTotal(montot);
                     resumen.setUsuario(Inicio.usuario);
@@ -380,7 +387,8 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
                 }
                 resu.AjustarMontoTotal(resumenId);
                 fila[4]=rs.getInt("id");
-                mod.addRow(fila);   
+                mod.addRow(fila);  
+                }
             }
             rs.close();
         } catch (SQLException ex) {

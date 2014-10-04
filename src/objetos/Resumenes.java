@@ -154,6 +154,11 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
         Resumenes resumen=new Resumenes();
         Montable mont=new Contratos();
         resumen=(Resumenes)objeto;
+        if(resumen.getPropiedad().getId() > 0){
+            
+        }else{
+            System.out.println("la propiedad no esta cargada");
+        }
         String sql="insert into resumenes (idpropiedad,idgasto,montototal,idusuario,estado,idconcepto,descripcion) values ("+resumen.getPropiedad().getId()+","+resumen.getIdGasto()+","+resumen.getMontoTotal()+","+resumen.getUsuario().getNumeroId()+","+resumen.getEstado()+","+resumen.getIdConcepto()+",'"+resumen.getDescripcion()+"')";
         tra.guardarRegistro(sql);
         sql="select id from resumenes order by id";
@@ -262,17 +267,29 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
 
     @Override
     public DefaultTableModel LlenarTabla(Integer id) {
+        
         DefaultTableModel mod=new DefaultTableModel();
         mod.addColumn("FECHA");
         mod.addColumn("DESCRIPCION");
         mod.addColumn("MONTO");
         mod.addColumn("Num RESUMEN");
-        Object[] fila=new Object[4];
+        Object[] fila;
+        if(id==0){
+            mod.addColumn("PROPIEDAD");
+            fila=new Object[5];
+        }else{
+            fila=new Object[4];
+        }
         Transaccionable tra=new ConeccionLocal();
         
         Generable prop=new Propiedades();
         Personalizable per=new Usuarios();
-        String sql="select * from resumenes where estado=0 and idpropiedad="+id+" order by id";
+        String sql="";
+        if(id==0){
+            sql="select resumenes.fecha,resumenes.descripcion,resumenes.montototal,resumenes.id,(select propiedades.direccion from propiedades where propiedades.id=resumenes.idpropiedad)as propiedad from resumenes order by id desc";
+        }else{
+            sql="select * from resumenes where estado=0 and idpropiedad="+id+" order by id";
+        }
         System.out.println(sql);
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -281,6 +298,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
                 fila[1]=rs.getString("descripcion");
                 fila[2]=rs.getDouble("montototal");
                 fila[3]=rs.getInt("id");
+                if(id==0)fila[4]=rs.getString("propiedad");
                 mod.addRow(fila);
                 
                 /*

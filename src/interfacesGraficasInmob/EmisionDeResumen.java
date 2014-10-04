@@ -131,8 +131,11 @@ public class EmisionDeResumen extends javax.swing.JDialog {
             res.setVencimiento(vencimiento);
             //res.setVencimiento(Numeros.ConvertirStringEnDate(String.valueOf(vencimiento)));
             res.setEstado(1);
+            if(res.getPropiedad().getId()==0){
+                System.err.println(res.getIdConcepto());
+            }else{
             pdf.GenerarPdfResumen(res);
-            
+                    }
         }
         em.GuardarArrayParaEmitir(lstResumenes);
         

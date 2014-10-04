@@ -38,12 +38,17 @@ import net.sf.jasperreports.engine.util.JRLoader;
  * @author mauro di
  */
 public class PdfJava implements Pdfable{
+    private ConeccionLocal con;
+    private Connection ch;
+    public PdfJava() {
+        con=new ConeccionLocal();
+        ch=con.getCon();
+    }
 
     @Override
     public String GenerarPdfResumen(Object objeto) {
         //Transaccionable tra=new ConeccionLocal();
-        ConeccionLocal con=new ConeccionLocal();
-        Connection ch=con.getCon();
+        
         
             
             String detalle = null;
@@ -86,15 +91,15 @@ public class PdfJava implements Pdfable{
             //JOptionPane.showMessageDialog(null,"pdf generado "+destino2);
             ServidorDeCorreos servidor=new ServidorDeCorreos();
             Boolean accionDeServ;
-        Generable ge=new ServidorDeCorreos();
-        servidor=(ServidorDeCorreos) ge.Cargar(1);
-        if(servidor.getPuerto() == 0){
-            accionDeServ=true;
-        }else{
-            accionDeServ=false;
+            Generable ge=new ServidorDeCorreos();
+            servidor=(ServidorDeCorreos) ge.Cargar(1);
+            if(servidor.getPuerto() == 0){
+                accionDeServ=true;
+            }else{
+                accionDeServ=false;
            
-        }
-        Mail mail=new Mail(servidor);
+            }
+            Mail mail=new Mail(servidor);
                 mail.setDireccionFile(destino2);
                 mail.setDetalleListado(resumen.getId()+"_resumen.pdf");
                 mail.setAsunto("Resumen de Liquidacion emitido N° :"+resumen.getId());
@@ -121,7 +126,12 @@ public class PdfJava implements Pdfable{
             }
               */  
                 
-}
+        }
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(PdfJava.class.getName()).log(Level.SEVERE, null, ex);
+        }
        return direccion;
     }
     
