@@ -159,7 +159,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
         }else{
             System.out.println("la propiedad no esta cargada");
         }
-        String sql="insert into resumenes (idpropiedad,idgasto,montototal,idusuario,estado,idconcepto,descripcion) values ("+resumen.getPropiedad().getId()+","+resumen.getIdGasto()+","+resumen.getMontoTotal()+","+resumen.getUsuario().getNumeroId()+","+resumen.getEstado()+","+resumen.getIdConcepto()+",'"+resumen.getDescripcion()+"')";
+        String sql="insert into resumenes (idpropiedad,idgasto,montototal,idusuario,estado,idconcepto,descripcion,saldo) values ("+resumen.getPropiedad().getId()+","+resumen.getIdGasto()+","+resumen.getMontoTotal()+","+resumen.getUsuario().getNumeroId()+","+resumen.getEstado()+","+resumen.getIdConcepto()+",'"+resumen.getDescripcion()+"',"+resumen.getMontoTotal()+")";
         tra.guardarRegistro(sql);
         sql="select id from resumenes order by id";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);

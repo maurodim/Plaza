@@ -23,6 +23,8 @@ import objetos.Inquilinos;
 import objetos.Propiedades;
 import objetos.Propietarios;
 import objetos.Resumenes;
+import objetos.Saldos;
+import objetos.pdfsJavaGenerador;
 import tablas.MiModeloTablaCargaHdr;
 import tablas.MiModeloTablaListado;
 
@@ -41,6 +43,7 @@ public class Listados extends javax.swing.JInternalFrame {
         initComponents();
         CargarTabla(objeto);
         eleccion=objeto;
+        this.jButton4.setVisible(false);
     }
     private void CargarTabla(int objeto){
         switch(objeto){
@@ -58,7 +61,9 @@ public class Listados extends javax.swing.JInternalFrame {
                 this.jTable1.setModel(genP.LlenarTabla(0));
                 this.jButton1.setText("Modificar Propiedad");
                 this.jButton2.setText("Eliminar Propiedad");
-                this.jButton3.setVisible(false);
+                this.jButton3.setVisible(true);
+                this.jButton4.setVisible(true);
+                this.jButton4.setText("Ver Saldo");
                 break;
             case 3:
                 this.setTitle("LISTADO DE INQUILINOS");
@@ -110,6 +115,7 @@ public class Listados extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setClosable(true);
         setMaximizable(true);
@@ -183,6 +189,13 @@ public class Listados extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton4.setText("jButton4");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -192,7 +205,8 @@ public class Listados extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -204,6 +218,8 @@ public class Listados extends javax.swing.JInternalFrame {
                 .addComponent(jButton2)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton4)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -225,7 +241,7 @@ public class Listados extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         pack();
@@ -381,14 +397,33 @@ public class Listados extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Listados.class.getName()).log(Level.SEVERE, null, ex);
         }
+        pdfsJavaGenerador pdf=new pdfsJavaGenerador();
+        pdf.start();
         
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        ListadoDeSaldos listadoS=new ListadoDeSaldos(null,true);
+        Generable gen=new Saldos();
+        Componable comp=new Saldos();
+        ArrayList lstSaldos=new ArrayList();
+        int renglon=this.jTable1.getSelectedRow();
+        int numero=(int) this.jTable1.getValueAt(renglon,0);
+        Saldos.setIdBuscador(numero);
+        lstSaldos=gen.Listar();
+        MiModeloTablaCargaHdr mod=new MiModeloTablaCargaHdr();
+        mod=(MiModeloTablaCargaHdr) comp.LlenarTablaConArray(lstSaldos);
+        listadoS.jTable1.setModel(mod);
+//listadoS.jList1.setModel(comp.LlenarListConArray(lstSaldos));
+        listadoS.setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

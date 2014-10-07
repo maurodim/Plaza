@@ -344,7 +344,8 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
         Generable genC=new Contratos();
         Contratos contrato;
         int resumenId=0;
-        String sql="select contratos.id,contratos.monto1,contratos.monto2,contratos.fecha1,contratos.idpropiedad,(select resumenes.id from resumenes where resumenes.IDPROPIEDAD=contratos.idpropiedad and estado=0)as idresumen from contratos where contratos.fecha2 > '"+Inicio.fechaDia+"'";
+        //String sql="select contratos.id,contratos.monto1,contratos.monto2,contratos.fecha1,contratos.idpropiedad,(select resumenes.id from resumenes where resumenes.IDPROPIEDAD=contratos.idpropiedad and estado=0)as idresumen from contratos where contratos.fecha2 > '"+Inicio.fechaDia+"'";
+        String sql="select contratos.id,contratos.monto1,contratos.monto2,contratos.fecha1,contratos.idpropiedad,(contratos.idgarante) as idresumen from contratos where contratos.fecha2 > '"+Inicio.fechaDia+"'";
         System.out.println(sql);
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         Double montot=0.00;

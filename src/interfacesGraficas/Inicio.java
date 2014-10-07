@@ -8,6 +8,7 @@ import Actualizaciones.Actualiza;
 
 import Excel.InformeMensual;
 import interfaces.Cajeables;
+import interfaces.Generable;
 import interfaces.Transaccionable;
 import interfacesGraficasInmob.Parametros;
 import interfacesGraficasInmob.PropietariosMod;
@@ -30,6 +31,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -42,6 +44,7 @@ import javax.swing.Timer;
 import objetos.Articulos;
 import objetos.Cajas;
 import objetos.ClientesTango;
+import objetos.Comisiones;
 import objetos.ConeccionLocal;
 import objetos.GastosF;
 import objetos.ListasDePrecios;
@@ -62,6 +65,7 @@ public class Inicio extends javax.swing.JFrame {
     public static Date fechaVal;
     public static Integer numeroCajaAdministradora=0;
     public static Double porcentajeRecargo=0.04;
+    public static ArrayList comisiones;
     private BufferedImage img;
     public static Boolean coneccionRemota=true;
     private static Actualiza actu=new Actualiza();
@@ -84,6 +88,8 @@ public class Inicio extends javax.swing.JFrame {
         }else{
             Proveedores.cargarListadoProv();
         }
+        Generable gg=new Comisiones();
+        comisiones=gg.Listar();
         ClientesTango.cargarMap();
         ListasDePrecios.cargarMap();
 //        Cajas.BackapearCajas();
@@ -205,6 +211,7 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
 
+        jDesktopPane1.setBackground(java.awt.Color.gray);
         jDesktopPane1.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 jDesktopPane1ComponentShown(evt);
