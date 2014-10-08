@@ -6,7 +6,16 @@
 package interfacesGraficas;
 
 import Conversores.Numeros;
+import Documentos.CuerpoDetalle;
+import Documentos.Encabezado;
+import Documentos.PieDocumento;
+import Documentos.ResumenDeSaldo;
+import interfaces.Contratable;
+import interfaces.Generable;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import objetos.Inquilinos;
+import objetos.Propiedades;
 import objetos.Saldos;
 import tablas.MiModeloTablaCargaHdr;
 
@@ -53,6 +62,11 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
         });
 
         jButton2.setText("Cerrar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(mod);
         jScrollPane2.setViewportView(jTable1);
@@ -125,6 +139,37 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
         }
         System.out.println("cantidad elegidos "+listadoSeleccion.size());
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(listadoSeleccion.size()==0){
+            JOptionPane.showMessageDialog(this,"No se ha seleccionado ningún items");
+        }else{
+            //aca debo llamar a documento para crear el pdf con el resumen de saldo
+            Encabezado encabezado=new Encabezado();
+            Inquilinos inquilino=new Inquilinos();
+            Propiedades propiedad=new Propiedades();
+            Generable gen=new Propiedades();
+            propiedad=(Propiedades) gen.Cargar(Saldos.getIdBuscador());
+            
+            Contratable genI=new Inquilinos();
+            //gen.Cargar(WIDTH)
+            inquilino=(Inquilinos)genI.CargarDesdePropiedad(propiedad.getId());
+            encabezado.setFecha(Inicio.fechaDia);
+            encabezado.setNombre(inquilino.getNombre());
+            encabezado.setDireccion(inquilino.getDomicilioRef());
+            encabezado.setIdComprobante("Resumen de Saldo");
+            encabezado.setLocalidad("Santa Fe");
+            encabezado.setNumeroDeCuit(inquilino.getCuit());
+            encabezado.setTelefono(inquilino.getTelefono());
+            encabezado.setTextoSuperior("INMOBILIARIA PLAZA");
+            CuerpoDetalle cuerpo=new CuerpoDetalle();
+            cuerpo.setDetalle(listadoSeleccion);
+            PieDocumento pie=new PieDocumento("Este es el pie del documento");
+            
+            ResumenDeSaldo resumen=new ResumenDeSaldo(encabezado,cuerpo,pie);
+            resumen.start();
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

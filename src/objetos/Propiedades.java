@@ -527,6 +527,11 @@ public class Propiedades implements Generable,Listables,Componable,Contratable,R
     public Double AjustarMontoTotal(Integer id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public Object CargarDesdePropiedad(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }

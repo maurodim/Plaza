@@ -449,6 +449,11 @@ public class Propietarios implements Generable,Componable,Contratable,Propietabl
         }
         return propietario;
     }
+
+    @Override
+    public Object CargarDesdePropiedad(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }

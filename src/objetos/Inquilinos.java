@@ -480,5 +480,36 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable,Contr
        }
        return inquilino;    
     }
+
+    @Override
+    public Object CargarDesdePropiedad(Integer id) {
+        Transaccionable tra=new ConeccionLocal();
+        Generable propi=new Propiedades();
+        Generable gar=new Garantes();
+        Generable cta=new CuentaCorriente();
+        ArrayList listado=new ArrayList();
+        Inquilinos inquilino=new Inquilinos();
+        String sql="select * from inquilinos where propiedad="+id;
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+       try {
+           while(rs.next()){
+               
+               inquilino.setId(rs.getInt("id"));
+               inquilino.setNombre(rs.getString("nombre"));
+               inquilino.setDni(rs.getString("dni"));
+               inquilino.setTelefono(rs.getString("telefono"));
+               inquilino.setDomicilioRef(rs.getString("domicilio"));
+               inquilino.setMail(rs.getString("mail"));
+               inquilino.setObservaciones(rs.getString("observaciones"));
+               inquilino.setFechaAlta(rs.getDate("fechaalta"));
+               
+               //listado.add(inquilino);
+           }
+           rs.close();
+       } catch (SQLException ex) {
+           Logger.getLogger(Inquilinos.class.getName()).log(Level.SEVERE, null, ex);
+       }
+       return inquilino;    
+    }
    
 }

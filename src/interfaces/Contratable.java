@@ -11,4 +11,5 @@ package interfaces;
  */
 public interface Contratable {
     public Object CargarDesdeContratos(Integer id);
+    public Object CargarDesdePropiedad(Integer id);
 }

@@ -34,6 +34,10 @@ public class Saldos implements Generable,Componable{
     private Integer tipo;
     private Integer idResumen;
 
+    public static Integer getIdBuscador() {
+        return idBuscador;
+    }
+
     public static void setIdBuscador(Integer idBuscador) {
         Saldos.idBuscador = idBuscador;
     }
@@ -141,6 +145,7 @@ public class Saldos implements Generable,Componable{
                saldo.setTotal(tot);
                saldo.setIdResumen(rs.getInt("id"));
                saldo.setVencimiento(rs.getDate("fechavencimiento"));
+               saldo.setIdTitular(Saldos.idBuscador);
                resultado.add(saldo);
             }
         } catch (SQLException ex) {
