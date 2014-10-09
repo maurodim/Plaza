@@ -33,6 +33,16 @@ public class Saldos implements Generable,Componable{
     private Double total;
     private Integer tipo;
     private Integer idResumen;
+    private String vencimientoString;
+
+    public String getVencimientoString() {
+        return vencimientoString;
+    }
+
+    public void setVencimientoString(String vencimientoString) {
+        this.vencimientoString = vencimientoString;
+    }
+    
 
     public static Integer getIdBuscador() {
         return idBuscador;
@@ -130,17 +140,26 @@ public class Saldos implements Generable,Componable{
         Saldos saldo;
         Comisiones comision=new Comisiones();
         comision=(Comisiones)Inicio.comisiones.get(0);
-        String sql="select * from resumenes where fechavencimiento < '"+Inicio.fechaDia+"' and estado=1 and idpropiedad="+Saldos.idBuscador;
+        //String sql="select * from resumenes where fechavencimiento < '"+Inicio.fechaDia+"' and estado=1 and idpropiedad="+Saldos.idBuscador;
+        String sql="select * from resumenes where estado=1 and idpropiedad="+Saldos.idBuscador;
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rs.next()){
                saldo=new Saldos();
                saldo.setIdTitular(rs.getInt("idpropiedad"));
                Double sald=rs.getDouble("saldo");
-               Integer dias=Numeros.CalcularDiasAFechaActual(rs.getDate("fechavencimiento"));
-               Double total=sald * dias;
-               Double part1=total * comision.getPorcentaje();
-               Double tot=sald + part1;
+               Integer dias=0;
+               if(Inicio.fechaVal.after(rs.getDate("fechavencimiento"))){
+               dias=Numeros.CalcularDiasAFechaActual(rs.getDate("fechavencimiento"));
+               }
+               Double tot=0.00;
+               if(dias > 0){
+               Double total1=sald * dias;
+               Double part1=total1 * comision.getPorcentaje();
+               tot=sald + part1;
+               }else{
+                   tot=sald;
+               }
                saldo.setSaldo(sald);
                saldo.setTotal(tot);
                saldo.setIdResumen(rs.getInt("id"));
@@ -190,6 +209,7 @@ public class Saldos implements Generable,Componable{
     public DefaultTableModel LlenarTablaConArray(ArrayList listado) {
         MiModeloTablaCargaHdr modelo=new MiModeloTablaCargaHdr();
         Iterator il=listado.listIterator();
+        Double recargo=0.00;
         Saldos saldo=new Saldos();
         modelo.addColumn("seleccion");
          modelo.addColumn("numero Resumen");
@@ -204,7 +224,9 @@ public class Saldos implements Generable,Componable{
             fila[1]=saldo.getIdResumen();
             fila[2]=saldo.getVencimiento();
             fila[3]=saldo.getSaldo();
-            fila[4]=saldo.getTotal() - saldo.getSaldo();
+            recargo=saldo.getTotal() - saldo.getSaldo();
+            saldo.setRecargo(recargo);
+            fila[4]=saldo.getRecargo();
             fila[5]=saldo.getTotal();
             modelo.addRow(fila);
 //modelo.addElement("Resumen :"+saldo.getIdResumen()+"Vencimiento :"+saldo.getVencimiento()+" Saldo actual :"+saldo.getSaldo());

@@ -124,14 +124,20 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
         Integer id;
         Double ss;
         Double tt;
+        Double rr;
+        String venc=null;
         for(int i=0; i< cantidad;i++){
             sel=(Boolean) jTable1.getValueAt(i, 0);
             if(sel){
             saldo=new Saldos();
             id=Integer.parseInt(String.valueOf(jTable1.getValueAt(i,1)));
             saldo.setIdResumen(id);
+            venc=String.valueOf(jTable1.getValueAt(i,2));
+            saldo.setVencimientoString(venc);
             ss=Numeros.ConvertirStringADouble(String.valueOf(jTable1.getValueAt(i,3)));
             saldo.setSaldo(ss);
+            rr=Numeros.ConvertirStringADouble(String.valueOf(jTable1.getValueAt(i,4)));
+            saldo.setRecargo(rr);
             tt=Numeros.ConvertirStringADouble(String.valueOf(jTable1.getValueAt(i,5)));
             saldo.setTotal(tt);
             listadoSeleccion.add(saldo);
