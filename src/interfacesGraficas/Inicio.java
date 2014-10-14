@@ -46,6 +46,7 @@ import objetos.Cajas;
 import objetos.ClientesTango;
 import objetos.Comisiones;
 import objetos.ConeccionLocal;
+import objetos.Configuracion;
 import objetos.GastosF;
 import objetos.ListasDePrecios;
 import objetos.Proveedores;
@@ -69,6 +70,7 @@ public class Inicio extends javax.swing.JFrame {
     private BufferedImage img;
     public static Boolean coneccionRemota=true;
     private static Actualiza actu=new Actualiza();
+    public static Configuracion configuracion=new Configuracion();
 
     public void setNiv(Integer nive) {
         niv = nive;

@@ -49,6 +49,7 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Listado de Saldos");
@@ -61,7 +62,7 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
             }
         });
 
-        jButton2.setText("Cerrar");
+        jButton2.setText("Generar Resumen");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -70,6 +71,8 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
 
         jTable1.setModel(mod);
         jScrollPane2.setViewportView(jTable1);
+
+        jButton3.setText("Generar Recibo");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -81,7 +84,8 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -93,7 +97,9 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)))
+                        .addComponent(jButton2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -164,13 +170,13 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
             encabezado.setNombre(inquilino.getNombre());
             encabezado.setDireccion(inquilino.getDomicilioRef());
             encabezado.setIdComprobante("Resumen de Saldo");
-            encabezado.setLocalidad("Santa Fe");
+            encabezado.setLocalidad(Inicio.configuracion.getLocalidad());
             encabezado.setNumeroDeCuit(inquilino.getCuit());
             encabezado.setTelefono(inquilino.getTelefono());
-            encabezado.setTextoSuperior("INMOBILIARIA PLAZA");
+            encabezado.setTextoSuperior(Inicio.configuracion.getNombre()+"\n"+Inicio.configuracion.getDireccion());
             CuerpoDetalle cuerpo=new CuerpoDetalle();
             cuerpo.setDetalle(listadoSeleccion);
-            PieDocumento pie=new PieDocumento("Este es el pie del documento");
+            PieDocumento pie=new PieDocumento(Inicio.configuracion.getNota1());
             
             ResumenDeSaldo resumen=new ResumenDeSaldo(encabezado,cuerpo,pie);
             resumen.start();
@@ -222,6 +228,7 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     public static javax.swing.JTable jTable1;

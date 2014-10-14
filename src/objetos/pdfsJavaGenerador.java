@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -56,7 +57,7 @@ public class pdfsJavaGenerador extends Thread{
             cb.setFontAndSize(bf,14);
             cb.beginText();
             cb.setTextMatrix(120,750);
-            cb.showText("RESUMEN DE SALDO - INMOBILIARIA PLAZA");
+            cb.showText("RESUMEN DE SALDO - "+Inicio.configuracion.getNombre());
             bf = BaseFont.createFont(BaseFont.COURIER,BaseFont.CP1252,BaseFont.NOT_EMBEDDED);
             cb.setFontAndSize(bf,10);
             cb.setTextMatrix(40,690);
@@ -106,9 +107,24 @@ public class pdfsJavaGenerador extends Thread{
             cb.setTextMatrix(380,renglon);
             cb.showText("TOTAL "+totalFinal);
             
+            //pie de documento
+            renglon=renglon - 60;
+            cb.setTextMatrix(40,renglon);
+            cb.showText(Inicio.configuracion.getNota1());
             cb.endText();
             documento.close();
             
+            File f=new File(arch);
+            if(f.exists()){
+            
+                Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+arch);
+            }
+            int confirmacion=JOptionPane.showConfirmDialog(null, "DESEA NOTIFICAR POR MAIL?");
+            if(confirmacion==0){
+                //JOptionPane.showMessageDialog(null,"acepto");
+                
+            }
+            System.out.println("eligio "+confirmacion);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(pdfsJavaGenerador.class.getName()).log(Level.SEVERE, null, ex);
             

@@ -15,9 +15,21 @@ import objetos.pdfsJavaGenerador;
 public class Documento implements Pdfable{
     private static Integer tipo;
     private Integer numero;
-    private Encabezado encabezado;
-    private CuerpoDetalle cuerpo;
-    private PieDocumento pie;
+    private static Encabezado encabezado;
+    private static CuerpoDetalle cuerpo;
+    private static PieDocumento pie;
+
+    public static void setEncabezado(Encabezado encabezado) {
+        Documento.encabezado = encabezado;
+    }
+
+    public static void setCuerpo(CuerpoDetalle cuerpo) {
+        Documento.cuerpo = cuerpo;
+    }
+
+    public static void setPie(PieDocumento pie) {
+        Documento.pie = pie;
+    }
 
     public static Integer getTipo() {
         return tipo;

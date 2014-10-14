@@ -40,6 +40,8 @@ public class ResumenDeSaldo extends Thread{
     public void run(){
         
         Pdfable pdfs=new Documento();
+        Documento.setEncabezado(encabezado);
+        Documento.setPie(pieDocumento);
         Documento.setTipo(1);
         pdfs.GenerarPdfResumen(this);
     }
