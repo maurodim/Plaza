@@ -66,6 +66,8 @@ public class pdfsJavaGenerador extends Thread{
             cb.showText("Fecha "+Inicio.fechaDia);
             cb.setTextMatrix(40,670);
             cb.showText("Direccion :"+doc.getEncabezado().getDireccion());
+            cb.setTextMatrix(380,670);
+            cb.showText("Mail :"+doc.getEncabezado().getMail());
             cb.setTextMatrix(40,650);
             cb.showText("Telefono :"+doc.getEncabezado().getTelefono());
             cb.setTextMatrix(380,650);
@@ -119,10 +121,15 @@ public class pdfsJavaGenerador extends Thread{
             
                 Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+arch);
             }
-            int confirmacion=JOptionPane.showConfirmDialog(null, "DESEA NOTIFICAR POR MAIL?");
+            int confirmacion=0;
+            if(doc.getEncabezado().getMail().isEmpty()){
+                
+            }else{
+                confirmacion=JOptionPane.showConfirmDialog(null, "DESEA NOTIFICAR POR MAIL?");
             if(confirmacion==0){
                 //JOptionPane.showMessageDialog(null,"acepto");
                 
+            }
             }
             System.out.println("eligio "+confirmacion);
         } catch (FileNotFoundException ex) {

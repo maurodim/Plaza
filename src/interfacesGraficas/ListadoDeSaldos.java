@@ -174,6 +174,7 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
             encabezado.setNumeroDeCuit(inquilino.getCuit());
             encabezado.setTelefono(inquilino.getTelefono());
             encabezado.setTextoSuperior(Inicio.configuracion.getNombre()+"\n"+Inicio.configuracion.getDireccion());
+            encabezado.setMail(inquilino.getMail());
             CuerpoDetalle cuerpo=new CuerpoDetalle();
             cuerpo.setDetalle(listadoSeleccion);
             PieDocumento pie=new PieDocumento(Inicio.configuracion.getNota1());
