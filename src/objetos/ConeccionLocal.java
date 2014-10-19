@@ -322,6 +322,7 @@ public class ConeccionLocal implements Transaccionable{
                     pstm25=dbConnection.prepareStatement(sql);
                     pstm25.execute();
                     pstm25.close();
+                    
                     JOptionPane.showMessageDialog(null,"BASE DE DATOS CORRECTAMENTE CREADA");
                     /*
                     Articulos.RecargarMap();
