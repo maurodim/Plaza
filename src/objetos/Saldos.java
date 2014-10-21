@@ -129,7 +129,7 @@ public class Saldos implements Generable,Componable{
 
     @Override
     public void Modificacion(Object objeto) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
@@ -175,7 +175,41 @@ public class Saldos implements Generable,Componable{
 
     @Override
     public Object Cargar(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Transaccionable tra=new ConeccionLocal();
+        Saldos saldo = null;
+        Comisiones comision=new Comisiones();
+        comision=(Comisiones)Inicio.comisiones.get(0);
+        //String sql="select * from resumenes where fechavencimiento < '"+Inicio.fechaDia+"' and estado=1 and idpropiedad="+Saldos.idBuscador;
+        String sql="select * from resumenes where id="+id;
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rs.next()){
+               saldo=new Saldos();
+               saldo.setIdTitular(rs.getInt("idpropiedad"));
+               Double sald=rs.getDouble("saldo");
+               Integer dias=0;
+               if(Inicio.fechaVal.after(rs.getDate("fechavencimiento"))){
+               dias=Numeros.CalcularDiasAFechaActual(rs.getDate("fechavencimiento"));
+               }
+               Double tot=0.00;
+               if(dias > 0){
+               Double total1=sald * dias;
+               Double part1=total1 * comision.getPorcentaje();
+               tot=sald + part1;
+               }else{
+                   tot=sald;
+               }
+               saldo.setSaldo(sald);
+               saldo.setTotal(tot);
+               saldo.setIdResumen(rs.getInt("id"));
+               saldo.setVencimiento(rs.getDate("fechavencimiento"));
+               saldo.setIdTitular(Saldos.idBuscador);
+               //resultado.add(saldo);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Saldos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return saldo;
     }
 
     @Override
