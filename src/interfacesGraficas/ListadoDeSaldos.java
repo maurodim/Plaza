@@ -243,14 +243,13 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         //ACA NECESITO HACER EL CALCULO RETRO DE LA APLICACION DEL RECARGO, PARA QUE DESCUENTE DEL MONTO ORIGINAL
         // EL MONTO SIN RECARGO, Y GENERE UN MOVIMIENTO POR EL RECARGO SOLO, Y AJUSTE EL SALDO DEL RESUMEN
+        Double totalElegido=0.00;
         
+        totalElegido=Numeros.ConvertirStringADouble(String.valueOf(JOptionPane.showInputDialog(this,"Ingrese numero a imprimir ","0")));
         
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
