@@ -7,6 +7,7 @@ package objetos;
 
 import interfaces.Generable;
 import interfaces.HacerPagoResumen;
+import interfaces.Transaccionable;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,46 @@ public class RecibosResumen implements Generable,HacerPagoResumen{
    private String descripcion;
    private Double monto;
    private Integer idUsuario;
+   private Integer idResumen;
+   private Double saldo;
+   private Double recargo;
+   private Double saldoOriginal;
+
+    public Double getSaldoOriginal() {
+        return saldoOriginal;
+    }
+
+    public void setSaldoOriginal(Double saldoOriginal) {
+        this.saldoOriginal = saldoOriginal;
+    }
+   
+
+    public Double getRecargo() {
+        return recargo;
+    }
+
+    public void setRecargo(Double recargo) {
+        this.recargo = recargo;
+    }
+   
+
+    public Double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(Double saldo) {
+        this.saldo = saldo;
+    }
+   
+
+    public Integer getIdResumen() {
+        return idResumen;
+    }
+
+    public void setIdResumen(Integer idResumen) {
+        this.idResumen = idResumen;
+    }
+   
 
     public Integer getId() {
         return id;
@@ -97,7 +138,16 @@ public class RecibosResumen implements Generable,HacerPagoResumen{
         
         RecibosResumen recib=new RecibosResumen();
         recib=(RecibosResumen)objeto;
-        System.out.println("recibo resumen "+recib.getDescripcion()+" //monto "+recib.getMonto()+" recibo id "+recib.getIdRecibo());
+        System.out.println("recibo resumen "+recib.getIdResumen()+" //monto "+recib.getMonto()+" recibo id "+recib.getIdRecibo());
+        int estado=0;
+        if(recib.getSaldo() > 0){
+            estado=1;
+        }else{
+            estado=2;
+        }
+        String sql1="update resumenes set estado="+estado+", saldo="+recib.getSaldo()+" where id="+recib.getIdResumen();
+        Transaccionable tran=new ConeccionLocal();
+        tran.guardarRegistro(sql1);
         
         
         return recib;

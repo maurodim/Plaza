@@ -219,8 +219,12 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
             saldo=(Saldos)it.next();
             totalGral=totalGral + saldo.getTotal();
             resumen=new RecibosResumen();
-            resumen.setDescripcion(saldo.getDescripcion()+" monto :"+saldo.getSaldo()+" recargo :"+saldo.getRecargo());
+            resumen.setDescripcion("Resumen N° "+saldo.getIdResumen()+" monto :"+saldo.getSaldo()+" recargo :"+saldo.getRecargo());
+            resumen.setIdResumen(saldo.getIdResumen());
+            resumen.setRecargo(saldo.getRecargo());
             resumen.setMonto(saldo.getTotal());
+            resumen.setSaldoOriginal(saldo.getSaldo());
+            resumen.setSaldo(0.00);
             listadoSald.add(resumen);
         }
         recibo.setMonto(totalGral);
@@ -228,7 +232,7 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
         totalElegido=String.valueOf(JOptionPane.showInputDialog(this,"Ingrese numero a imprimir ","0"));
         recibo.setNumero(Integer.parseInt(totalElegido));
         gen.Alta(recibo);
-        
+        this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

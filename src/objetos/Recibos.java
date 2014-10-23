@@ -8,6 +8,7 @@ package objetos;
 import interfaces.Generable;
 import interfaces.HacerPagoResumen;
 import interfaces.Transaccionable;
+import interfacesGraficas.Inicio;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class Recibos implements Generable{
     private Integer idUsuario;
     private Integer numero;
     private ArrayList resumenRecibos;
+    
 
     public Recibos() {
         resumenRecibos=new ArrayList();
@@ -135,8 +137,19 @@ public class Recibos implements Generable{
         while(itR.hasNext()){
             resumenR=(RecibosResumen)itR.next();
             resumenR.setIdRecibo(recibo.getId());
+            //aca cargo los movimientos en la tabla movimientos clientes
+            if(resumenR.getRecargo() > 0){
+                sql="insert into movimientosclientes (numeroproveedor,monto,pagado,numerocomprobante,idremito,idusuario,idcaja,tipocomprobante,idsucursal,estado) values ("+recibo.getIdPropiedad()+","+resumenR.getRecargo() * (-1)+",1,"+recibo.getId()+",6,"+Inicio.usuario.getNumeroId()+","+Inicio.caja.getNumero()+",5,1,1)";
+                tra.guardarRegistro(sql);
+            }
+                sql="insert into movimientosclientes (numeroproveedor,monto,pagado,numerocomprobante,idremito,idusuario,idcaja,tipocomprobante,idsucursal,estado) values ("+recibo.getIdPropiedad()+","+resumenR.getSaldoOriginal() * (-1)+",1,"+recibo.getId()+",5,"+Inicio.usuario.getNumeroId()+","+Inicio.caja.getNumero()+",5,1,1)";
+                tra.guardarRegistro(sql);
+            
+            
             ge.MovimientoDePago(resumenR);
         }
+        sql="insert into movimientoscaja (numerousuario,idcliente,numerosucursal,numerocomprobante,tipocomprobante,monto,tipomovimiento,idcaja,pagado,estado,tipocliente) values ("+Inicio.usuario.getNumeroId()+","+recibo.getIdInquilino()+",1,"+recibo.getId()+",5,"+recibo.getMonto()+",13,"+Inicio.caja.getNumero()+",1,1,1)";
+        tra.guardarRegistro(sql);
         
         
     }
