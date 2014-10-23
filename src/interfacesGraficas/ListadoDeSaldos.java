@@ -17,6 +17,8 @@ import java.util.Iterator;
 import javax.swing.JOptionPane;
 import objetos.Inquilinos;
 import objetos.Propiedades;
+import objetos.Recibos;
+import objetos.RecibosResumen;
 import objetos.Saldos;
 import tablas.MiModeloTablaCargaHdr;
 
@@ -27,6 +29,9 @@ import tablas.MiModeloTablaCargaHdr;
 public class ListadoDeSaldos extends javax.swing.JDialog {
     private MiModeloTablaCargaHdr mod=new MiModeloTablaCargaHdr();
     public static ArrayList listadoSeleccion;
+    public static Integer idPropiedad;
+    public static Integer idContrato;
+    
     /**
      * Creates new form ListadoDeSaldos
      */
@@ -200,12 +205,29 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
         Iterator it=listadoSeleccion.listIterator();
         Saldos saldo=new Saldos();
         Double totalGral=0.0;
-        Double totalElegido=0.00;
+        String totalElegido="";
+        Recibos recibo;
+        RecibosResumen resumen;
+        Generable gen=new Recibos();
+        recibo=new Recibos();
+        recibo.setFecha(Inicio.fechaDia);
+        recibo.setIdUsuario(Inicio.usuario.getNumeroId());
+        recibo.setIdPropiedad(idPropiedad);
+        recibo.setIdContrato(idContrato);
+        ArrayList listadoSald=new ArrayList();
         while(it.hasNext()){
             saldo=(Saldos)it.next();
             totalGral=totalGral + saldo.getTotal();
+            resumen=new RecibosResumen();
+            resumen.setDescripcion(saldo.getDescripcion()+" monto :"+saldo.getSaldo()+" recargo :"+saldo.getRecargo());
+            resumen.setMonto(saldo.getTotal());
+            listadoSald.add(resumen);
         }
-        totalElegido=Numeros.ConvertirStringADouble(String.valueOf(JOptionPane.showInputDialog(this,"Ingrese monto a saldar ",totalGral)));
+        recibo.setMonto(totalGral);
+        recibo.setResumenRecibos(listadoSald);
+        totalElegido=String.valueOf(JOptionPane.showInputDialog(this,"Ingrese numero a imprimir ","0"));
+        recibo.setNumero(Integer.parseInt(totalElegido));
+        gen.Alta(recibo);
         
     }//GEN-LAST:event_jButton3ActionPerformed
 

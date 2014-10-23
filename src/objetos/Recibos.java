@@ -116,10 +116,14 @@ public class Recibos implements Generable{
         Transaccionable tra=new ConeccionLocal();
         String sql="insert into recibos (idpropiedad,idcontrato,idinquilino,monto,fecha,idusuario,numero) values ("+recibo.getIdPropiedad()+","+recibo.getIdContrato()+","+recibo.getIdInquilino()+","+recibo.getMonto()+",'"+recibo.getFecha()+"',"+recibo.getIdUsuario()+","+recibo.getNumero()+")";
         tra.guardarRegistro(sql);
-        sql="select recibos.id from recibos order by id desc";
+        sql="select recibos.id from recibos order by id";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
-            recibo.setId(rs.getInt("id"));
+            while(rs.next()){
+                
+                recibo.setId(rs.getInt("id"));
+                //rs.last();
+            }
             rs.close();
             
         } catch (SQLException ex) {
@@ -130,6 +134,7 @@ public class Recibos implements Generable{
         HacerPagoResumen ge=new RecibosResumen();
         while(itR.hasNext()){
             resumenR=(RecibosResumen)itR.next();
+            resumenR.setIdRecibo(recibo.getId());
             ge.MovimientoDePago(resumenR);
         }
         

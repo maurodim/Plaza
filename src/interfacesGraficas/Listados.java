@@ -409,8 +409,11 @@ public class Listados extends javax.swing.JInternalFrame {
         ArrayList lstSaldos=new ArrayList();
         int renglon=this.jTable1.getSelectedRow();
         int numero=(int) this.jTable1.getValueAt(renglon,0);
+        int numeroC=Integer.parseInt(String.valueOf(this.jTable1.getValueAt(renglon,4)));
         Saldos.setIdBuscador(numero);
         lstSaldos=gen.Listar();
+        listadoS.idPropiedad=numero;
+        listadoS.idContrato=numeroC;
         MiModeloTablaCargaHdr mod=new MiModeloTablaCargaHdr();
         mod=(MiModeloTablaCargaHdr) comp.LlenarTablaConArray(lstSaldos);
         listadoS.jTable1.setModel(mod);

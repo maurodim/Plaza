@@ -97,7 +97,7 @@ public class RecibosResumen implements Generable,HacerPagoResumen{
         
         RecibosResumen recib=new RecibosResumen();
         recib=(RecibosResumen)objeto;
-        
+        System.out.println("recibo resumen "+recib.getDescripcion()+" //monto "+recib.getMonto()+" recibo id "+recib.getIdRecibo());
         
         
         return recib;
