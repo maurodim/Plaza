@@ -87,6 +87,11 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
         });
 
         jButton4.setText("Recibo Parcial");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -234,6 +239,14 @@ public class ListadoDeSaldos extends javax.swing.JDialog {
         gen.Alta(recibo);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        //ACA NECESITO HACER EL CALCULO RETRO DE LA APLICACION DEL RECARGO, PARA QUE DESCUENTE DEL MONTO ORIGINAL
+        // EL MONTO SIN RECARGO, Y GENERE UN MOVIMIENTO POR EL RECARGO SOLO, Y AJUSTE EL SALDO DEL RESUMEN
+        
+        
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
