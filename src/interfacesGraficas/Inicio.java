@@ -14,6 +14,7 @@ import interfacesGraficasInmob.Parametros;
 import interfacesGraficasInmob.PropietariosMod;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -208,6 +209,7 @@ public class Inicio extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SISITEMA DE GESTION BAMBU SOFTWARE");
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        setIconImage(new ImageIcon(getClass().getResource("/imagen/icono.png")).getImage());
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);

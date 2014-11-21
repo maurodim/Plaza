@@ -34,11 +34,11 @@ public class Propietarios implements Generable,Componable,Contratable,Propietabl
     private String dni;
     private String telefono;
     private String domicilio;
-    private Propiedades propiedad;
+    private Integer propiedad;
     private String mail;
     private String observaciones;
     private Date fechaAlta;
-    private Usuarios usuario;
+    private Integer usuario;
     private Double saldo;
     private String localidad;
     private ArrayList propiedadesP;
@@ -125,11 +125,11 @@ public class Propietarios implements Generable,Componable,Contratable,Propietabl
         this.domicilio = domicilio;
     }
 
-    public Propiedades getPropiedad() {
+    public Integer getPropiedad() {
         return propiedad;
     }
 
-    public void setPropiedad(Propiedades propiedad) {
+    public void setPropiedad(Integer propiedad) {
         this.propiedad = propiedad;
     }
 
@@ -157,11 +157,11 @@ public class Propietarios implements Generable,Componable,Contratable,Propietabl
         this.fechaAlta = fechaAlta;
     }
 
-    public Usuarios getUsuario() {
+    public Integer getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuarios usuario) {
+    public void setUsuario(Integer usuario) {
         this.usuario = usuario;
     }
 
@@ -178,7 +178,7 @@ public class Propietarios implements Generable,Componable,Contratable,Propietabl
         Propietarios propietario=new Propietarios();
         propietario=(Propietarios)objeto;
         Transaccionable tra=new ConeccionLocal();
-        String sql="insert into proveedores (nombre,domicilio,localidad,telefono,mail,idusuario,observaciones,cuit,iva) values ('"+propietario.getNombre()+"','"+propietario.getDomicilio()+"','"+propietario.getLocalidad()+"','"+propietario.getTelefono()+"','"+propietario.getMail()+"',"+propietario.getUsuario().getNumeroId()+",'"+propietario.getObservaciones()+"','"+propietario.getCuit()+"','"+propietario.getCondIva()+"')";
+        String sql="insert into proveedores (nombre,domicilio,localidad,telefono,mail,idusuario,observaciones,cuit,iva) values ('"+propietario.getNombre()+"','"+propietario.getDomicilio()+"','"+propietario.getLocalidad()+"','"+propietario.getTelefono()+"','"+propietario.getMail()+"',"+propietario.getUsuario()+",'"+propietario.getObservaciones()+"','"+propietario.getCuit()+"','"+propietario.getCondIva()+"')";
         System.out.println(sql);
         tra.guardarRegistro(sql);
         sql="select numero from proveedores ";
@@ -230,8 +230,8 @@ public class Propietarios implements Generable,Componable,Contratable,Propietabl
                 propietario.setTelefono(rs.getString("telefono"));
                 propietario.setMail(rs.getString("mail"));
                 propietario.setSaldo(rs.getDouble("saldo"));
-                propietario.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
-                propietario.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                propietario.setPropiedad(rs.getInt("idpropiedad"));
+                propietario.setUsuario(rs.getInt("idusuario"));
                 propietario.setFechaAlta(rs.getDate("fechaalta"));
                 propietario.setObservaciones(rs.getString("observaciones"));
                 propietario.setCuit(rs.getString("cuit"));
@@ -265,8 +265,8 @@ public class Propietarios implements Generable,Componable,Contratable,Propietabl
                 propietario.setTelefono(rs.getString("telefono"));
                 propietario.setMail(rs.getString("mail"));
                 propietario.setSaldo(rs.getDouble("saldo"));
-                if(rs.getInt("idpropiedad") > 0)propietario.setPropiedad((Propiedades)prop.Cargar(rs.getInt("idpropiedad")));
-                if(rs.getInt("idusuario") > 0)propietario.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                if(rs.getInt("idpropiedad") > 0)propietario.setPropiedad(rs.getInt("idpropiedad"));
+                if(rs.getInt("idusuario") > 0)propietario.setUsuario(rs.getInt("idusuario"));
                 propietario.setFechaAlta(rs.getDate("fechaalta"));
                 propietario.setObservaciones(rs.getString("observaciones"));
                 //listado.add(propietario);
@@ -276,7 +276,7 @@ public class Propietarios implements Generable,Componable,Contratable,Propietabl
             }
             rs.close();
             try{
-            if(propietario.getPropiedad().getId() > 0)propietario.setPropiedadesP(lista.listarPorId(propietario.getId()));
+            if(propietario.getPropiedad() > 0)propietario.setPropiedadesP(lista.listarPorId(propietario.getId()));
             }catch(java.lang.NullPointerException e){
                 
             }
@@ -376,7 +376,7 @@ public class Propietarios implements Generable,Componable,Contratable,Propietabl
                 propietario.setTelefono(rs.getString("telefono"));
                 propietario.setMail(rs.getString("mail"));
                 propietario.setSaldo(rs.getDouble("saldo"));
-                if(rs.getInt("idusuario") > 0)propietario.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                if(rs.getInt("idusuario") > 0)propietario.setUsuario(rs.getInt("idusuario"));
                 propietario.setFechaAlta(rs.getDate("fechaalta"));
                 propietario.setObservaciones(rs.getString("observaciones"));
                 //listado.add(propietario);
@@ -386,7 +386,7 @@ public class Propietarios implements Generable,Componable,Contratable,Propietabl
             }
             rs.close();
             try{
-            if(propietario.getPropiedad().getId() > 0)propietario.setPropiedadesP(lista.listarPorId(propietario.getId()));
+            if(propietario.getPropiedad() > 0)propietario.setPropiedadesP(lista.listarPorId(propietario.getId()));
             }catch(java.lang.NullPointerException e){
                 
             }
@@ -440,7 +440,7 @@ public class Propietarios implements Generable,Componable,Contratable,Propietabl
             }
             rs.close();
             try{
-            if(propietario.getPropiedad().getId() > 0)propietario.setPropiedadesP(lista.listarPorId(propietario.getId()));
+            if(propietario.getPropiedad() > 0)propietario.setPropiedadesP(lista.listarPorId(propietario.getId()));
             }catch(java.lang.NullPointerException e){
                 
             }

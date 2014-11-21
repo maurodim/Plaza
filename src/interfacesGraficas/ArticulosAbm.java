@@ -48,7 +48,7 @@ public class ArticulosAbm extends javax.swing.JInternalFrame {
         setClosable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Alta, Baja y modificacion de Articulos");
+        setTitle("ALTA, BAJA Y MODIFICACION DE ARTICULOS");
 
         MiModeloTablaArticulos modelArticulos=new MiModeloTablaArticulos();
         Facturar fact=new Articulos();
@@ -121,7 +121,7 @@ public class ArticulosAbm extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addGap(18, 18, 18)

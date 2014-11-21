@@ -36,13 +36,13 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable,Contr
    private String dni;
    private String telefono;
    private String domicilioRef;
-   private Propiedades propiedad;
-   private Garantes garantes;
-   private CuentaCorriente cuentaCorriente;
+   private Integer propiedad;
+   private Integer garantes;
+   private Integer cuentaCorriente;
    private String mail;
    private String observaciones;
    private Date fechaAlta;
-   private Usuarios usuario;
+   private Integer usuario;
    private ArrayList arrayDatos;
    private String cuit;
    private Integer condicionIva;
@@ -112,27 +112,27 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable,Contr
         this.domicilioRef = domicilioRef;
     }
 
-    public Propiedades getPropiedad() {
+    public Integer getPropiedad() {
         return propiedad;
     }
 
-    public void setPropiedad(Propiedades propiedad) {
+    public void setPropiedad(Integer propiedad) {
         this.propiedad = propiedad;
     }
 
-    public Garantes getGarantes() {
+    public Integer getGarantes() {
         return garantes;
     }
 
-    public void setGarantes(Garantes garantes) {
+    public void setGarantes(Integer garantes) {
         this.garantes = garantes;
     }
 
-    public CuentaCorriente getCuentaCorriente() {
+    public Integer getCuentaCorriente() {
         return cuentaCorriente;
     }
 
-    public void setCuentaCorriente(CuentaCorriente cuentaCorriente) {
+    public void setCuentaCorriente(Integer cuentaCorriente) {
         this.cuentaCorriente = cuentaCorriente;
     }
 
@@ -160,11 +160,11 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable,Contr
         this.fechaAlta = fechaAlta;
     }
 
-    public Usuarios getUsuario() {
+    public Integer getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuarios usuario) {
+    public void setUsuario(Integer usuario) {
         this.usuario = usuario;
     }
 
@@ -199,7 +199,7 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable,Contr
         inquilino=(Inquilinos)objeto;
         Transaccionable tra=new ConeccionLocal();
         try{
-        String sql="update inquilinos set nombre='"+inquilino.getNombre()+"',dni='"+inquilino.getDni()+"',domicilio='"+inquilino.getDomicilioRef()+"',mail='"+inquilino.getMail()+"',telefono='"+inquilino.getTelefono()+"',observaciones='"+inquilino.getObservaciones()+"',propiedad="+inquilino.getPropiedad().getId()+" where id="+inquilino.getId();
+        String sql="update inquilinos set nombre='"+inquilino.getNombre()+"',dni='"+inquilino.getDni()+"',domicilio='"+inquilino.getDomicilioRef()+"',mail='"+inquilino.getMail()+"',telefono='"+inquilino.getTelefono()+"',observaciones='"+inquilino.getObservaciones()+"',propiedad="+inquilino.getPropiedad()+" where id="+inquilino.getId();
         System.out.println(sql);
         tra.guardarRegistro(sql);
         }catch(java.lang.NullPointerException ex){
@@ -231,9 +231,9 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable,Contr
                inquilino.setFechaAlta(rs.getDate("fechaalta"));
                //inquilino.setCuit(rs.getString("cuit"));
                //inquilino.setCondicionIva(rs.getInt("cIva"));
-               if(rs.getInt("propiedad") > 0)inquilino.setPropiedad((Propiedades) propi.Cargar(rs.getInt("propiedad")));
-               if(rs.getInt("garante") > 0)inquilino.setGarantes((Garantes) gar.Cargar(rs.getInt("garante")));
-               if(rs.getInt("cuentacorriente") > 0)inquilino.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("cuentacorriente")));
+               if(rs.getInt("propiedad") > 0)inquilino.setPropiedad(rs.getInt("propiedad"));
+               if(rs.getInt("garante") > 0)inquilino.setGarantes(rs.getInt("garante"));
+               if(rs.getInt("cuentacorriente") > 0)inquilino.setCuentaCorriente(rs.getInt("cuentacorriente"));
                listado.add(inquilino);
            }
            rs.close();
@@ -264,9 +264,9 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable,Contr
                inquilino.setMail(rs.getString("mail"));
                inquilino.setObservaciones(rs.getString("observaciones"));
                inquilino.setFechaAlta(rs.getDate("fechaalta"));
-               if(rs.getInt("propiedad") > 0)inquilino.setPropiedad((Propiedades) propi.Cargar(rs.getInt("propiedad")));
-               if(rs.getInt("garante") > 0)inquilino.setGarantes((Garantes) gar.Cargar(rs.getInt("garante")));
-               if(rs.getInt("cuentacorriente") > 0)inquilino.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("cuentacorriente")));
+               if(rs.getInt("propiedad") > 0)inquilino.setPropiedad(rs.getInt("propiedad"));
+               if(rs.getInt("garante") > 0)inquilino.setGarantes(rs.getInt("garante"));
+               if(rs.getInt("cuentacorriente") > 0)inquilino.setCuentaCorriente(rs.getInt("cuentacorriente"));
                //listado.add(inquilino);
            }
            rs.close();
@@ -321,9 +321,9 @@ public class Inquilinos implements Generable,Listables,Componable,Saldable,Contr
                inquilino.setMail(rs.getString("mail"));
                inquilino.setObservaciones(rs.getString("observaciones"));
                inquilino.setFechaAlta(rs.getDate("fechaalta"));
-               if(rs.getInt("propiedad") > 0)inquilino.setPropiedad((Propiedades) propi.Cargar(rs.getInt("propiedad")));
-               if(rs.getInt("garante") > 0)inquilino.setGarantes((Garantes) gar.Cargar(rs.getInt("garante")));
-               if(rs.getInt("cuentacorriente") > 0)inquilino.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("cuentacorriente")));
+               if(rs.getInt("propiedad") > 0)inquilino.setPropiedad(rs.getInt("propiedad"));
+               if(rs.getInt("garante") > 0)inquilino.setGarantes(rs.getInt("garante"));
+               if(rs.getInt("cuentacorriente") > 0)inquilino.setCuentaCorriente(rs.getInt("cuentacorriente"));
                listado.add(inquilino);
            }
            rs.close();

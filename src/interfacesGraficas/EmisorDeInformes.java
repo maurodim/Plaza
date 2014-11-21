@@ -58,7 +58,7 @@ public class EmisorDeInformes extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setMaximizable(true);
-        setTitle("Emision de Informes");
+        setTitle("EMISION DE INFORMES");
 
         jButton1.setText("Emitir Informe Diario");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

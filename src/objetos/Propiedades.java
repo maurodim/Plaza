@@ -35,10 +35,10 @@ public class Propiedades implements Generable,Listables,Componable,Contratable,R
     private String direccion;
     private String localidad;
     private Rubro rubro;
-    private Contratos contrato;
-    private Propietarios propietario;
-    private CuentaCorriente cuentaCorriente;
-    private Usuarios usuario;
+    private Integer contrato;
+    private Integer propietario;
+    private Integer cuentaCorriente;
+    private Integer usuario;
     private Date fecha;
     private Integer idResumen;
     private Integer estadoResumen;
@@ -111,35 +111,35 @@ public class Propiedades implements Generable,Listables,Componable,Contratable,R
         this.rubro = rubro;
     }
 
-    public Contratos getContrato() {
+    public Integer getContrato() {
         return contrato;
     }
 
-    public void setContrato(Contratos contrato) {
+    public void setContrato(Integer contrato) {
         this.contrato = contrato;
     }
 
-    public Propietarios getPropietario() {
+    public Integer getPropietario() {
         return propietario;
     }
 
-    public void setPropietario(Propietarios propietario) {
+    public void setPropietario(Integer propietario) {
         this.propietario = propietario;
     }
 
-    public CuentaCorriente getCuentaCorriente() {
+    public Integer getCuentaCorriente() {
         return cuentaCorriente;
     }
 
-    public void setCuentaCorriente(CuentaCorriente cuentaCorriente) {
+    public void setCuentaCorriente(Integer cuentaCorriente) {
         this.cuentaCorriente = cuentaCorriente;
     }
 
-    public Usuarios getUsuario() {
+    public Integer getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuarios usuario) {
+    public void setUsuario(Integer usuario) {
         this.usuario = usuario;
     }
 
@@ -149,7 +149,7 @@ public class Propiedades implements Generable,Listables,Componable,Contratable,R
         propiedad=(Propiedades)objeto;
         //Personalizable per=new Usuarios();
         Transaccionable tra=new ConeccionLocal();
-        String sql="insert into propiedades (direccion,localidad,rubro,idusuario) values ('"+propiedad.getDireccion()+"','"+propiedad.getLocalidad()+"',"+propiedad.getRubro().getId()+","+propiedad.getUsuario().getNumeroId()+")";
+        String sql="insert into propiedades (direccion,localidad,rubro,idusuario) values ('"+propiedad.getDireccion()+"','"+propiedad.getLocalidad()+"',"+propiedad.getRubro().getId()+","+propiedad.getUsuario()+")";
         tra.guardarRegistro(sql);
         sql="select id from propiedades";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
@@ -176,7 +176,7 @@ public class Propiedades implements Generable,Listables,Componable,Contratable,R
         propiedad=(Propiedades)objeto;
         //Personalizable per=new Usuarios();
         Transaccionable tra=new ConeccionLocal();
-        String sql="update propiedades set direccion='"+propiedad.getDireccion()+"',localidad='"+propiedad.getLocalidad()+"',rubro="+propiedad.getRubro().getId()+",idpropietario="+propiedad.getPropietario().getId()+" where id="+propiedad.getId();
+        String sql="update propiedades set direccion='"+propiedad.getDireccion()+"',localidad='"+propiedad.getLocalidad()+"',rubro="+propiedad.getRubro().getId()+",idpropietario="+propiedad.getPropietario()+" where id="+propiedad.getId();
         System.out.println(sql);
         tra.guardarRegistro(sql);
     }
@@ -202,10 +202,14 @@ public class Propiedades implements Generable,Listables,Componable,Contratable,R
                 propiedad.setDireccion(rs.getString("direccion"));
                 propiedad.setLocalidad(rs.getString("localidad"));
                 propiedad.setRubro((Rubro)rub.Cargar(rs.getInt("rubro")));
-                propiedad.setContrato((Contratos)cont.Cargar(rs.getInt("idcontrato")));
-                propiedad.setPropietario((Propietarios)prop.Cargar(rs.getInt("idpropietario")));
-                propiedad.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("idcuentascorriente")));
-                propiedad.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                propiedad.setContrato(rs.getInt("idcontrato"));
+                if(rs.getInt("idpropietario")==0){
+                    Integer numeroProp=Integer.parseInt(String.valueOf(JOptionPane.showInputDialog(null,"Ingrese numero de propietario")));
+                }else{
+                    propiedad.setPropietario(rs.getInt("idpropietario"));
+                }
+                propiedad.setCuentaCorriente(rs.getInt("idcuentascorriente"));
+                propiedad.setUsuario(rs.getInt("idusuario"));
                 propiedad.setFecha(rs.getDate("fecha"));
                 res=(Resumenes) ppR.cargarPorIdPropiedadSolo(propiedad.getId());
                 propiedad.setIdResumen(res.getId());
@@ -241,16 +245,22 @@ public class Propiedades implements Generable,Listables,Componable,Contratable,R
                 propiedad.setDireccion(rs.getString("direccion"));
                 propiedad.setLocalidad(rs.getString("localidad"));
                 propiedad.setRubro((Rubro)rub.Cargar(rs.getInt("rubro")));
+                try{
                 if(rs.getInt("idcontrato")==0){
                     idcontrato=Integer.parseInt(JOptionPane.showInputDialog("Ingrese ID del contrato","ID contrato"));
                     modificar="update propiedades set idcontrato="+idcontrato+" where id="+propiedad.getId();
-                    propiedad.setContrato((Contratos)cont.cargarDesdePropiedad(idcontrato));
+                    propiedad.setContrato(idcontrato);
                 }else{
-                propiedad.setContrato((Contratos)cont.cargarDesdePropiedad(rs.getInt("idcontrato")));
+                propiedad.setContrato(rs.getInt("idcontrato"));
                 }
-                propiedad.setPropietario((Propietarios)prop.cargarDesdePropiedad(rs.getInt("idpropietario")));
-                propiedad.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("idcuentascorriente")));
-                propiedad.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                }catch(java.lang.NumberFormatException ee){
+                    idcontrato=Integer.parseInt(JOptionPane.showInputDialog("Ingrese ID del contrato","ID contrato"));
+                    modificar="update propiedades set idcontrato="+idcontrato+" where id="+propiedad.getId();
+                    propiedad.setContrato(idcontrato);
+                }
+                propiedad.setPropietario(rs.getInt("idpropietario"));
+                propiedad.setCuentaCorriente(rs.getInt("idcuentascorriente"));
+                propiedad.setUsuario(rs.getInt("idusuario"));
                 propiedad.setFecha(rs.getDate("fecha"));
                 //propiedad.setIdResumen(rs.getInt("idresumen"));
                 //propiedad.setEstadoResumen(0);
@@ -285,10 +295,10 @@ public class Propiedades implements Generable,Listables,Componable,Contratable,R
                 propiedad.setDireccion(rs.getString("direccion"));
                 propiedad.setLocalidad(rs.getString("localidad"));
                 propiedad.setRubro((Rubro)rub.Cargar(rs.getInt("rubro")));
-                if(rs.getInt("idcontrato") > 0)propiedad.setContrato((Contratos)cont.Cargar(rs.getInt("idcontrato")));
+                if(rs.getInt("idcontrato") > 0)propiedad.setContrato(rs.getInt("idcontrato"));
                 //propiedad.setPropietario((Propietarios)prop.Cargar(rs.getInt("idpropietario")));
-                if(rs.getInt("idcuentascorriente") > 0)propiedad.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("idcuentascorriente")));
-                propiedad.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                if(rs.getInt("idcuentascorriente") > 0)propiedad.setCuentaCorriente(rs.getInt("idcuentascorriente"));
+                propiedad.setUsuario(rs.getInt("idusuario"));
                 propiedad.setFecha(rs.getDate("fecha"));
                 listado.add(propiedad);
             }
@@ -334,10 +344,10 @@ public class Propiedades implements Generable,Listables,Componable,Contratable,R
                 propiedad.setDireccion(rs.getString("direccion"));
                 propiedad.setLocalidad(rs.getString("localidad"));
                 propiedad.setRubro((Rubro)rub.Cargar(rs.getInt("rubro")));
-                if(rs.getInt("idcontrato") > 0)propiedad.setContrato((Contratos)cont.Cargar(rs.getInt("idcontrato")));
+                if(rs.getInt("idcontrato") > 0)propiedad.setContrato(rs.getInt("idcontrato"));
                 //propiedad.setPropietario((Propietarios)prop.Cargar(rs.getInt("idpropietario")));
-                if(rs.getInt("idcuentascorriente") > 0)propiedad.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("idcuentascorriente")));
-                propiedad.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                if(rs.getInt("idcuentascorriente") > 0)propiedad.setCuentaCorriente(rs.getInt("idcuentascorriente"));
+                propiedad.setUsuario(rs.getInt("idusuario"));
                 propiedad.setFecha(rs.getDate("fecha"));
                 listado.add(propiedad);
             }
@@ -413,10 +423,10 @@ public class Propiedades implements Generable,Listables,Componable,Contratable,R
                 propiedad.setDireccion(rs.getString("direccion"));
                 propiedad.setLocalidad(rs.getString("localidad"));
                 propiedad.setRubro((Rubro)rub.Cargar(rs.getInt("rubro")));
-                if(rs.getInt("idcontrato") > 0)propiedad.setContrato((Contratos)cont.Cargar(rs.getInt("idcontrato")));
-                propiedad.setPropietario((Propietarios)prop.Cargar(rs.getInt("idpropietario")));
-                if(rs.getInt("idcuentascorriente") > 0)propiedad.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("idcuentascorriente")));
-                propiedad.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                if(rs.getInt("idcontrato") > 0)propiedad.setContrato(rs.getInt("idcontrato"));
+                propiedad.setPropietario(rs.getInt("idpropietario"));
+                if(rs.getInt("idcuentascorriente") > 0)propiedad.setCuentaCorriente(rs.getInt("idcuentascorriente"));
+                propiedad.setUsuario(rs.getInt("idusuario"));
                 propiedad.setFecha(rs.getDate("fecha"));
                 listado.add(propiedad);
             }
@@ -461,9 +471,9 @@ public class Propiedades implements Generable,Listables,Componable,Contratable,R
                 propiedad.setLocalidad(rs.getString("localidad"));
                 propiedad.setRubro((Rubro)rub.Cargar(rs.getInt("rubro")));
 
-                propiedad.setPropietario((Propietarios)prop.Cargar(rs.getInt("idpropietario")));
-                propiedad.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("idcuentascorriente")));
-                propiedad.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                propiedad.setPropietario(rs.getInt("idpropietario"));
+                propiedad.setCuentaCorriente(rs.getInt("idcuentascorriente"));
+                propiedad.setUsuario(rs.getInt("idusuario"));
                 propiedad.setFecha(rs.getDate("fecha"));
                 //propiedad.setIdResumen(rs.getInt("idresumen"));
                 //propiedad.setEstadoResumen(0);
@@ -506,9 +516,9 @@ public class Propiedades implements Generable,Listables,Componable,Contratable,R
                 propiedad.setLocalidad(rs.getString("localidad"));
                 propiedad.setRubro((Rubro)rub.Cargar(rs.getInt("rubro")));
 
-                propiedad.setPropietario((Propietarios)prop.Cargar(rs.getInt("idpropietario")));
-                propiedad.setCuentaCorriente((CuentaCorriente)cta.Cargar(rs.getInt("idcuentascorriente")));
-                propiedad.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                propiedad.setPropietario(rs.getInt("idpropietario"));
+                propiedad.setCuentaCorriente(rs.getInt("idcuentascorriente"));
+                propiedad.setUsuario(rs.getInt("idusuario"));
                 propiedad.setFecha(rs.getDate("fecha"));
                 //propiedad.setIdResumen(rs.getInt("idresumen"));
                 //propiedad.setEstadoResumen(0);

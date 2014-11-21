@@ -9,6 +9,7 @@ package interfacesGraficasInmob;
 import interfaces.Generable;
 import interfaces.Listables;
 import interfacesGraficas.Inicio;
+import interfacesGraficas.NuevaPropiedad;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.DefaultListModel;
@@ -115,7 +116,7 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setMaximizable(true);
-        setTitle("Propietarios");
+        setTitle("PROPIETARIOS");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Propietario"));
         jPanel1.setToolTipText("");
@@ -350,7 +351,7 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
         propietario.setDomicilio(this.jTextField4.getText());
         propietario.setMail(this.jTextField5.getText());
         propietario.setObservaciones(this.jTextField6.getText());
-        propietario.setUsuario((Usuarios)Inicio.usuario);
+        propietario.setUsuario(Inicio.usuario.getNumeroId());
         propietario.setCuit(this.jTextField8.getText());
         propietario.setCondIva((String) this.jComboBox1.getSelectedItem());
         if(accion==1){
@@ -360,7 +361,7 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
         }
         try{
         System.out.println("id propietario :"+propietario.getId());
-        propiedad.setPropietario(propietario);
+        propiedad.setPropietario(propietario.getId());
         geni.Modificacion(propiedad);
         }catch(java.lang.NullPointerException ex){
             System.err.println("NO SE ASIGNO PROPIEDAD");
@@ -374,6 +375,12 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        NuevaPropiedad prop=new NuevaPropiedad();
+        Inicio.jDesktopPane1.add(prop);
+        prop.setVisible(true);
+        prop.toFront();
+        
+        /*
         this.jPanel2.setVisible(true);
         Localidad loc=new Localidad();
         Rubro rub=new Rubro();
@@ -389,13 +396,14 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
             rub=(Rubro)iG.next();
             ((DefaultListModel)this.jList3.getModel()).addElement(rub.getDescripcion());
         }
+                */
         this.jTextField7.requestFocus();
     
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         propiedad=new Propiedades();
-        propiedad.setUsuario((Usuarios)Inicio.usuario);
+        propiedad.setUsuario(Inicio.usuario.getNumeroId());
         propiedad.setLocalidad(String.valueOf(this.jList2.getSelectedValue()));
         Generable rub=new Rubro();
         int pos=this.jList3.getSelectedIndex();
@@ -405,7 +413,7 @@ public class PropietariosMod extends javax.swing.JInternalFrame {
         propiedad.setDireccion(this.jTextField7.getText());
         geni.Alta(propiedad);
         numeroPropiedad=propiedad.getId();
-        propietario.setPropiedad(propiedad);
+        propietario.setPropiedad(propiedad.getId());
         
        ((DefaultListModel)this.jList1.getModel()).addElement(propiedad.getDireccion());
         LimpiarPanel2();

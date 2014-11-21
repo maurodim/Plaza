@@ -30,6 +30,7 @@ public class EmisionDeRecibos extends javax.swing.JInternalFrame {
     public EmisionDeRecibos() {
         listadoClientes=new ArrayList();
         initComponents();
+        
     }
     public EmisionDeRecibos(ArrayList list){
         listadoClientes=new ArrayList();
@@ -54,7 +55,7 @@ public class EmisionDeRecibos extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setMaximizable(true);
-        setTitle("Emision de Resumenes");
+        setTitle("EMISION DE RESUMENES");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Listado de Propiedades"));
 

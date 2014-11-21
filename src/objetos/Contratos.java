@@ -40,12 +40,12 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
     private String vencimiento1;
     private Double monto2;
     private String vencimiento2;
-    private Inquilinos inquilino;
-    private Propiedades propiedad;
-    private Propietarios propietario;
-    private Garantes garante;
+    private Integer inquilino;
+    private Integer propiedad;
+    private Integer propietario;
+    private Integer garante;
     private String archivo;
-    private Usuarios usuario;
+    private Integer usuario;
 
     public Contratos() {
        // inquilino=new Inquilinos();
@@ -103,35 +103,35 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
         this.vencimiento2 = vencimiento2;
     }
 
-    public Inquilinos getInquilino() {
+    public Integer getInquilino() {
         return inquilino;
     }
 
-    public void setInquilino(Inquilinos inquilino) {
+    public void setInquilino(Integer inquilino) {
         this.inquilino = inquilino;
     }
 
-    public Propiedades getPropiedad() {
+    public Integer getPropiedad() {
         return propiedad;
     }
 
-    public void setPropiedad(Propiedades propiedad) {
+    public void setPropiedad(Integer propiedad) {
         this.propiedad = propiedad;
     }
 
-    public Propietarios getPropietario() {
+    public Integer getPropietario() {
         return propietario;
     }
 
-    public void setPropietario(Propietarios propietario) {
+    public void setPropietario(Integer propietario) {
         this.propietario = propietario;
     }
 
-    public Garantes getGarante() {
+    public Integer getGarante() {
         return garante;
     }
 
-    public void setGarante(Garantes garante) {
+    public void setGarante(Integer garante) {
         this.garante = garante;
     }
 
@@ -143,11 +143,11 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
         this.archivo = archivo;
     }
 
-    public Usuarios getUsuario() {
+    public Integer getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuarios usuario) {
+    public void setUsuario(Integer usuario) {
         this.usuario = usuario;
     }
 
@@ -156,7 +156,7 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
         Transaccionable tra=new ConeccionLocal();
         Contratos contrato=new Contratos();
         contrato=(Contratos)objeto;
-        String sql="insert into contratos(monto1,fecha1,monto2,fecha2,idinquilino,idpropiedad,idpropietario,idusuario) values ("+contrato.getMonto1()+",'"+contrato.getVencimiento1()+"',"+contrato.getMonto2()+",'"+contrato.getVencimiento2()+"',"+contrato.getInquilino().getId()+","+contrato.getPropiedad().getId()+","+contrato.getPropietario().getId()+","+contrato.getUsuario().getNumeroId()+")";
+        String sql="insert into contratos(monto1,fecha1,monto2,fecha2,idinquilino,idpropiedad,idpropietario,idusuario) values ("+contrato.getMonto1()+",'"+contrato.getVencimiento1()+"',"+contrato.getMonto2()+",'"+contrato.getVencimiento2()+"',"+contrato.getInquilino()+","+contrato.getPropiedad()+","+contrato.getPropietario()+","+contrato.getUsuario()+")";
         tra.guardarRegistro(sql);
         sql="select id from contratos";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
@@ -165,8 +165,11 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
                 contrato.setId(rs.getInt(1));
             }
             rs.close();
+            sql="update propiedades set idcontrato="+contrato.getId()+" where id="+contrato.getPropiedad();
+            tra.guardarRegistro(sql);
         } catch (SQLException ex) {
             Logger.getLogger(Propietarios.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"REINGRESE LOS DATOS, NO SE HA PODIDO GUARDAR EN LA BASE");
         }
     }
 
@@ -182,7 +185,7 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
         Transaccionable tra=new ConeccionLocal();
         Contratos contrato=new Contratos();
         contrato=(Contratos)objeto;
-        String sql="update contratos set monto1="+contrato.getMonto1()+",fecha1='"+contrato.getVencimiento1()+"',monto2="+contrato.getMonto2()+",fecha2='"+contrato.getVencimiento2()+"',idinquilino="+contrato.getInquilino().getId()+",idpropiedad="+contrato.getPropiedad().getId()+",idpropietario="+contrato.getPropietario().getId()+",idgarante="+contrato.getGarante().getId()+",archivo="+contrato.getArchivo()+",idusuario="+contrato.getUsuario().getNumeroId()+" where id="+contrato.getId();
+        String sql="update contratos set monto1="+contrato.getMonto1()+",fecha1='"+contrato.getVencimiento1()+"',monto2="+contrato.getMonto2()+",fecha2='"+contrato.getVencimiento2()+"',idinquilino="+contrato.getInquilino()+",idpropiedad="+contrato.getPropiedad()+",idpropietario="+contrato.getPropietario()+",idgarante="+contrato.getGarante()+",archivo="+contrato.getArchivo()+",idusuario="+contrato.getUsuario()+" where id="+contrato.getId();
         tra.guardarRegistro(sql);
     }
 
@@ -206,18 +209,18 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
                 contrato.setVencimiento1(rs.getString("fecha1"));
                 contrato.setMonto2(rs.getDouble("monto2"));
                 contrato.setVencimiento2(rs.getString("fecha2"));
-                contrato.setInquilino((Inquilinos)inqui.CargarDesdeContratos(rs.getInt("idinquilino")));
+                contrato.setInquilino(rs.getInt("idinquilino"));
                 System.out.println("ID CONTRATO :"+contrato.getId());
-                contrato.setPropiedad((Propiedades)prop.CargarDesdeContratos(rs.getInt("idpropiedad")));
+                contrato.setPropiedad(rs.getInt("idpropiedad"));
                 
-                contrato.setPropietario((Propietarios)propi.CargarDesdeContratos(rs.getInt("idpropietario")));
+                contrato.setPropietario(rs.getInt("idpropietario"));
                 try{
-                contrato.setGarante((Garantes)gar.Cargar(rs.getInt("idgarante")));
+                contrato.setGarante(rs.getInt("idgarante"));
                 contrato.setArchivo(rs.getString("archivo"));
                 }catch(java.lang.UnsupportedOperationException exx){
                     
                 }
-                contrato.setUsuario((Usuarios)usu.buscarPorNumero(rs.getInt("idusuario")));
+                contrato.setUsuario(rs.getInt("idusuario"));
                 listado.add(contrato);
             }
         } catch (SQLException ex) {
@@ -247,16 +250,16 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
                 contrato.setVencimiento1(rs.getString("fecha1"));
                 contrato.setMonto2(rs.getDouble("monto2"));
                 contrato.setVencimiento2(rs.getString("fecha2"));
-                contrato.setInquilino((Inquilinos)inqui.CargarDesdeContratos(rs.getInt("idinquilino")));
-                contrato.setPropiedad((Propiedades)prop.CargarDesdeContratos(rs.getInt("idpropiedad")));
-                contrato.setPropietario((Propietarios)propi.CargarDesdeContratos(rs.getInt("idpropietario")));
+                contrato.setInquilino(rs.getInt("idinquilino"));
+                contrato.setPropiedad(rs.getInt("idpropiedad"));
+                contrato.setPropietario(rs.getInt("idpropietario"));
                 try{
                 //contrato.setGarante((Garantes)gar.Cargar(rs.getInt("idgarante")));
                 }catch(java.lang.UnsupportedOperationException ex){
                     System.err.println(ex);
                 }
                 contrato.setArchivo(rs.getString("archivo"));
-                contrato.setUsuario((Usuarios)usu.buscarPorNumero(rs.getInt("idusuario")));
+                contrato.setUsuario(rs.getInt("idusuario"));
                 //listado.add(contrato);
             }
         } catch (SQLException ex) {
@@ -355,7 +358,7 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
                 pp=new Propiedades();
                 pp=(Propiedades) prop.CargarDesdeContratos(rs.getInt("idpropiedad"));
                 contrato=(Contratos) genC.Cargar(rs.getInt("id"));
-                pp.setContrato(contrato);
+                pp.setContrato(contrato.getId());
                 fila[0]=true;
                 fila[1]=pp.getDireccion();
                 if(Inicio.fechaVal.before(rs.getDate("fecha1"))){
@@ -375,7 +378,7 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
                     }
                     resumen.setIdGasto(1);
                     resumen.setMontoTotal(montot);
-                    resumen.setUsuario(Inicio.usuario);
+                    resumen.setUsuario(Inicio.usuario.getNumeroId());
                     resumen.setEstado(0);
                     resumen.setIdConcepto(1);
                     resumen.setDescripcion("alquiler");
@@ -465,7 +468,7 @@ public class Contratos implements Generable,Componable,Emitible,Montable,Propiet
                 contrato.setMonto2(rs.getDouble("monto2"));
                 contrato.setVencimiento2(rs.getString("fecha2"));
                 
-                contrato.setUsuario((Usuarios)usu.buscarPorNumero(rs.getInt("idusuario")));
+                contrato.setUsuario(rs.getInt("idusuario"));
                 //listado.add(contrato);
             }
         } catch (SQLException ex) {

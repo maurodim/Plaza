@@ -81,17 +81,18 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setMaximizable(true);
-        setTitle("Generador de Resumenes");
+        setTitle("GENERADOR DE RESUMENES");
 
         jLabel1.setText("Seleccionar Propiedad");
 
         Generable gen=new Contratos();
+        Generable pro=new Propiedades();
         Contratos contrato=new Contratos();
         listadoPro=gen.Listar();
         Iterator iP=listadoPro.listIterator();
         while(iP.hasNext()){
             contrato=(Contratos)iP.next();
-            propiedad=(Propiedades)contrato.getPropiedad();
+            propiedad=(Propiedades)pro.Cargar(contrato.getPropiedad());
             this.jComboBox1.addItem(propiedad.getDireccion());
         }
         jComboBox1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -333,7 +334,7 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
             resumen.setIdGasto(cuenta.getId());
             resumen.setMontoTotal(cuenta.getMonto());
             resumen.setPropiedad(propiedad);
-            resumen.setUsuario((Usuarios)Inicio.usuario);
+            resumen.setUsuario(Inicio.usuario.getNumeroId());
             resumen.setEstado(0);
             if(seleccion==1){
             resumen.setIdConcepto(concepto1.getId());
@@ -369,19 +370,19 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         // el numero de resumen, lo debo hacer en resumen
         // en prinicipio lo que es nuevo es la cuenta no como estoy haciendo aca al comienzo
         
-        if(nuevo == 0){
-            resumen.setId(propiedad.getIdResumen());
-            cuenta.setIdResumen(resumen.getId());
+        //if(nuevo == 0){
+            //resumen.setId(propiedad.getIdResumen());
+            //cuenta.setIdResumen(resumen.getId());
         
         gen.Alta(cuenta);
             
-        }else{
+        //}else{
             
-            res.Alta(resumen);
-            cuenta.setIdResumen(resumen.getId());
+            //res.Alta(resumen);
+            //cuenta.setIdResumen(resumen.getId());
         
         gen.Alta(cuenta);
-        }
+        //}
         System.out.println(" id resumen "+resumen.getId());
         Resumible resu=new Resumenes();
         resu.AjustarMontoTotal(resumen.getId());
@@ -409,7 +410,7 @@ public class GeneradorDeResumenes extends javax.swing.JInternalFrame {
         Contratos contrato=new Contratos();
         //posicion++;
         contrato=(Contratos)listadoPro.get(posicion);
-        propiedad=contrato.getPropiedad();
+        propiedad=(Propiedades)pro.Cargar(contrato.getPropiedad());
         resumen=(Resumenes) ppR.cargarPorIdPropiedad(propiedad.getId());
         if(resumen.getId() > 0){
             propiedad.setIdResumen(resumen.getId());

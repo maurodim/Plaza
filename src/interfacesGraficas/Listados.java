@@ -41,6 +41,7 @@ public class Listados extends javax.swing.JInternalFrame {
      */
     public Listados(int objeto) {
         initComponents();
+        
         CargarTabla(objeto);
         eleccion=objeto;
         this.jButton4.setVisible(false);

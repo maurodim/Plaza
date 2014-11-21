@@ -111,7 +111,7 @@ public class PropiedadesMod extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setMaximizable(true);
-        setTitle("Modificacion de Propiedades");
+        setTitle("MODIFICACION DE PROPIEDADES");
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Propiedad"));
 
@@ -194,7 +194,7 @@ public class PropiedadesMod extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4)
                     .addComponent(jButton2))
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
 
         jButton1.setText("Propietario");
@@ -223,7 +223,7 @@ public class PropiedadesMod extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(217, 217, 217)
                 .addComponent(jButton1)
-                .addContainerGap(237, Short.MAX_VALUE))
+                .addContainerGap(241, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -237,7 +237,7 @@ public class PropiedadesMod extends javax.swing.JInternalFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         //propiedad=new Propiedades();
         geni=new Propiedades();
-        propiedad.setUsuario((Usuarios)Inicio.usuario);
+        propiedad.setUsuario(Inicio.usuario.getNumeroId());
         propiedad.setLocalidad(String.valueOf(this.jList2.getSelectedValue()));
         Generable rub=new Rubro();
         int pos=this.jList3.getSelectedIndex();
@@ -245,7 +245,7 @@ public class PropiedadesMod extends javax.swing.JInternalFrame {
         System.out.println("LA POSICION ELEGIDA ES "+pos);
         propiedad.setRubro((Rubro)rub.Cargar(pos));
         propiedad.setDireccion(this.jTextField7.getText());
-        propiedad.setPropietario(propietario);
+        propiedad.setPropietario(propietario.getId());
         //geni.Alta(propiedad);
         geni.Modificacion(propiedad);
         //numeroPropiedad=propiedad.getId();

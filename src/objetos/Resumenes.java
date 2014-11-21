@@ -41,7 +41,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
     private Double montoTotal;
     private Integer numero;
     private Date fecha;
-    private Usuarios usuario;
+    private Integer usuario;
     private String vencimiento;
     private Integer estado;
     private Integer idGasto;
@@ -115,11 +115,11 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
         this.fecha = fecha;
     }
 
-    public Usuarios getUsuario() {
+    public Integer getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuarios usuario) {
+    public void setUsuario(Integer usuario) {
         this.usuario = usuario;
     }
 
@@ -159,7 +159,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
         }else{
             System.out.println("la propiedad no esta cargada");
         }
-        String sql="insert into resumenes (idpropiedad,idgasto,montototal,idusuario,estado,idconcepto,descripcion,saldo) values ("+resumen.getPropiedad().getId()+","+resumen.getIdGasto()+","+resumen.getMontoTotal()+","+resumen.getUsuario().getNumeroId()+","+resumen.getEstado()+","+resumen.getIdConcepto()+",'"+resumen.getDescripcion()+"',"+resumen.getMontoTotal()+")";
+        String sql="insert into resumenes (idpropiedad,idgasto,montototal,idusuario,estado,idconcepto,descripcion,saldo) values ("+resumen.getPropiedad().getId()+","+resumen.getIdGasto()+","+resumen.getMontoTotal()+","+resumen.getUsuario()+","+resumen.getEstado()+","+resumen.getIdConcepto()+",'"+resumen.getDescripcion()+"',"+resumen.getMontoTotal()+")";
         tra.guardarRegistro(sql);
         sql="select id from resumenes order by id";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
@@ -175,7 +175,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
         }
         resumen.setId(ultimoResumen);
         String desc="alquiler";
-        sql="insert into cuentas (descripcion,monto,idpropiedad,estado,idusuario,idresumen,vencimiento) values ('"+desc+"',"+mont.LeerMontoActual(resumen.getPropiedad().getContrato().getId())+","+resumen.getPropiedad().getId()+",0,"+Inicio.usuario.getNumeroId()+","+resumen.getId()+","+resumen.getVencimiento()+")";
+        sql="insert into cuentas (descripcion,monto,idpropiedad,estado,idusuario,idresumen,vencimiento) values ('"+desc+"',"+mont.LeerMontoActual(resumen.getPropiedad().getContrato())+","+resumen.getPropiedad().getId()+",0,"+Inicio.usuario.getNumeroId()+","+resumen.getId()+","+resumen.getVencimiento()+")";
         System.err.println(sql);
         tra.guardarRegistro(sql);
         objeto=resumen;
@@ -193,7 +193,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
         Transaccionable tra=new ConeccionLocal();
         Resumenes resumen=new Resumenes();
         resumen=(Resumenes)objeto;
-        String sql="update resumenes set idpropiedad="+resumen.getPropiedad().getId()+",numero="+resumen.getNumero()+",idgasto="+resumen.getIdGasto()+",montototal="+resumen.getMontoTotal()+",idusuario="+resumen.getUsuario().getNumeroId()+",fechavencimiento='"+resumen.getVencimiento()+",estado="+resumen.getEstado()+" where id="+resumen.getId();
+        String sql="update resumenes set idpropiedad="+resumen.getPropiedad().getId()+",numero="+resumen.getNumero()+",idgasto="+resumen.getIdGasto()+",montototal="+resumen.getMontoTotal()+",idusuario="+resumen.getUsuario()+",fechavencimiento='"+resumen.getVencimiento()+",estado="+resumen.getEstado()+" where id="+resumen.getId();
         tra.guardarRegistro(sql);
     }
 
@@ -214,7 +214,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
                 resumen.setIdGasto(rs.getInt("idgasto"));
                 resumen.setMontoTotal(rs.getDouble("montototal"));
                 resumen.setFecha(rs.getDate("fecha"));
-                resumen.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                resumen.setUsuario(rs.getInt("idusuario"));
                 resumen.setVencimiento(rs.getString("fechavencimiento"));
                 resumen.setEstado(rs.getInt("estado"));
                 listado.add(resumen);
@@ -245,7 +245,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
                 resumen.setIdGasto(rs.getInt("idgasto"));
                 resumen.setMontoTotal(rs.getDouble("montototal"));
                 resumen.setFecha(rs.getDate("fecha"));
-                resumen.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                resumen.setUsuario(rs.getInt("idusuario"));
                 resumen.setVencimiento(rs.getString("fechavencimiento"));
                 resumen.setEstado(rs.getInt("estado"));
                 
@@ -419,7 +419,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
                 resumen.setIdGasto(rs.getInt("idgasto"));
                 resumen.setMontoTotal(rs.getDouble("montototal"));
                 resumen.setFecha(rs.getDate("fecha"));
-                resumen.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                resumen.setUsuario(rs.getInt("idusuario"));
                 resumen.setVencimiento(rs.getString("fechavencimiento"));
                 resumen.setEstado(rs.getInt("estado"));
                 
@@ -457,7 +457,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
                 resumen.setIdGasto(rs.getInt("idgasto"));
                 resumen.setMontoTotal(rs.getDouble("montototal"));
                 resumen.setFecha(rs.getDate("fecha"));
-                resumen.setUsuario((Usuarios)per.buscarPorNumero(rs.getInt("idusuario")));
+                resumen.setUsuario(rs.getInt("idusuario"));
                 resumen.setVencimiento(rs.getString("fechavencimiento"));
                 resumen.setEstado(rs.getInt("estado"));
                 
@@ -544,7 +544,7 @@ public class Resumenes implements Generable,Componable,Emitible,Listables,Propie
         Montable mon=new Contratos();
         Contratos contrato=new Contratos();
         contrato=(Contratos)objeto;
-        String sql="insert into resumenes (idpropiedad,idgasto,montototal,idusuario,estado,idconcepto,descripcion) values ("+resumen.getPropiedad().getId()+","+resumen.getIdGasto()+","+resumen.getMontoTotal()+","+resumen.getUsuario().getNumeroId()+","+resumen.getEstado()+","+resumen.getIdConcepto()+",'"+resumen.getDescripcion()+"')";
+        String sql="insert into resumenes (idpropiedad,idgasto,montototal,idusuario,estado,idconcepto,descripcion) values ("+resumen.getPropiedad().getId()+","+resumen.getIdGasto()+","+resumen.getMontoTotal()+","+resumen.getUsuario()+","+resumen.getEstado()+","+resumen.getIdConcepto()+",'"+resumen.getDescripcion()+"')";
         tra.guardarRegistro(sql);
         sql="select id from resumenes order by id";
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);

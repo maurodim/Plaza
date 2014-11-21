@@ -73,7 +73,10 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         }
         //this.jComboBox1.setSelectedItem(arti.getInquilino().getNombre());
         //this.jComboBox2.setSelectedItem(arti.getPropiedad().getDireccion());
-        this.jTextField2.setText(arti.getPropiedad().getPropietario().getNombre());
+        Propietarios propietario=new Propietarios();
+        Generable genP=new Propietarios();
+        propietario=(Propietarios) genP.Cargar(arti.getPropietario());
+        this.jTextField2.setText(propietario.getNombre());
         }catch(java.lang.NullPointerException ec){
             System.err.println(ec);
         }
@@ -155,7 +158,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         setClosable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Modificacion de Articulos");
+        setTitle("MODIFICACION DE ARTICULOS");
 
         jLabel1.setText("Fecha Modificacion Valores");
 
@@ -302,19 +305,19 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         arti.setMonto1(Numeros.ConvertirStringADouble(this.jTextField7.getText()));
         arti.setVencimiento2(venc2);
         arti.setMonto2(Numeros.ConvertirStringADouble(this.jTextField1.getText()));
-        arti.setInquilino(inquilino);
-        arti.setPropiedad(propiedad);
-        arti.setPropietario((Propietarios)propiedad.getPropietario());
-        arti.setUsuario(Inicio.usuario);
+        arti.setInquilino(inquilino.getId());
+        arti.setPropiedad(propiedad.getId());
+        arti.setPropietario(propiedad.getPropietario());
+        arti.setUsuario(Inicio.usuario.getNumeroId());
         
         Generable edit=new Contratos();
         if(accion==2){
             edit.Modificacion(arti);
         }else{
             edit.Alta(arti);
-            inquilino.setPropiedad(propiedad);
+            inquilino.setPropiedad(propiedad.getId());
             inquilino.setObservaciones(" ");
-            propiedad.setContrato(arti);
+            propiedad.setContrato(arti.getId());
             Generable in=new Inquilinos();
             Generable pp=new Propiedades();
             in.Modificacion(inquilino);
@@ -325,15 +328,23 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        //ACA DEBO CARGAR DESDE EL ARRAY
+        
         Generable gen=new Propiedades();
+        Generable genP=new Propietarios();
+        Propietarios propietario=new Propietarios();
         int posicion=this.jComboBox2.getSelectedIndex();
-        posicion++;
-        propiedad=(Propiedades)gen.Cargar(posicion);
+        //posicion++;
+        propiedad=(Propiedades)listadoProp.get(posicion);
+        
         try{
             this.jLabel6.setVisible(true);
             this.jTextField2.setVisible(true);
-
-            this.jTextField2.setText(propiedad.getPropietario().getNombre());
+            System.out.println("propietario id "+propiedad.getPropietario());
+            if(propiedad.getPropietario() > 0){
+            propietario=(Propietarios)genP.Cargar(propiedad.getPropietario());
+            }
+            this.jTextField2.setText(propietario.getNombre());
             this.jTextField2.setEnabled(false);
         }catch(java.lang.NullPointerException e){
             System.err.println("DIO ERROR COMO SUPONIA");
